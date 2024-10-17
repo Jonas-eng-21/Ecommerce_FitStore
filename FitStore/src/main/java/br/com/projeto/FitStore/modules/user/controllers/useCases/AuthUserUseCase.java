@@ -42,15 +42,17 @@ public class AuthUserUseCase {
         }
         
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
+        var expiresIn = Instant.now().plus(Duration.ofMinutes(10));
         var token = JWT.create()
             .withIssuer("FitStore")
             .withSubject(user.getId().toString())
             .withClaim("roles", Arrays.asList("user"))
-            .withExpiresAt(Instant.now().plus(Duration.ofMinutes(10)))
+            .withExpiresAt(expiresIn)
             .sign(algorithm);
         
         var authUserResponse = AuthUserResponseDTO.builder()
         .access_token(token)
+        .expires_in(expiresIn.toEpochMilli())
         .build();
 
         return authUserResponse;

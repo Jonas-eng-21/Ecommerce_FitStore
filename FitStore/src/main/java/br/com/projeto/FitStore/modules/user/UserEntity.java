@@ -32,10 +32,10 @@ public class UserEntity {
     @Email(message = "Email inválido")
     private String email;
 
-    @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "O nome de usuário deve conter apenas letras e números")
+    @Pattern(regexp = "\\S+", message = "O nome de usuário não pode conter espaços")
     private String username;
     
-    @Length(min = 6, message = "A senha deve ter no mínimo 6 caracteres", max = 100)
+    @Length(min = 6, message = "A senha deve ter entre 6 a 100 caracteres", max = 100)
     private String password;
 
     @CreationTimestamp
