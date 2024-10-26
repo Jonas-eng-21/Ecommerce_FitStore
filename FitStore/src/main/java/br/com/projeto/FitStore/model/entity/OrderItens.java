@@ -1,7 +1,5 @@
 package br.com.projeto.FitStore.model.entity;
 
-import javax.persistence.*;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -72,4 +70,8 @@ public class OrderItens {
         return price;
     }
 
-    public void setPr
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+    }
+
