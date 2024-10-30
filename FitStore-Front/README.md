@@ -38,8 +38,7 @@ Abaixo está a estrutura padrão de diretórios que devemos manter para garantir
 Descrição: A pasta Components contém componentes reutilizáveis da interface, como botões, inputs, cards, entre outros elementos independentes.
 Uso: Cada componente deve estar em uma pasta própria e incluir seu arquivo .tsx e .styled.ts para os estilos.
 Exemplo:
-plaintext
-Copiar código
+<pre>
 └── Components
     ├── Button
     │   ├── Button.tsx
@@ -47,29 +46,29 @@ Copiar código
     ├── Card
     │   ├── Card.tsx
     │   └── Card.styled.ts
-
+</pre>
 #### 📄 Pages
 Descrição: A pasta Pages é onde residem as páginas principais do projeto, como Home, Login, Dashboard, entre outras.
 Uso: Cada página deve ser composta por componentes e, se necessário, conter subcomponentes específicos da página. Mantenha a responsabilidade de cada página clara e organizada.
 Exemplo:
-plaintext
-Copiar código
+<pre>
 └── Pages
     ├── Home
     │   └── Home.tsx
     ├── Login
     │   └── Login.tsx
-
+</pre>
 #### 🔌 Services
 
 Descrição: Em Services, você encontrará os arquivos responsáveis por todas as chamadas à API. Centralizar essas funções facilita o gerenciamento e a reutilização de chamadas e configurações de rede.
 Uso: Crie arquivos ou funções específicas para cada endpoint da API, utilizando o padrão de serviços e facilitando a manutenção e organização.
 Exemplo:
-plaintext
-Copiar código
+
+<pre>
 └── Services
     ├── api.ts
     └── userService.ts
+</pre>
 ---
 
 ### 📘 Dicas e Boas Práticas
