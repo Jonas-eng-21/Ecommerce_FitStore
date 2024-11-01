@@ -5,14 +5,12 @@ import br.com.projeto.FitStore.models.Cidade;
 import br.com.projeto.FitStore.repository.CidadeRepositorio;
 import br.com.projeto.FitStore.repository.FuncionarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@Controller
 public class FuncionarioController {
 
 	@Autowired
@@ -35,14 +33,28 @@ public class FuncionarioController {
 
     @PostMapping("/funcionario")
     public Funcionario cadastrarFuncionario(@RequestBody Funcionario funcionario) {
-        if (funcionario.getCidade() != null && funcionario.getCidade().getId() != null) {
-            // Busca o cidade pelo ID, ou lança uma exceção se não for encontrado
-            Cidade cidadeExistente = cidadeRepositorio.findById(funcionario.getCidade().getId())
-                    .orElseThrow(() -> new RuntimeException("Cidade não encontrado"));
-            funcionario.setCidade(cidadeExistente); // Define o cidade existente
+        if (funcionario.getCidade() != null) {
+            // Verifica se a cidade possui um ID
+            if (funcionario.getCidade().getId() != null) {
+                // Busca a cidade pelo ID, ou lança uma exceção se não for encontrada
+                Cidade cidadeExistente = cidadeRepositorio.findById(funcionario.getCidade().getId())
+                        .orElseThrow(() -> new RuntimeException("Cidade não encontrada"));
+
+                // Verifica se a cidade associada tem um estado
+                if (cidadeExistente.getEstado() == null) {
+                    throw new RuntimeException("A cidade associada não possui um estado definido.");
+                }
+                funcionario.setCidade(cidadeExistente); // Define a cidade existente
+            } else {
+                throw new RuntimeException("O ID da cidade deve ser fornecido.");
+            }
+        } else {
+            throw new RuntimeException("Cidade não fornecida.");
         }
+
         return funcionarioRepositorio.save(funcionario);
     }
+
 
 
 

@@ -5,13 +5,12 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="funcionario")
 public class Funcionario implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
 	private String nome;
 	private String cpf;
 	private String telefone;
@@ -19,6 +18,10 @@ public class Funcionario implements Serializable{
 	private String numero;
 	private String bairro;
 	private String email;
+	private String funcao;
+
+	@ManyToOne
+	private Cidade cidade;
 
 	public Long getId() {
 		return id;
@@ -100,12 +103,9 @@ public class Funcionario implements Serializable{
 		this.cidade = cidade;
 	}
 
-	private String funcao;
-
-	@ManyToOne(fetch = FetchType.LAZY) // Evitar carregamento desnecessário de estados
-	@JoinColumn(name = "estado_id", nullable = false) // Nome da coluna de chave estrangeira
-	private Cidade cidade;
-
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 }
 
