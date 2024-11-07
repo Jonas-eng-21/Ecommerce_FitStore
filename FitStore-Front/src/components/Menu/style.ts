@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const MenuContainer = styled.nav<{ isOpen: boolean }>`
   background: #0099cc;
@@ -6,6 +6,17 @@ export const MenuContainer = styled.nav<{ isOpen: boolean }>`
   border-radius: ${(props) => (props.isOpen ? '0' : '10px')};
   border: 3px outset #66566d;
   position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+`;
+
+export const Logo = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
 `;
 
 export const MenuList = styled.ul`
@@ -14,6 +25,8 @@ export const MenuList = styled.ul`
   margin: 0 auto;
   padding: 0;
   list-style: none;
+  display: flex;
+  justify-content: center;
 
   @media screen and (max-width: 800px) {
     background: #444444;
@@ -143,3 +156,22 @@ export const Label = styled.label`
     display: block;
   }
 `;
+
+export const CartButton = styled.button`
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 24px;
+  cursor: pointer;
+  margin-left: 20px;
+  
+  &:hover {
+    color: #0099cc;
+  }
+
+  @media screen and (max-width: 800px) {
+    font-size: 20px;
+    margin-left: 10px;
+  }
+`;
+

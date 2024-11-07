@@ -10,6 +10,7 @@ import {
   SubMenu,
   SubMenuItem,
   SubMenuLink,
+  CartButton, 
 } from "./style";
 
 export default function Menu() {
@@ -63,6 +64,12 @@ export default function Menu() {
         </MenuItem>
         <MenuItem>
           <MenuLink href="#">Contact Us</MenuLink>
+        </MenuItem>
+        {/* Adicionando o CartButton ao final da lista */}
+        <MenuItem>
+          <CartButton>
+            🛒 {/* Ícone do carrinho */}
+          </CartButton>
         </MenuItem>
       </MenuList>
     </MenuContainer>
