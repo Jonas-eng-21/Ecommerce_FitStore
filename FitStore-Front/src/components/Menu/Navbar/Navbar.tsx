@@ -1,7 +1,9 @@
 import React, { useContext } from "react";
 import { CartContext } from "../CartContext";
-import "./Navbar.css";
-function Navbar() {
+import { CartButton } from "../Cart/CartButton";
+import "./Navbar.css"; // Arquivo de estilo opcional
+
+const Navbar: React.FC = () => {
   const { cartItems } = useContext(CartContext);
 
   return (
@@ -11,8 +13,9 @@ function Navbar() {
         <span role="img" aria-label="cart">🛒</span>
         <span className="cart-count">{cartItems.length}</span>
       </div>
+      <CartButton />
     </nav>
   );
-}
+};
 
 export default Navbar;

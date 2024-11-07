@@ -10,7 +10,7 @@ import {
   SubMenu,
   SubMenuItem,
   SubMenuLink,
-  CartButton, 
+  CartButton,
 } from "./style";
 
 export default function Menu() {

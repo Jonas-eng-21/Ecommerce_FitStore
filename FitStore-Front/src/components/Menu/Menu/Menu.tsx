@@ -1,36 +1,74 @@
-import React from 'react';
-import Header from '../components/Header';
-import Banner from '../components/Banner';
-import CategoryList from '../components/CategoryList';
-import Navbar from "./Navbar";
-import ProductList from "./ProductList";
+import { useState } from "react";
+import { CartButton } from "../Cart/CartButton";
+import {
+  Checkbox,
+  DropdownArrow,
+  Label,
+  MenuContainer,
+  MenuItem,
+  MenuLink,
+  MenuList,
+  SubMenu,
+  SubMenuItem,
+  SubMenuLink,
+} from "./style";
 
-const Home = () => {
+export default function Menu() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const updateMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
-    <div>
-      <Header />
-      <Banner />
-      <CategoryList />
-    </div>
-  );
-};
-
-
-const products = [
-  { id: 1, name: "Produto 1", price: 100 },
-  { id: 2, name: "Produto 2", price: 150 },
-  { id: 3, name: "Produto 3", price: 200 },
-];
-
-function Home() {
-  return (
-    <div>
-      <Navbar />
-      <h2>Produtos Disponíveis</h2>
-      <ProductList products={products} />
-    </div>
+    <MenuContainer isOpen={isMenuOpen}>
+      <Checkbox type="checkbox" id="responsive-menu" onClick={updateMenu} />
+      <Label htmlFor="responsive-menu"></Label>
+      <MenuList>
+        <MenuItem>
+          <MenuLink href="#">Home</MenuLink>
+        </MenuItem>
+        <MenuItem>
+          <DropdownArrow href="#">Products</DropdownArrow>
+          <SubMenu>
+            <SubMenuItem>
+              <SubMenuLink href="#">Products 1</SubMenuLink>
+            </SubMenuItem>
+            <SubMenuItem>
+              <SubMenuLink href="#">Products 2</SubMenuLink>
+            </SubMenuItem>
+            <SubMenuItem>
+              <SubMenuLink href="#">Products 3</SubMenuLink>
+            </SubMenuItem>
+            <SubMenuItem>
+              <SubMenuLink href="#">Products 4</SubMenuLink>
+            </SubMenuItem>
+          </SubMenu>
+        </MenuItem>
+        <MenuItem>
+          <MenuLink href="#">About</MenuLink>
+        </MenuItem>
+        <MenuItem>
+          <DropdownArrow href="#">Services</DropdownArrow>
+          <SubMenu>
+            <SubMenuItem>
+              <SubMenuLink href="#">Services 1</SubMenuLink>
+            </SubMenuItem>
+            <SubMenuItem>
+              <SubMenuLink href="#">Services 2</SubMenuLink>
+            </SubMenuItem>
+            <SubMenuItem>
+              <SubMenuLink href="#">Services 3</SubMenuLink>
+            </SubMenuItem>
+          </SubMenu>
+        </MenuItem>
+        <MenuItem>
+          <MenuLink href="#">Contact Us</MenuLink>
+        </MenuItem>
+        <MenuItem>
+          <CartButton />
+        </MenuItem>
+      </MenuList>
+    </MenuContainer>
   );
 }
-
-export default Home;
-

@@ -174,4 +174,3 @@ export const CartButton = styled.button`
     margin-left: 10px;
   }
 `;
-
