@@ -3,14 +3,15 @@ import FormCadastro from "../../../components/FormCadastro";
 import { Container, ContainerLeft, ContainerRight } from "./style";
 
 interface FormData {
-    nome: string;
-    cpf: string;
-    telefone: string;
-    endereco: string;
-    numero: string;
-    bairro: string;
-    email: string;
-  }
+  nome?: string;
+  cpf?: string;
+  telefone?: string;
+  endereco?: string;
+  numero?: string;
+  funcao?: string;
+  bairro?: string;
+  email?: string;
+}
 
 const initialClienteData: FormData = {
   nome: "",
@@ -18,6 +19,7 @@ const initialClienteData: FormData = {
   telefone: "",
   endereco: "",
   numero: "",
+  funcao: "",
   bairro: "",
   email: "",
 };
@@ -34,6 +36,7 @@ export default function CadastroFuncinoario() {
         <FormCadastro
           initialData={initialClienteData}
           onSubmit={handleClienteSubmit}
+          fields={["nome", "cpf", "telefone", "endereco", "numero", "funcao", "bairro", "email"]}
         />
       </ContainerLeft>
       <ContainerRight>

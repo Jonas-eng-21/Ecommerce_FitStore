@@ -3,18 +3,18 @@ import FormCadastro from "../../../components/FormCadastro";
 import { Container, ContainerLeft, ContainerRight } from "./style";
 
 interface FormData {
-    nome: string;
-    cpf: string;
-    telefone: string;
-    endereco: string;
-    numero: string;
-    bairro: string;
-    email: string;
-  }
+  nome?: string;
+  cnpj?: string;
+  telefone?: string;
+  endereco?: string;
+  numero?: string;
+  bairro?: string;
+  email?: string;
+}
 
 const initialClienteData: FormData = {
   nome: "",
-  cpf: "",
+  cnpj: "",
   telefone: "",
   endereco: "",
   numero: "",
@@ -34,6 +34,7 @@ export default function CadastroFornecedor() {
         <FormCadastro
           initialData={initialClienteData}
           onSubmit={handleClienteSubmit}
+          fields={["nome", "cnpj", "telefone", "endereco", "numero", "bairro", "email"]}
         />
       </ContainerLeft>
       <ContainerRight>

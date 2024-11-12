@@ -3,14 +3,15 @@ import FormCadastro from "../../../components/FormCadastro";
 import { Container, ContainerLeft, ContainerRight } from "./style";
 
 interface FormData {
-    nome: string;
-    cpf: string;
-    telefone: string;
-    endereco: string;
-    numero: string;
-    bairro: string;
-    email: string;
-  }
+  nome?: string;
+  cpf?: string;
+  telefone?: string;
+  endereco?: string;
+  numero?: string;
+  bairro?: string;
+  email?: string;
+}
+
 
 const initialClienteData: FormData = {
   nome: "",
@@ -25,7 +26,6 @@ const initialClienteData: FormData = {
 export default function CadastroCliente() {
   const handleClienteSubmit = (data: FormData) => {
     console.log("Dados do Cliente:", data);
-    // Aqui fazer tratamento dos dados para envio ao backend
   };
 
   return (
@@ -34,6 +34,7 @@ export default function CadastroCliente() {
         <FormCadastro
           initialData={initialClienteData}
           onSubmit={handleClienteSubmit}
+          fields={["nome", "cpf", "telefone", "endereco", "numero", "bairro", "email"]}
         />
       </ContainerLeft>
       <ContainerRight>
