@@ -34,19 +34,19 @@ public class AuthService {
     private BCryptPasswordEncoder passwordEncoder;
 
     public String loginCliente(String email, String senha) {
-        Cliente cliente = clienteRepositorio.findByEmail(email)
+        Cliente cliente = (Cliente) clienteRepositorio.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
         return autenticarUsuario(cliente, senha);
     }
 
     public String loginFuncionario(String email, String senha) {
-        Funcionario funcionario = funcionarioRepositorio.findByEmail(email)
+        Funcionario funcionario = (Funcionario) funcionarioRepositorio.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
         return autenticarUsuario(funcionario, senha);
     }
 
     public String loginFornecedor(String email, String senha) {
-        Fornecedor fornecedor = fornecedorRepositorio.findByEmail(email)
+        Fornecedor fornecedor = (Fornecedor) fornecedorRepositorio.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
         return autenticarUsuario(fornecedor, senha);
     }
