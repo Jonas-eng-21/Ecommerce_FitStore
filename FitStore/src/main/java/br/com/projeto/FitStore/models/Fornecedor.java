@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 @Entity
 public class Fornecedor implements Serializable{
 
@@ -18,6 +20,7 @@ public class Fornecedor implements Serializable{
 	private String numero;
 	private String bairro;
 	private String email;
+	private String senha;
 
 	@ManyToOne
 	private Cidade cidade;
@@ -85,6 +88,14 @@ public class Fornecedor implements Serializable{
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = new BCryptPasswordEncoder().encode(senha);
+	}
+
+	public String getSenha() {
+		return senha;
 	}
 
 	public Cidade getCidade() {

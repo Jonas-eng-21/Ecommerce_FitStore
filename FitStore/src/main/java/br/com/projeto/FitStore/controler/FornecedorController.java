@@ -21,13 +21,16 @@ public class FornecedorController {
 
     @GetMapping("/fornecedors")
     public List<Fornecedor> listarFornecedors() {
-        return fornecedorRepositorio.findAll();
+        List<Fornecedor> fornecedors = fornecedorRepositorio.findAll();
+        fornecedors.forEach(fornecedor -> fornecedor.setSenha(null));
+        return fornecedors;
     }
 
-  
     @GetMapping("/fornecedor/{id}")
     public Optional<Fornecedor> obterFornecedorPorId(@PathVariable Long id) {
-        return fornecedorRepositorio.findById(id);
+        Optional<Fornecedor> fornecedor = fornecedorRepositorio.findById(id);
+        fornecedor.ifPresent(f -> f.setSenha(null));
+        return fornecedor;
     }
 
 

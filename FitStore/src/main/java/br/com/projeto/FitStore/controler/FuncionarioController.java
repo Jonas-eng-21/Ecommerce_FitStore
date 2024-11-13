@@ -21,13 +21,16 @@ public class FuncionarioController {
 
     @GetMapping("/funcionarios")
     public List<Funcionario> listarFuncionarios() {
-        return funcionarioRepositorio.findAll();
+        List<Funcionario> funcionarios = funcionarioRepositorio.findAll();
+        funcionarios.forEach(funcionario -> funcionario.setSenha(null));
+        return funcionarios;
     }
 
-  
     @GetMapping("/funcionario/{id}")
     public Optional<Funcionario> obterFuncionarioPorId(@PathVariable Long id) {
-        return funcionarioRepositorio.findById(id);
+        Optional<Funcionario> funcionario = funcionarioRepositorio.findById(id);
+        funcionario.ifPresent(f -> f.setSenha(null));
+        return funcionario;
     }
 
 

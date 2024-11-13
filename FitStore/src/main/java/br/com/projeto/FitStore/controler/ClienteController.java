@@ -21,15 +21,18 @@ public class ClienteController {
 
     @GetMapping("/clientes")
     public List<Cliente> listarClientes() {
-        return clienteRepositorio.findAll();
+        List<Cliente> clientes = clienteRepositorio.findAll();
+        clientes.forEach(cliente -> cliente.setSenha(null));
+        return clientes;
     }
 
-  
+
     @GetMapping("/cliente/{id}")
     public Optional<Cliente> obterClientePorId(@PathVariable Long id) {
-        return clienteRepositorio.findById(id);
+        Optional<Cliente> cliente = clienteRepositorio.findById(id);
+        cliente.ifPresent(c -> c.setSenha(null));
+        return cliente;
     }
-
 
     @PostMapping("/cliente")
     public Cliente cadastrarCliente(@RequestBody Cliente cliente) {
