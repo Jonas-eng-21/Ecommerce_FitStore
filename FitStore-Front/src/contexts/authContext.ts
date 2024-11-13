@@ -1,24 +1,28 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 import { login } from "../services/authService";
 
-// Interface para o AuthContext
+
 interface AuthContextProps {
   user: { email: string; userType: string } | null;
   token: string | null;
-  login: (email: string, senha: string) => Promise<void>;
+  login: (email: string, senha: string, userType: "cliente" | "funcionario" | "fornecedor") => Promise<void>;
   logout: () => void;
 }
 
-// Cria o AuthContext
+
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-export const AuthProvider: React.FC = ({ children }) => {
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<AuthContextProps["user"]>(null);
   const [token, setToken] = useState<string | null>(null);
 
   // Função de login
-  const handleLogin = async (email: string, senha: string) => {
-    const data = await login(email, senha);
+  const handleLogin = async (email: string, senha: string, userType: "cliente" | "funcionario" | "fornecedor") => {
+    const data = await login(email, senha, userType); // Passando userType para a função login
     setUser({ email, userType: data.userType });
     setToken(data.token);
     localStorage.setItem("token", data.token); // Armazena o token no localStorage
