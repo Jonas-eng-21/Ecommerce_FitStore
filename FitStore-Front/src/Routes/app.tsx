@@ -3,6 +3,9 @@ import Home from '../pages/Home';
 import CadastroCliente from '../pages/Register/CadastroCliente';
 import CadastroFornecedor from '../pages/Register/CadastroFornecedor';
 import CadastroFuncinoario from '../pages/Register/CadastroFuncionario';
+import Login from '../pages/Login';
+import ProtectedRoute from "../Routes/protectedRoute";
+import { AuthProvider } from "../contexts/authContext";
 
 
 function App() {
@@ -13,6 +16,7 @@ function App() {
         <Route path="/cadastroCliente" element={<CadastroCliente />} />
         <Route path="/CadastroFornecedor" element={<CadastroFornecedor />} />
         <Route path="/CadastroFuncinoario" element={<CadastroFuncinoario />} />
+        <Route path="/Login" element={<Login/>} />
       </Routes>
     </Router>
   );
