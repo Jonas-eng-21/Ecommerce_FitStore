@@ -6,7 +6,7 @@ import java.io.Serializable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
-public class Cliente implements Serializable{
+public class Cliente implements Serializable, UsuarioAutenticavel {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -80,8 +80,9 @@ public class Cliente implements Serializable{
 		this.bairro = bairro;
 	}
 
+	@Override
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 
 	public void setEmail(String email) {
@@ -92,8 +93,9 @@ public class Cliente implements Serializable{
 		this.senha = new BCryptPasswordEncoder().encode(senha);
 	}
 
+	@Override
 	public String getSenha() {
-		return senha;
+		return this.senha;
 	}
 
 	public Cidade getCidade() {
