@@ -1,34 +1,42 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
-import { login } from "../services/authService";
+import React, { createContext, useContext, useState } from "react";
+import { login as loginService } from "../services/authService";
 
+interface User {
+  email: string;
+  userType: "cliente" | "funcionario" | "fornecedor";
+}
 
-interface AuthContextProps {
-  user: { email: string; userType: string } | null;
+interface AuthContextType {
+  user: User | null;
   token: string | null;
   login: (email: string, senha: string, userType: "cliente" | "funcionario" | "fornecedor") => Promise<void>;
   logout: () => void;
 }
 
 
-const AuthContext = createContext<AuthContextProps | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface AuthProviderProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
+
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<AuthContextProps["user"]>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
-  // Função de login
-  const handleLogin = async (email: string, senha: string, userType: "cliente" | "funcionario" | "fornecedor") => {
-    const data = await login(email, senha, userType); // Passando userType para a função login
-    setUser({ email, userType: data.userType });
-    setToken(data.token);
-    localStorage.setItem("token", data.token); // Armazena o token no localStorage
+  const login = async (email: string, senha: string, userType: "cliente" | "funcionario" | "fornecedor") => {
+    try {
+      const { token } = await loginService(email, senha, userType);
+      setToken(token);
+      setUser({ email, userType });
+      localStorage.setItem("token", token);
+    } catch (error) {
+      console.error("Erro no login", error);
+      throw new Error("Erro ao fazer login");
+    }
   };
 
-  // Função de logout
   const logout = () => {
     setUser(null);
     setToken(null);
@@ -36,14 +44,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login: handleLogin, logout }}>
+    <AuthContext.Provider value={{ user, token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Hook para usar o AuthContext
-export const useAuth = () => {
+
+export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error("useAuth deve ser usado dentro de um AuthProvider");
