@@ -9,16 +9,18 @@ import br.com.projeto.FitStore.repository.FornecedorRepositorio;
 import br.com.projeto.FitStore.repository.FuncionarioRepositorio;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Key;
 import java.util.Date;
 
 @Service
 public class AuthService {
 
-    private final String JWT_SECRET = "seuSegredoSeguro";
+    private final Key JWT_SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     private final long JWT_EXPIRATION = 86400000; // 24 horas
 
     @Autowired
@@ -63,7 +65,7 @@ public class AuthService {
                 .setSubject(usuario.getEmail())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION))
-                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
+                .signWith(JWT_SECRET_KEY)
                 .compact();
     }
 }
