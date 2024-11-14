@@ -7,8 +7,6 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -16,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@Controller
 @RequestMapping("/api/entradas")
 public class EntradaController {
 
@@ -26,10 +23,6 @@ public class EntradaController {
     private ItemEntradaRepositorio itemEntradaRepositorio;
     @Autowired
     private ProdutoRepositorio produtoRepositorio;
-    @Autowired
-    private FuncionarioRepositorio funcionarioRepositorio;
-    @Autowired
-    private FornecedorRepositorio fornecedorRepositorio;
 
     @Setter
     @Getter
@@ -41,41 +34,31 @@ public class EntradaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> cadastrarEntrada(@RequestParam String acao, @RequestBody Entrada entrada, BindingResult result) {
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body("Erro de validação");
+    public ResponseEntity<?> cadastrarEntrada(@RequestBody Entrada entrada) {
+        if (entrada.getItensEntrada() == null || entrada.getItensEntrada().isEmpty()) {
+            return ResponseEntity.badRequest().body("A entrada deve conter pelo menos um item.");
         }
 
-        if (acao.equals("itens")) {
-            ItemEntrada itemEntrada = entrada.getItensEntrada().get(0); // Presume que item está em lista
-            listaItemEntrada.add(itemEntrada);
-            entrada.setValorTotal(entrada.getValorTotal() + (itemEntrada.getValor() * itemEntrada.getQuantidade()));
-            entrada.setQuantidadeTotal(entrada.getQuantidadeTotal() + itemEntrada.getQuantidade());
+        for (ItemEntrada item : entrada.getItensEntrada()) {
+            entrada.setValorTotal(entrada.getValorTotal() + (item.getValor() * item.getQuantidade()));
+            entrada.setQuantidadeTotal(entrada.getQuantidadeTotal() + item.getQuantidade());
+        }
 
-            return ResponseEntity.ok().body("Item adicionado");
+        Entrada entradaSalva = entradaRepositorio.saveAndFlush(entrada);
 
-        } else if (acao.equals("salvar")) {
-            entrada.setItensEntrada(listaItemEntrada);
-            Entrada entradaSalva = entradaRepositorio.saveAndFlush(entrada);
+        for (ItemEntrada it : entrada.getItensEntrada()) {
+            it.setEntrada(entradaSalva);
+            itemEntradaRepositorio.saveAndFlush(it);
 
-            for (ItemEntrada it : listaItemEntrada) {
-                it.setEntrada(entradaSalva);
-                itemEntradaRepositorio.saveAndFlush(it);
-
-                Optional<Produto> prod = produtoRepositorio.findById(it.getProduto().getId());
-                if (prod.isPresent()) {
-                    Produto produto = prod.get();
-                    produto.setEstoque(produto.getEstoque() + it.getQuantidade());
-                    produto.setPrecoVenda(it.getValor());
-                    produto.setPrecoCusto(it.getValorCusto());
-                    produtoRepositorio.saveAndFlush(produto);
-                }
+            Optional<Produto> prod = produtoRepositorio.findById(it.getProduto().getId());
+            if (prod.isPresent()) {
+                Produto produto = prod.get();
+                produto.setEstoque(produto.getEstoque() + it.getQuantidade());
+                produtoRepositorio.saveAndFlush(produto);
             }
-            listaItemEntrada.clear();
-            return new ResponseEntity<>("Entrada salva com sucesso", HttpStatus.CREATED);
         }
 
-        return ResponseEntity.badRequest().body("Ação não reconhecida");
+        return new ResponseEntity<>("Entrada salva com sucesso", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
@@ -96,5 +79,4 @@ public class EntradaController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item não encontrado");
     }
-
 }
