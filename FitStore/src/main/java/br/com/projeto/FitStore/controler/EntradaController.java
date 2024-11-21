@@ -39,12 +39,15 @@ public class EntradaController {
             return ResponseEntity.badRequest().body("A entrada deve conter pelo menos um item.");
         }
 
+
         for (ItemEntrada item : entrada.getItensEntrada()) {
             entrada.setValorTotal(entrada.getValorTotal() + (item.getValor() * item.getQuantidade()));
             entrada.setQuantidadeTotal(entrada.getQuantidadeTotal() + item.getQuantidade());
         }
 
+
         Entrada entradaSalva = entradaRepositorio.saveAndFlush(entrada);
+
 
         for (ItemEntrada it : entrada.getItensEntrada()) {
             it.setEntrada(entradaSalva);
@@ -53,13 +56,21 @@ public class EntradaController {
             Optional<Produto> prod = produtoRepositorio.findById(it.getProduto().getId());
             if (prod.isPresent()) {
                 Produto produto = prod.get();
+
+
                 produto.setEstoque(produto.getEstoque() + it.getQuantidade());
+
+
+                produto.setPrecoVenda(it.getValor());
+                produto.setPrecoCusto(it.getValorCusto());
+
                 produtoRepositorio.saveAndFlush(produto);
             }
         }
 
         return new ResponseEntity<>("Entrada salva com sucesso", HttpStatus.CREATED);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removerEntrada(@PathVariable Long id) {
