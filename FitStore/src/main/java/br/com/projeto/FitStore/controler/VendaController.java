@@ -42,47 +42,51 @@ public class VendaController {
             return ResponseEntity.badRequest().body("A venda deve conter pelo menos um item.");
         }
 
+        // Inicializar totais da venda
+        double valorTotal = 0;
+        double quantidadeTotal = 0;
+
+        // Processar os itens da venda
         for (ItemVenda item : venda.getItensVenda()) {
-            venda.setValorTotal(venda.getValorTotal() + (item.getValor() * item.getQuantidade()));
-            venda.setQuantidadeTotal(venda.getQuantidadeTotal() + item.getQuantidade());
+            Optional<Produto> prodOptional = produtoRepositorio.findById(item.getProduto().getId());
+            if (prodOptional.isEmpty()) {
+                return ResponseEntity.badRequest().body("Produto não encontrado para o item da venda.");
+            }
+
+            Produto produto = prodOptional.get();
+
+            // Definir valores do item de venda
+            item.setValor(produto.getPrecoVenda());
+            item.setSubtotal(item.getValor() * item.getQuantidade());
+            valorTotal += item.getSubtotal();
+            quantidadeTotal += item.getQuantidade();
+
+            // Verificar estoque
+            if (produto.getEstoque() < item.getQuantidade()) {
+                return ResponseEntity.badRequest().body(
+                        String.format("Estoque insuficiente para o produto ID %d.", produto.getId())
+                );
+            }
         }
 
-        Venda vendaSalva = vendaRepositorio.saveAndFlush(venda);
-        for (ItemVenda it : venda.getItensVenda()) {
-            it.setVenda(vendaSalva);
-            itemVendaRepositorio.saveAndFlush(it);
+        // Atualizar totais na venda
+        venda.setValorTotal(valorTotal);
+        venda.setQuantidadeTotal(quantidadeTotal);
 
-            Optional<Produto> prod = produtoRepositorio.findById(it.getProduto().getId());
-            if (prod.isPresent()) {
-                Produto produto = prod.get();
-                produto.setEstoque(produto.getEstoque() + it.getQuantidade());
-                produto.setPrecoVenda(it.getValor());
-                produto.setPrecoCusto(it.getSubtotal());
-                produtoRepositorio.saveAndFlush(produto);
-            }
+        // Salvar a venda
+        Venda vendaSalva = vendaRepositorio.saveAndFlush(venda);
+
+        // Persistir os itens da venda e atualizar o estoque dos produtos
+        for (ItemVenda item : venda.getItensVenda()) {
+            item.setVenda(vendaSalva);
+            itemVendaRepositorio.saveAndFlush(item);
+
+            Produto produto = produtoRepositorio.findById(item.getProduto().getId()).get();
+            produto.setEstoque(produto.getEstoque() - item.getQuantidade());
+            produtoRepositorio.saveAndFlush(produto);
         }
 
         VendaDTO vendaDTO = new VendaDTO(vendaSalva);
         return ResponseEntity.status(HttpStatus.CREATED).body(vendaDTO);
-    }
-
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> removerVenda(@PathVariable Long id) {
-        if (vendaRepositorio.existsById(id)) {
-            vendaRepositorio.deleteById(id);
-            return ResponseEntity.ok("Venda removida com sucesso");
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Venda não encontrada");
-    }
-
-    @DeleteMapping("/item/{id}")
-    public ResponseEntity<?> removerItemVenda(@PathVariable Long id) {
-        Optional<ItemVenda> itemVenda = itemVendaRepositorio.findById(id);
-        if (itemVenda.isPresent()) {
-            itemVendaRepositorio.delete(itemVenda.get());
-            return ResponseEntity.ok("Item removido com sucesso");
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item não encontrado");
     }
 }
