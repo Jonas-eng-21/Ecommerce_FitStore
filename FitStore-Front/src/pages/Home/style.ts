@@ -83,7 +83,7 @@ export const NavActions = styled.div`
 export const HeroSection = styled.section`
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: top;
     padding: 50px;
     background-color: #6e6e6e;
 

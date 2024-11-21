@@ -34,9 +34,11 @@ export default function Home() {
                 <div>
                     <h1>Fit Store</h1>
                     <p>
-                    Tudo para seu treino, do começo ao topo! 💪🛒
+                    Tudo para seu treino, do zero ao shape! 💪🛒
                     </p>
                     <CallToAction>Ver Produtos</CallToAction>
+                    <h2>Aproveite Nossas Promoções</h2>
+                    <p>Desconto em sua primeira compra e frete grátis nas compras a partir de R$199!</p>
                 </div>
                 <img src="assets/images/default-image.png" alt="Hero Banner" />
             </HeroSection>
