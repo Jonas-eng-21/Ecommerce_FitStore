@@ -1,5 +1,6 @@
 package br.com.projeto.FitStore.controler;
 
+import br.com.projeto.FitStore.dto.EntradaDTO;
 import br.com.projeto.FitStore.models.*;
 import br.com.projeto.FitStore.repository.*;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/entradas")
@@ -24,13 +26,13 @@ public class EntradaController {
     @Autowired
     private ProdutoRepositorio produtoRepositorio;
 
-    @Setter
-    @Getter
-    private List<ItemEntrada> listaItemEntrada = new ArrayList<>();
-
     @GetMapping
-    public List<Entrada> listarEntradas() {
-        return entradaRepositorio.findAll();
+    public ResponseEntity<List<EntradaDTO>> listarEntradas() {
+        List<Entrada> entradas = entradaRepositorio.findAll();
+        List<EntradaDTO> entradaDTOs = entradas.stream()
+                .map(EntradaDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(entradaDTOs);
     }
 
     @PostMapping
@@ -39,16 +41,12 @@ public class EntradaController {
             return ResponseEntity.badRequest().body("A entrada deve conter pelo menos um item.");
         }
 
-
         for (ItemEntrada item : entrada.getItensEntrada()) {
             entrada.setValorTotal(entrada.getValorTotal() + (item.getValor() * item.getQuantidade()));
             entrada.setQuantidadeTotal(entrada.getQuantidadeTotal() + item.getQuantidade());
         }
 
-
         Entrada entradaSalva = entradaRepositorio.saveAndFlush(entrada);
-
-
         for (ItemEntrada it : entrada.getItensEntrada()) {
             it.setEntrada(entradaSalva);
             itemEntradaRepositorio.saveAndFlush(it);
@@ -56,19 +54,15 @@ public class EntradaController {
             Optional<Produto> prod = produtoRepositorio.findById(it.getProduto().getId());
             if (prod.isPresent()) {
                 Produto produto = prod.get();
-
-
                 produto.setEstoque(produto.getEstoque() + it.getQuantidade());
-
-
                 produto.setPrecoVenda(it.getValor());
                 produto.setPrecoCusto(it.getValorCusto());
-
                 produtoRepositorio.saveAndFlush(produto);
             }
         }
 
-        return new ResponseEntity<>("Entrada salva com sucesso", HttpStatus.CREATED);
+        EntradaDTO entradaDTO = new EntradaDTO(entradaSalva);
+        return ResponseEntity.status(HttpStatus.CREATED).body(entradaDTO);
     }
 
 
