@@ -10,7 +10,9 @@ import {
   SubMenu,
   SubMenuItem,
   SubMenuLink,
+  CartButtonWrapper, // Importando o estilo do botão de carrinho
 } from "./style";
+import { FaShoppingCart } from "react-icons/fa"; // Usando um ícone para o carrinho
 
 export default function Menu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -63,6 +65,11 @@ export default function Menu() {
         </MenuItem>
         <MenuItem>
           <MenuLink href="#">Contact Us</MenuLink>
+        </MenuItem>
+        <MenuItem>
+          <CartButtonWrapper>
+            <FaShoppingCart size={24} /> {/* Ícone do carrinho */}
+          </CartButtonWrapper>
         </MenuItem>
       </MenuList>
     </MenuContainer>

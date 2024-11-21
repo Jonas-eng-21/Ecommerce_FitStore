@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const MenuContainer = styled.nav<{ isOpen: boolean }>`
   background: #0099cc;
@@ -31,6 +31,12 @@ export const MenuList = styled.ul`
 export const MenuItem = styled.li`
   display: inline-block;
   position: relative;
+  list-style: none;
+  padding: 10px 15px;
+
+  &:last-child {
+    padding-right: 30px; /* Para dar um espaçamento maior ao último item */
+  }
 
   @media screen and (max-width: 800px) {
     display: block;
@@ -68,7 +74,7 @@ export const SubMenu = styled.ul`
   position: absolute;
   z-index: 99;
   display: none;
-  
+
   ${MenuItem}:hover & {
     display: block;
   }
@@ -141,5 +147,20 @@ export const Label = styled.label`
 
   @media screen and (max-width: 800px) {
     display: block;
+  }
+`;
+
+export const CartButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 10px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
   }
 `;
