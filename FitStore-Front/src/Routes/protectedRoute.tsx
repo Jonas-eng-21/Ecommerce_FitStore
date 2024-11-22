@@ -1,21 +1,16 @@
 import React from "react";
-import { Route, Redirect, RouteProps } from "react-router-dom";
-import { useAuth } from "../contexts/authContext";
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "../contexts/useAuth";
 
-interface ProtectedRouteProps extends RouteProps {
-  component: React.ComponentType<any>;
-}
+type Props = { children: React.ReactNode };
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ component: Component, ...rest }) => {
-  const { token } = useAuth();
-
-  return (
-    <Route
-      {...rest}
-      render={(props) =>
-        token ? <Component {...props} /> : <Redirect to="/login" />
-      }
-    />
+const ProtectedRoute = ({ children }: Props) => {
+  const location = useLocation();
+  const { isLoggedIn } = useAuth();
+  return isLoggedIn() ? (
+    <>{children}</>
+  ) : (
+    <Navigate to="/Login" state={{ from: location }} replace />
   );
 };
 
