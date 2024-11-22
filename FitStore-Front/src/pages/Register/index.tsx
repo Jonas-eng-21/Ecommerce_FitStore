@@ -4,27 +4,28 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuth } from "../../contexts/useAuth";
 import { useForm } from "react-hook-form";
 
-
-type LoginFormsInputs = {
+type RegisterFormsInputs = {
   email: string;
+  nome: string;
   senha: string;
 };
 
 const validation = Yup.object().shape({
-  email: Yup.string().required("O email é obrigatório"),
-  senha: Yup.string().required("A senha é obrigatório"),
+  email: Yup.string().required("Email is required"),
+  nome: Yup.string().required("nome is required"),
+  senha: Yup.string().required("senha is required"),
 });
 
-const LoginPage = () => {
-  const { loginUser } = useAuth();
+const RegisterPage = () => {
+  const { registerUser } = useAuth();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormsInputs>({ resolver: yupResolver(validation) });
+  } = useForm<RegisterFormsInputs>({ resolver: yupResolver(validation) });
 
-  const handleLogin = (form: LoginFormsInputs) => {
-    loginUser(form.email, form.senha);
+  const handleLogin = (form: RegisterFormsInputs) => {
+    registerUser(form.email, form.nome, form.senha);
   };
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -43,17 +44,37 @@ const LoginPage = () => {
                   htmlFor="email"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  email
+                  Email
                 </label>
                 <input
                   type="text"
                   id="email"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="email"
+                  placeholder="Email"
                   {...register("email")}
                 />
                 {errors.email ? (
                   <p className="text-white">{errors.email.message}</p>
+                ) : (
+                  ""
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="nome"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  nome
+                </label>
+                <input
+                  type="text"
+                  id="nome"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="nome"
+                  {...register("nome")}
+                />
+                {errors.nome ? (
+                  <p className="text-white">{errors.nome.message}</p>
                 ) : (
                   ""
                 )}
@@ -109,4 +130,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
