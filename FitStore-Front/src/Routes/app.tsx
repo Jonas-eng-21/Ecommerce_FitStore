@@ -1,27 +1,32 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from '../pages/Home';
-import CadastroCliente from '../pages/Register/CadastroCliente';
-import CadastroFornecedor from '../pages/Register/CadastroFornecedor';
-import CadastroFuncinoario from '../pages/Register/CadastroFuncionario';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "../pages/Home";
+import CadastroCliente from "../pages/Register/CadastroCliente";
+import CadastroFornecedor from "../pages/Register/CadastroFornecedor";
+import CadastroFuncinoario from "../pages/Register/CadastroFuncionario";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { UserProvider } from "../contexts/useAuth";
 // import Login from '../pages/Login';
 // import ProtectedRoute from "../Routes/protectedRoute";
 // import { AuthProvider } from "../contexts/authContext";
 
-
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/cadastroCliente" element={<CadastroCliente />} />
-        <Route path="/CadastroFornecedor" element={<CadastroFornecedor />} />
-        <Route path="/CadastroFuncinoario" element={<CadastroFuncinoario />} />
-        <ToastContainer />
-        {/* <Route path="/Login" element={<Login/>} /> */}
-      </Routes>
-    </Router>
+    <UserProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/cadastroCliente" element={<CadastroCliente />} />
+          <Route path="/CadastroFornecedor" element={<CadastroFornecedor />} />
+          <Route
+            path="/CadastroFuncinoario"
+            element={<CadastroFuncinoario />}
+          />
+          <ToastContainer />
+          {/* <Route path="/Login" element={<Login/>} /> */}
+        </Routes>
+      </Router>
+    </UserProvider>
   );
 }
 

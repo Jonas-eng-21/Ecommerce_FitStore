@@ -4,11 +4,25 @@ import { UserProfileToken } from "../models/user";
 
 const api = "http://localhost:8080/";
 
-export const loginAPI = async (username: string, password: string) => {
+type RegisterUserData = {
+  nome: string;
+  cpf?: string;
+  cnpj?: string;
+  telefone: string;
+  endereco: string;
+  numero: string;
+  bairro: string;
+  email: string;
+  senha: string;
+  cidade: { id: number };
+  funcao?: string;
+};
+
+export const loginAPI = async (nome: string, senha: string) => {
   try {
     const data = await axios.post<UserProfileToken>(api + "account/login", {
-      username: username,
-      password: password,
+      nome: nome,
+      senha: senha,
     });
     return data;
   } catch (error) {
@@ -16,17 +30,12 @@ export const loginAPI = async (username: string, password: string) => {
   }
 };
 
-export const registerAPI = async (
-  email: string,
-  username: string,
-  password: string
-) => {
+export const registerAPI = async (userData: RegisterUserData) => {
   try {
-    const data = await axios.post<UserProfileToken>(api + "account/register", {
-      email: email,
-      username: username,
-      password: password,
-    });
+    const data = await axios.post<UserProfileToken>(
+      api + "account/register",
+      userData
+    );
     return data;
   } catch (error) {
     handleError(error);
