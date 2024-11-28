@@ -9,6 +9,8 @@ interface FormData {
   numero: string;
   bairro: string;
   email: string;
+  senha: string;
+  cidade: string;
 }
 
 
@@ -21,6 +23,8 @@ const initialClienteData: FormData = {
   numero: "",
   bairro: "",
   email: "",
+  senha: "",
+  cidade: "",
 };
 
 export default function CadastroCliente() {
@@ -34,7 +38,7 @@ export default function CadastroCliente() {
         <FormCadastro
           initialData={initialClienteData}
           onSubmit={handleClienteSubmit}
-          fields={["nome", "cpf", "telefone", "endereco", "numero", "bairro", "email"]}
+          fields={["nome", "cpf", "telefone", "endereco", "numero", "bairro", "email", "senha", "cidade"]}
         />
       </ContainerLeft>
       <ContainerRight>

@@ -2,7 +2,7 @@ import React from "react";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ContainerForm, ErrorLabel, InputForm } from "./style";
+import { ContainerForm, ErrorLabel, InputForm, SelectForm } from "./style";
 import ButtonRegister from "../../../../components/ButtonRegister";
 
 interface FormData {
@@ -13,6 +13,8 @@ interface FormData {
   numero: string;
   bairro: string;
   email: string;
+  senha: string;
+  cidade: string;
 }
 
 interface FormCadastroProps {
@@ -31,7 +33,18 @@ const validationSchema = Yup.object().shape({
   numero: Yup.string().required("Número é obrigatório"),
   bairro: Yup.string().required("Bairro é obrigatório"),
   email: Yup.string().email("E-mail inválido").required("E-mail é obrigatório"),
+  senha: Yup.string()
+    .required("Senha é obrigatória")
+    .min(4, "Senha deve ter pelo menos 4 caracteres"),
+  cidade: Yup.string().required("Selecione uma cidade"),
 });
+
+const cidades = [
+  { id: "1", nome: "São Paulo" },
+  { id: "2", nome: "Rio de Janeiro" },
+  { id: "3", nome: "Belo Horizonte" },
+  { id: "4", nome: "Curitiba" },
+];
 
 const FormCadastro: React.FC<FormCadastroProps> = ({
   initialData,
@@ -49,7 +62,7 @@ const FormCadastro: React.FC<FormCadastroProps> = ({
 
   const handleClick = () => {
     console.log("Botão clicado");
-  }
+  };
 
   return (
     <ContainerForm>
@@ -84,7 +97,9 @@ const FormCadastro: React.FC<FormCadastroProps> = ({
               {...register("telefone")}
               className={errors.telefone ? "error" : ""}
             />
-            {errors.telefone && <ErrorLabel>{errors.telefone.message}</ErrorLabel>}
+            {errors.telefone && (
+              <ErrorLabel>{errors.telefone.message}</ErrorLabel>
+            )}
           </div>
         )}
         {fields.includes("endereco") && (
@@ -95,7 +110,9 @@ const FormCadastro: React.FC<FormCadastroProps> = ({
               {...register("endereco")}
               className={errors.endereco ? "error" : ""}
             />
-            {errors.endereco && <ErrorLabel>{errors.endereco.message}</ErrorLabel>}
+            {errors.endereco && (
+              <ErrorLabel>{errors.endereco.message}</ErrorLabel>
+            )}
           </div>
         )}
         {fields.includes("numero") && (
@@ -129,6 +146,34 @@ const FormCadastro: React.FC<FormCadastroProps> = ({
               className={errors.email ? "error" : ""}
             />
             {errors.email && <ErrorLabel>{errors.email.message}</ErrorLabel>}
+          </div>
+        )}
+        {fields.includes("senha") && (
+          <div>
+            <label>Senha:</label>
+            <InputForm
+              type="password"
+              {...register("senha")}
+              className={errors.senha ? "error" : ""}
+            />
+            {errors.senha && <ErrorLabel>{errors.senha.message}</ErrorLabel>}
+          </div>
+        )}
+        {fields.includes("cidade") && (
+          <div>
+            <label>Cidade:</label>
+            <SelectForm
+              {...register("cidade")}
+              className={errors.cidade ? "error" : ""}
+            >
+              <option value="">Selecione uma cidade</option>
+              {cidades.map((cidade) => (
+                <option key={cidade.id} value={cidade.nome}>
+                  {cidade.nome}
+                </option>
+              ))}
+            </SelectForm>
+            {errors.cidade && <ErrorLabel>{errors.cidade.message}</ErrorLabel>}
           </div>
         )}
         <ButtonRegister text="Cadastrar" onClick={handleClick} />

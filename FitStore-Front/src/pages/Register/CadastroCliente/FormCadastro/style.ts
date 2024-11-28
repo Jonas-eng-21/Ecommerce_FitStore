@@ -23,3 +23,11 @@ export const ErrorLabel = styled.p`
   color: red;
   margin-top: -3%;
 `;
+export const SelectForm = styled.select`
+  width: 100%;
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  border-radius: 0.4em;
+  font-size: 1em;
+  margin-top: 0.5em;
+`;
