@@ -50,6 +50,24 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
+        <!--Dependências do Login -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.11.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.11.2</version>
+        </dependency>
+
+        <!--Dependências do Login -->
         <!--Dependências do cadastro -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
