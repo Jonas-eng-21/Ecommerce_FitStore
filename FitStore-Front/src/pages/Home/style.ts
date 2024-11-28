@@ -29,11 +29,12 @@ export const NavLinks = styled.div`
     a {
         font-size: 1rem;
         font-weight: bold;
-        color: #555;
+        color: #000;
         text-decoration: none;
 
         &:hover {
-            color: #7d8895;
+            //color: #7d8895;
+            color: #555;
         }
     }
 

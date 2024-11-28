@@ -18,6 +18,7 @@ export const router = createBrowserRouter([
       { path: "cadastroCliente", element: <CadastroCliente /> },
       { path: "CadastroFornecedor", element: <CadastroFornecedor /> },
       { path: "CadastroFuncinoario", element: <CadastroFuncinoario /> },
+      { path: "Home", element: <Home /> },
       { path: "Login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
       {

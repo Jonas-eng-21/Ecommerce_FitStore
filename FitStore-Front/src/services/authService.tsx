@@ -2,7 +2,7 @@ import axios from "axios";
 import { handleError } from "../helpers/errorHandler";
 import { UserProfileToken } from "../models/user";
 
-const api = "http://localhost:8080/";
+const api = "http://localhost:5173/";
 
 type RegisterCliente = {
   nome: string;
@@ -85,4 +85,12 @@ export const registerFornecedorAPI = async (userData: RegisterFornecedor) => {
   } catch (error) {
     handleError(error);
   }
+};
+
+export const registerAPI = () => {
+  return {
+    registerCliente: registerClienteAPI,
+    registerFuncionario: registerFuncionarioAPI,
+    registerFornecedor: registerFornecedorAPI,
+  };
 };

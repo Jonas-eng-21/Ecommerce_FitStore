@@ -9,24 +9,29 @@ import {
   SocialProof,
   NavActions
 } from './style';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
     return (
         <Container>
             {/* Navbar */}
             <Navbar>
-                <a href="#home" style={{marginTop: '-20px'}}>
+                <Link to="/home" style={{marginTop: '-20px'}}>
                 <img src="assets\images\logo-fitstore.png" alt="Fit Store Logo" style={{ height: '50px', width: 'auto' }} />
-                </a>
+                </Link>
                 <NavLinks>
-                    <a href="#home">Início</a>
-                    <a href="#produto">Produtos</a>
-                    <a href="#sobrenos">Sobre Nós</a>
-                    <a href="#contato">Contato</a>
+                    <Link to="/home">Início </Link>
+                    <Link to="/produto">Produtos</Link>
+                    <Link to="/about">Sobre Nós</Link>
+                    <Link to="/contato">Contato</Link>
                 </NavLinks>
                 <NavActions>
+                    <Link to="/cart">
                     <button className="primary">🛒 Carrinho</button>
+                    </Link>
+                    <Link to="/login">
                     <button className="secondary">Login</button>
+                    </Link>
                 </NavActions>
             </Navbar>
 
@@ -37,9 +42,9 @@ export default function Home() {
                     <p>
                     Tudo para seu treino, do zero ao shape! 💪🛒
                     </p>
-                    <a href="#produtos">
+                    <Link to="/produto">
                     <CallToAction>Ver Produtos</CallToAction>
-                    </a>
+                    </Link>
                     <h2>Aproveite Nossas Promoções</h2>
                     <p>Desconto em sua primeira compra e frete grátis nas compras a partir de R$199!</p>
                 </div>
@@ -50,13 +55,18 @@ export default function Home() {
             <SocialProof>
                 <p>Nos siga nas rede sociais!</p>
                 <div className="logos">
-                    <a href="https://www.instagram.com/fittttt_storeeeee" target='_blank' rel='noopener noreferrer'>
-                    <img src="assets/images/instagram1.png" alt="Hero Banner" />
-                    </a>
-                    <a href="https://github.com/Jonas-eng-21/Ecommerce_FitStore" target='_blank' rel='noopener noreferrer'>
+                    <Link to="https://www.instagram.com/fittttt_storeeeee" target='_blank' rel='noopener noreferrer' style={{ height: '30px', width: 'auto' }}>
+                    <img src="assets/images/instagram.png" alt="Hero Banner" />
+                    </Link>
+                    
+                    <Link to="https://github.com/Jonas-eng-21/Ecommerce_FitStore" target='_blank' rel='noopener noreferrer' style={{ height: '30px', width: 'auto' }}>
                     <img src="assets/images/github.png" alt="Hero Banner" />
-                    </a>
-                    <img src="assets/images/instagram1.png" alt="Hero Banner" />
+                    </Link>
+
+                    <Link to="https://www.x.com" target='_blank' rel='noopener noreferrer' style={{ height: '30px', width: 'auto' }}>
+                    <img src="assets/images/X.png" alt="Hero Banner" />
+                    </Link>
+
                 </div>
             </SocialProof>
 
