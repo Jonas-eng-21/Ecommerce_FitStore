@@ -7,6 +7,7 @@ import CadastroFuncinoario from "../pages/Register/CadastroFuncionario";
 import Cart from "../pages/Cart";
 import ProtectedRoute from "./protectedRoute";
 import LoginPage from "../pages/Login";
+import RegisterPage from "../pages/Register";
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
       { path: "CadastroFornecedor", element: <CadastroFornecedor /> },
       { path: "CadastroFuncinoario", element: <CadastroFuncinoario /> },
       { path: "Login", element: <LoginPage /> },
+      { path: "register", element: <RegisterPage /> },
       {
         path: "Cart",
         element: (

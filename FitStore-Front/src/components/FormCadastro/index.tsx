@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
+import * as Yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { ButtonForm, ContainerForm, InputForm } from "./style";
 
 interface FormData {
@@ -16,38 +19,52 @@ interface FormData {
 interface FormCadastroProps {
   initialData: FormData;
   onSubmit: (data: FormData) => void;
-  fields: Array<keyof FormData>; // Lista de campos a serem exibidos
+  fields: Array<keyof FormData>;
 }
+
+const validationSchema = Yup.object().shape({
+  nome: Yup.string().required("Nome é obrigatório"),
+  cpf: Yup.string().when("cnpj", {
+    is: (cnpj: string | undefined) => !cnpj || cnpj.length === 0,
+    then: Yup.string().required("CPF é obrigatório quando CNPJ está vazio"),
+  }),
+  cnpj: Yup.string().when("cpf", {
+    is: (cpf: string | undefined) => !cpf || cpf.length === 0,
+    then: Yup.string().required("CNPJ é obrigatório quando CPF está vazio"),
+  }),
+  telefone: Yup.string().required("Telefone é obrigatório"),
+  endereco: Yup.string().required("Endereço é obrigatório"),
+  numero: Yup.string().required("Número é obrigatório"),
+  bairro: Yup.string().required("Bairro é obrigatório"),
+  email: Yup.string().email("E-mail inválido").required("E-mail é obrigatório"),
+});
 
 const FormCadastro: React.FC<FormCadastroProps> = ({
   initialData,
   onSubmit,
   fields,
 }) => {
-  const [formData, setFormData] = useState<FormData>(initialData);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(formData);
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    defaultValues: initialData,
+    resolver: yupResolver(validationSchema),
+  });
 
   return (
     <ContainerForm>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         {fields.includes("nome") && (
           <div>
             <label>Nome:</label>
             <InputForm
               type="text"
-              name="nome"
-              value={formData.nome || ""}
-              onChange={handleChange}
+              {...register("nome")}
+              className={errors.nome ? "error" : ""}
             />
+            {errors.nome && <p>{errors.nome.message}</p>}
           </div>
         )}
         {fields.includes("cpf") && (
@@ -55,10 +72,10 @@ const FormCadastro: React.FC<FormCadastroProps> = ({
             <label>CPF:</label>
             <InputForm
               type="text"
-              name="cpf"
-              value={formData.cpf || ""}
-              onChange={handleChange}
+              {...register("cpf")}
+              className={errors.cpf ? "error" : ""}
             />
+            {errors.cpf && <p>{errors.cpf.message}</p>}
           </div>
         )}
         {fields.includes("cnpj") && (
@@ -66,10 +83,10 @@ const FormCadastro: React.FC<FormCadastroProps> = ({
             <label>CNPJ:</label>
             <InputForm
               type="text"
-              name="cnpj"
-              value={formData.cnpj || ""}
-              onChange={handleChange}
+              {...register("cnpj")}
+              className={errors.cnpj ? "error" : ""}
             />
+            {errors.cnpj && <p>{errors.cnpj.message}</p>}
           </div>
         )}
         {fields.includes("telefone") && (
@@ -77,10 +94,10 @@ const FormCadastro: React.FC<FormCadastroProps> = ({
             <label>Telefone:</label>
             <InputForm
               type="text"
-              name="telefone"
-              value={formData.telefone || ""}
-              onChange={handleChange}
+              {...register("telefone")}
+              className={errors.telefone ? "error" : ""}
             />
+            {errors.telefone && <p>{errors.telefone.message}</p>}
           </div>
         )}
         {fields.includes("endereco") && (
@@ -88,10 +105,10 @@ const FormCadastro: React.FC<FormCadastroProps> = ({
             <label>Endereço:</label>
             <InputForm
               type="text"
-              name="endereco"
-              value={formData.endereco || ""}
-              onChange={handleChange}
+              {...register("endereco")}
+              className={errors.endereco ? "error" : ""}
             />
+            {errors.endereco && <p>{errors.endereco.message}</p>}
           </div>
         )}
         {fields.includes("numero") && (
@@ -99,21 +116,10 @@ const FormCadastro: React.FC<FormCadastroProps> = ({
             <label>Número:</label>
             <InputForm
               type="text"
-              name="numero"
-              value={formData.numero || ""}
-              onChange={handleChange}
+              {...register("numero")}
+              className={errors.numero ? "error" : ""}
             />
-          </div>
-        )}
-        {fields.includes("funcao") && (
-          <div>
-            <label>Função:</label>
-            <InputForm
-              type="text"
-              name="funcao"
-              value={formData.funcao || ""}
-              onChange={handleChange}
-            />
+            {errors.numero && <p>{errors.numero.message}</p>}
           </div>
         )}
         {fields.includes("bairro") && (
@@ -121,10 +127,10 @@ const FormCadastro: React.FC<FormCadastroProps> = ({
             <label>Bairro:</label>
             <InputForm
               type="text"
-              name="bairro"
-              value={formData.bairro || ""}
-              onChange={handleChange}
+              {...register("bairro")}
+              className={errors.bairro ? "error" : ""}
             />
+            {errors.bairro && <p>{errors.bairro.message}</p>}
           </div>
         )}
         {fields.includes("email") && (
@@ -132,10 +138,10 @@ const FormCadastro: React.FC<FormCadastroProps> = ({
             <label>Email:</label>
             <InputForm
               type="email"
-              name="email"
-              value={formData.email || ""}
-              onChange={handleChange}
+              {...register("email")}
+              className={errors.email ? "error" : ""}
             />
+            {errors.email && <p>{errors.email.message}</p>}
           </div>
         )}
         <ButtonForm type="submit">Cadastrar</ButtonForm>
