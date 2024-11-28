@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Container,
   Navbar,
-  Logo,
   NavLinks,
   HeroSection,
   CallToAction,
@@ -16,15 +15,17 @@ export default function Home() {
         <Container>
             {/* Navbar */}
             <Navbar>
-                <Logo>Fit Store</Logo>
+                <a href="#home" style={{marginTop: '-20px'}}>
+                <img src="assets\images\logo-fitstore.png" alt="Fit Store Logo" style={{ height: '50px', width: 'auto' }} />
+                </a>
                 <NavLinks>
-                    <a href="#page1">Início</a>
-                    <a href="#page2">Produtos</a>
-                    <a href="#page3">Sobre Nós</a>
-                    <a href="#page4">Contato</a>
+                    <a href="#home">Início</a>
+                    <a href="#produto">Produtos</a>
+                    <a href="#sobrenos">Sobre Nós</a>
+                    <a href="#contato">Contato</a>
                 </NavLinks>
                 <NavActions>
-                    <button className="primary">Carrinho 🛒</button>
+                    <button className="primary">🛒 Carrinho</button>
                     <button className="secondary">Login</button>
                 </NavActions>
             </Navbar>
@@ -36,7 +37,9 @@ export default function Home() {
                     <p>
                     Tudo para seu treino, do zero ao shape! 💪🛒
                     </p>
+                    <a href="#produtos">
                     <CallToAction>Ver Produtos</CallToAction>
+                    </a>
                     <h2>Aproveite Nossas Promoções</h2>
                     <p>Desconto em sua primeira compra e frete grátis nas compras a partir de R$199!</p>
                 </div>
@@ -47,8 +50,12 @@ export default function Home() {
             <SocialProof>
                 <p>Nos siga nas rede sociais!</p>
                 <div className="logos">
+                    <a href="https://www.instagram.com/fittttt_storeeeee" target='_blank' rel='noopener noreferrer'>
                     <img src="assets/images/instagram1.png" alt="Hero Banner" />
-                    <img src="assets/images/instagram1.png" alt="Hero Banner" />
+                    </a>
+                    <a href="https://github.com/Jonas-eng-21/Ecommerce_FitStore" target='_blank' rel='noopener noreferrer'>
+                    <img src="assets/images/github.png" alt="Hero Banner" />
+                    </a>
                     <img src="assets/images/instagram1.png" alt="Hero Banner" />
                 </div>
             </SocialProof>
