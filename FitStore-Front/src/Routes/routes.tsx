@@ -6,6 +6,7 @@ import CadastroFornecedor from "../pages/Register/CadastroFornecedor";
 import CadastroFuncinoario from "../pages/Register/CadastroFuncionario";
 import Cart from "../pages/Cart";
 import ProtectedRoute from "./protectedRoute";
+import LoginPage from "../pages/Login";
 
 export const router = createBrowserRouter([
   {
@@ -15,6 +16,8 @@ export const router = createBrowserRouter([
       { path: "", element: <Home /> },
       { path: "cadastroCliente", element: <CadastroCliente /> },
       { path: "CadastroFornecedor", element: <CadastroFornecedor /> },
+      { path: "CadastroFuncinoario", element: <CadastroFuncinoario /> },
+      { path: "Login", element: <LoginPage /> },
       {
         path: "Cart",
         element: (
@@ -23,7 +26,6 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      { path: "CadastroFuncinoario", element: <CadastroFuncinoario /> },
     ],
   },
 ]);
