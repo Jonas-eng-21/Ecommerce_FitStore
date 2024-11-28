@@ -2,19 +2,18 @@ import React from "react";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ButtonForm, ContainerForm, InputForm } from "./style";
+import { ContainerForm, ErrorLabel, InputForm } from "./style";
+import ButtonRegister from "../../../../components/ButtonRegister";
 
 interface FormData {
   nome: string;
-  cpf?: string | null;
-  cnpj?: string | null;
+  cpf: string;
   telefone: string;
   endereco: string;
   numero: string;
   bairro: string;
   email: string;
 }
-
 
 interface FormCadastroProps {
   initialData: FormData;
@@ -24,35 +23,33 @@ interface FormCadastroProps {
 
 const validationSchema = Yup.object().shape({
   nome: Yup.string().required("Nome é obrigatório"),
-  cpf: Yup.string().nullable(),
-  cnpj: Yup.string().nullable(),
+  cpf: Yup.string()
+    .required("CPF é obrigatório")
+    .matches(/^\d{11}$/, "CPF deve conter 11 números"),
   telefone: Yup.string().required("Telefone é obrigatório"),
   endereco: Yup.string().required("Endereço é obrigatório"),
   numero: Yup.string().required("Número é obrigatório"),
   bairro: Yup.string().required("Bairro é obrigatório"),
-  email: Yup.string()
-    .email("E-mail inválido")
-    .required("E-mail é obrigatório"),
-}).test("cpf-ou-cnpj", "CPF ou CNPJ é obrigatório", (values) => {
-  const { cpf, cnpj } = values || {};
-  return !!cpf || !!cnpj; // Pelo menos um dos dois deve estar preenchido
+  email: Yup.string().email("E-mail inválido").required("E-mail é obrigatório"),
 });
 
+const FormCadastro: React.FC<FormCadastroProps> = ({
+  initialData,
+  onSubmit,
+  fields,
+}) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    defaultValues: initialData,
+    resolver: yupResolver(validationSchema),
+  });
 
-
-  const FormCadastro: React.FC<FormCadastroProps> = ({
-    initialData,
-    onSubmit,
-    fields,
-  }) => {
-    const {
-      register,
-      handleSubmit,
-      formState: { errors },
-    } = useForm<FormData>({
-      defaultValues: initialData,
-      resolver: yupResolver(validationSchema),
-    });
+  const handleClick = () => {
+    console.log("Botão clicado");
+  }
 
   return (
     <ContainerForm>
@@ -65,7 +62,7 @@ const validationSchema = Yup.object().shape({
               {...register("nome")}
               className={errors.nome ? "error" : ""}
             />
-            {errors.nome && <p>{errors.nome.message}</p>}
+            {errors.nome && <ErrorLabel>{errors.nome.message}</ErrorLabel>}
           </div>
         )}
         {fields.includes("cpf") && (
@@ -76,18 +73,7 @@ const validationSchema = Yup.object().shape({
               {...register("cpf")}
               className={errors.cpf ? "error" : ""}
             />
-            {errors.cpf && <p>{errors.cpf.message}</p>}
-          </div>
-        )}
-        {fields.includes("cnpj") && (
-          <div>
-            <label>CNPJ:</label>
-            <InputForm
-              type="text"
-              {...register("cnpj")}
-              className={errors.cnpj ? "error" : ""}
-            />
-            {errors.cnpj && <p>{errors.cnpj.message}</p>}
+            {errors.cpf && <ErrorLabel>{errors.cpf.message}</ErrorLabel>}
           </div>
         )}
         {fields.includes("telefone") && (
@@ -98,7 +84,7 @@ const validationSchema = Yup.object().shape({
               {...register("telefone")}
               className={errors.telefone ? "error" : ""}
             />
-            {errors.telefone && <p>{errors.telefone.message}</p>}
+            {errors.telefone && <ErrorLabel>{errors.telefone.message}</ErrorLabel>}
           </div>
         )}
         {fields.includes("endereco") && (
@@ -109,7 +95,7 @@ const validationSchema = Yup.object().shape({
               {...register("endereco")}
               className={errors.endereco ? "error" : ""}
             />
-            {errors.endereco && <p>{errors.endereco.message}</p>}
+            {errors.endereco && <ErrorLabel>{errors.endereco.message}</ErrorLabel>}
           </div>
         )}
         {fields.includes("numero") && (
@@ -120,7 +106,7 @@ const validationSchema = Yup.object().shape({
               {...register("numero")}
               className={errors.numero ? "error" : ""}
             />
-            {errors.numero && <p>{errors.numero.message}</p>}
+            {errors.numero && <ErrorLabel>{errors.numero.message}</ErrorLabel>}
           </div>
         )}
         {fields.includes("bairro") && (
@@ -131,7 +117,7 @@ const validationSchema = Yup.object().shape({
               {...register("bairro")}
               className={errors.bairro ? "error" : ""}
             />
-            {errors.bairro && <p>{errors.bairro.message}</p>}
+            {errors.bairro && <ErrorLabel>{errors.bairro.message}</ErrorLabel>}
           </div>
         )}
         {fields.includes("email") && (
@@ -142,10 +128,10 @@ const validationSchema = Yup.object().shape({
               {...register("email")}
               className={errors.email ? "error" : ""}
             />
-            {errors.email && <p>{errors.email.message}</p>}
+            {errors.email && <ErrorLabel>{errors.email.message}</ErrorLabel>}
           </div>
         )}
-        <ButtonForm type="submit">Cadastrar</ButtonForm>
+        <ButtonRegister text="Cadastrar" onClick={handleClick} />
       </form>
     </ContainerForm>
   );

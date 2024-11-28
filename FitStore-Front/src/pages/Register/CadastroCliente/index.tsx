@@ -1,15 +1,16 @@
-import FormCadastro from "../../../components/FormCadastro";
+import FormCadastro from "./FormCadastro/index";
 import { Container, ContainerLeft, ContainerRight } from "./style";
 
 interface FormData {
-  nome?: string;
-  cpf?: string;
-  telefone?: string;
-  endereco?: string;
-  numero?: string;
-  bairro?: string;
-  email?: string;
+  nome: string;
+  cpf: string;
+  telefone: string;
+  endereco: string;
+  numero: string;
+  bairro: string;
+  email: string;
 }
+
 
 
 const initialClienteData: FormData = {

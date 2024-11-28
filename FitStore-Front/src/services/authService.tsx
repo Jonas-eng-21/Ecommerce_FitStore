@@ -4,10 +4,9 @@ import { UserProfileToken } from "../models/user";
 
 const api = "http://localhost:8080/";
 
-type RegisterUserData = {
+type RegisterCliente = {
   nome: string;
-  cpf?: string;
-  cnpj?: string;
+  cpf: string;
   telefone: string;
   endereco: string;
   numero: string;
@@ -15,13 +14,37 @@ type RegisterUserData = {
   email: string;
   senha: string;
   cidade: { id: number };
-  funcao?: string;
 };
 
-export const loginAPI = async (nome: string, senha: string) => {
+type RegisterFuncionario = {
+  nome: string;
+  cpf: string;
+  telefone: string;
+  endereco: string;
+  numero: string;
+  bairro: string;
+  email: string;
+  senha: string;
+  cidade: { id: number };
+};
+
+type RegisterFornecedor = {
+  nome: string;
+  cnpj: string;
+  telefone: string;
+  endereco: string;
+  numero: string;
+  bairro: string;
+  email: string;
+  senha: string;
+  funcao: string;
+  cidade: { id: number };
+};
+
+export const loginAPI = async (email: string, senha: string) => {
   try {
-    const data = await axios.post<UserProfileToken>(api + "account/login", {
-      nome: nome,
+    const data = await axios.post<UserProfileToken>(api + "auth/login", {
+      email: email,
       senha: senha,
     });
     return data;
@@ -30,10 +53,32 @@ export const loginAPI = async (nome: string, senha: string) => {
   }
 };
 
-export const registerAPI = async (userData: RegisterUserData) => {
+export const registerClienteAPI = async (userData: RegisterCliente) => {
   try {
     const data = await axios.post<UserProfileToken>(
-      api + "account/register",
+      api + "cliente",
+      userData
+    );
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+export const registerFuncionarioAPI = async (userData: RegisterFuncionario) => {
+  try {
+    const data = await axios.post<UserProfileToken>(
+      api + "funcionario",
+      userData
+    );
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+export const registerFornecedorAPI = async (userData: RegisterFornecedor) => {
+  try {
+    const data = await axios.post<UserProfileToken>(
+      api + "fornecedor",
       userData
     );
     return data;
