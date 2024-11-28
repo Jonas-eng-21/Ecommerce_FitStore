@@ -11,12 +11,14 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="estado")
 public class Estado implements Serializable{
-	
+
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String nome;
+	private String sigla;
+
 	public Long getId() {
 		return id;
 	}
@@ -35,6 +37,5 @@ public class Estado implements Serializable{
 	public void setSigla(String sigla) {
 		this.sigla = sigla;
 	}
-	private String sigla;
 
 }
