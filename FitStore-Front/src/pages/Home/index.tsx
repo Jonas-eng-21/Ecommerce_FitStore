@@ -21,7 +21,7 @@ export default function Home() {
                 </Link>
                 <NavLinks>
                     <Link to="/home">Início </Link>
-                    <Link to="/produto">Produtos</Link>
+                    <Link to="/Produtos">Produtos</Link>
                     <Link to="/about">Sobre Nós</Link>
                     <Link to="/contato">Contato</Link>
                 </NavLinks>
@@ -42,7 +42,7 @@ export default function Home() {
                     <p>
                     Tudo para seu treino, do zero ao shape! 💪🛒
                     </p>
-                    <Link to="/produto">
+                    <Link to="/Produtos">
                     <CallToAction>Ver Produtos</CallToAction>
                     </Link>
                     <h2>Aproveite Nossas Promoções</h2>

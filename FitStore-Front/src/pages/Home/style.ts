@@ -46,7 +46,6 @@ export const NavLinks = styled.div`
 
 export const NavActions = styled.div`
     display: flex;
-    align-items: center;
     gap: 1rem;
 
     p {
@@ -59,7 +58,7 @@ export const NavActions = styled.div`
         padding: 0.5rem 1rem;
         font-size: 0.9rem;
         border: none;
-        border-radius: 5px;
+        border-radius: 25px;
         cursor: pointer;
         transition: background-color 0.3s ease, color 0.3s ease;
 
