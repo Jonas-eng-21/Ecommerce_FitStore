@@ -18,7 +18,7 @@ interface CartItem {
   quantity: number;
 }
 
-const Cart: React.FC = () => {
+const Checkout: React.FC = () => {
 
   const [cartItems] = useState<CartItem[]>([
     { id: 1, name: "Produto 1", price: 50.0, quantity: 2 },
@@ -142,4 +142,4 @@ const Cart: React.FC = () => {
   );
 };
 
-export default Cart;
+export default Checkout;

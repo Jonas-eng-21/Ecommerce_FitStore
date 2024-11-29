@@ -8,6 +8,8 @@ import Cart from "../pages/Cart";
 import ProtectedRoute from "./protectedRoute";
 import LoginPage from "../pages/Login";
 import RegisterPage from "../pages/Register";
+import Checkout from "../pages/Checkout";
+
 
 export const router = createBrowserRouter([
   {
@@ -18,17 +20,19 @@ export const router = createBrowserRouter([
       { path: "cadastroCliente", element: <CadastroCliente /> },
       { path: "CadastroFornecedor", element: <CadastroFornecedor /> },
       { path: "CadastroFuncinoario", element: <CadastroFuncinoario /> },
+      { path: "checkout", element: <Checkout /> },
+      { path: "carrinho", element: <Cart /> },
       { path: "Home", element: <Home /> },
       { path: "Login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
-      {
-        path: "Cart",
-        element: (
-          <ProtectedRoute>
-            <Cart />
-          </ProtectedRoute>
-        ),
-      },
+      // {
+      //   path: "Cart",
+      //   element: (
+      //     <ProtectedRoute>
+      //       <Cart />
+      //     </ProtectedRoute>
+      //   ),
+      // },
     ],
   },
 ]);

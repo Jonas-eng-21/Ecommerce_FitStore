@@ -9,9 +9,14 @@ import {
   SocialProof,
   NavActions
 } from './style';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Home() {
+    const navigate = useNavigate();
+
+    const handleDirect = () => {
+        navigate('/carrinho');
+    }
     return (
         <Container>
             {/* Navbar */}
@@ -26,8 +31,8 @@ export default function Home() {
                     <Link to="/contato">Contato</Link>
                 </NavLinks>
                 <NavActions>
-                    <Link to="/cart">
-                    <button className="primary">🛒 Carrinho</button>
+                    <Link to="/carrinho">
+                    <button className="primary" onClick={handleDirect}>🛒 Carrinho</button>
                     </Link>
                     <Link to="/login">
                     <button className="secondary">Login</button>
