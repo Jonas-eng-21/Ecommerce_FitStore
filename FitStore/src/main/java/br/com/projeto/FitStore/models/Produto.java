@@ -11,6 +11,7 @@ public class Produto implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	private String categoria;
 	private String nome;
 	private String codigoBarras;
 	private String unidadeMedida;
@@ -25,6 +26,12 @@ public class Produto implements Serializable{
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public String getCategoria() {
+		return categoria;
+	}
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
 	}
 	public String getNome() {
 		return nome;

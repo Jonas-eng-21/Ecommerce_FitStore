@@ -33,17 +33,26 @@ public class ProdutoController {
         return produtoRepositorio.save(produto);
     }
 
-  
+
     @PutMapping("/produto/{id}")
     public Produto editarProduto(@PathVariable Long id, @RequestBody Produto produtoAtualizado) {
         Optional<Produto> produtoExistente = produtoRepositorio.findById(id);
         if (produtoExistente.isPresent()) {
             Produto produto = produtoExistente.get();
             produto.setNome(produtoAtualizado.getNome());
+            produto.setCategoria(produtoAtualizado.getCategoria());
+            produto.setCodigoBarras(produtoAtualizado.getCodigoBarras());
+            produto.setUnidadeMedida(produtoAtualizado.getUnidadeMedida());
+            produto.setEstoque(produtoAtualizado.getEstoque());
+            produto.setPrecoCusto(produtoAtualizado.getPrecoCusto());
+            produto.setPrecoVenda(produtoAtualizado.getPrecoVenda());
+            produto.setLucro(produtoAtualizado.getLucro());
+            produto.setMargemLucro(produtoAtualizado.getMargemLucro());
             return produtoRepositorio.save(produto);
         }
         return null;
     }
+
 
  
     @DeleteMapping("/produto/{id}")
