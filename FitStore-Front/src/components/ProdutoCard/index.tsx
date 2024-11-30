@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { listarProdutosAPI } from '../../services/produtoService'; // Importe o serviço
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import { Grid, Card, CardContent, Typography, Box, Button } from '@mui/material';
 
 interface Produto {
   nome: string;
@@ -29,41 +25,47 @@ const ProdutoCard: React.FC = () => {
     fetchProdutos();
   }, []);
 
-  // Função para dividir os produtos em grupos de 4
-  const chunkArray = (arr: Produto[], chunkSize: number) => {
-    const result: Produto[][] = [];
-    for (let i = 0; i < arr.length; i += chunkSize) {
-      result.push(arr.slice(i, i + chunkSize));
-    }
-    return result;
-  };
-
-  const produtosEmGrupos = chunkArray(produtos, 4);
-
   return (
-    <div>
-      {produtosEmGrupos.map((grupo, index) => (
-        <div key={index} style={{ width: '100%', marginLeft: '20%', marginRight: '20%', marginBottom: '20px' }}>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-            {grupo.map((produto, index) => (
-              <Card sx={{ minWidth: 275, marginBottom: 2, flex: '1 1 calc(25% - 20px)' }} key={index}>
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {produto.nome}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Preço: R${produto.preco && !isNaN(produto.preco) ? produto.preco.toFixed(2) : '0.00'}
-                  </Typography>
-                </CardContent>
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <Button size="small">Ver Detalhes</Button>
-                </Box>
-              </Card>
-            ))}
-          </Box>
-        </div>
+    <Grid
+      container
+      spacing={2} // Aumente o espaçamento se necessário
+      justifyContent="center" // Diminui o spacing entre os cards
+      sx={{ marginTop: '25px', backgroundColor: '#6e6e6e' }} // Cor de fundo cinza
+    >
+      {produtos.map((produto, index) => (
+        <Grid item xs={12} sm={6} md={3} key={index}>
+          <Card
+            sx={{
+              minHeight: 300, // Ajusta a altura mínima do card
+              maxHeight: 400, // Define a altura máxima
+              minWidth: 180,  // Define a largura mínima
+              maxWidth: 350,  // Define a largura máxima
+              marginBottom: 5,
+              marginLeft: 'auto',
+              marginRight: 'auto', // Centraliza os cards
+              display: 'flex', // Habilita o flexbox no card
+              flexDirection: 'column', // Organiza os elementos do card verticalmente
+            }}
+          >
+            {/* Centraliza o nome do produto */}
+            <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+              <Typography gutterBottom variant="h5" component="div" align="center">
+                {produto.nome}
+              </Typography>
+            </CardContent>
+
+            {/* Box para o preço e botão "Ver Detalhes" alinhados na parte inferior */}
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: '10px', alignItems: 'flex-end' }}>
+              <Typography variant="body1" color="text.secondary" sx={{ flexGrow: 1 }}>
+                Preço: R${produto.preco && !isNaN(produto.preco) ? produto.preco.toFixed(2) : '0.00'}
+              </Typography>
+
+              <Button size="small">Ver Detalhes</Button>
+            </Box>
+          </Card>
+        </Grid>
       ))}
-    </div>
+    </Grid>
   );
 };
 
