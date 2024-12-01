@@ -1,8 +1,10 @@
 package br.com.projeto.FitStore.controler;
 
+import br.com.projeto.FitStore.dto.ProdutoDTO;
 import br.com.projeto.FitStore.models.Produto;
 import br.com.projeto.FitStore.repository.ProdutoRepositorio;
 import br.com.projeto.FitStore.service.CloudinaryService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,7 +13,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "*")
 @RestController
+@RequestMapping("/produto")
 public class ProdutoController {
 
 	@Autowired
@@ -20,27 +24,45 @@ public class ProdutoController {
     @Autowired
     private CloudinaryService cloudinaryService;
 
-    @GetMapping("/produtos")
+    @GetMapping("/listarProdutos")
     public List<Produto> listarProdutos() {
         return produtoRepositorio.findAll();
     }
 
   
-    @GetMapping("/produto/{id}")
+    @GetMapping("/listarProdutos/{id}")
     public Optional<Produto> obterProdutoPorId(@PathVariable Long id) {
         return produtoRepositorio.findById(id);
     }
 
 
-    @PostMapping("/produto")
+    @PostMapping(consumes = "multipart/form-data")
     public Produto cadastrarProduto(
-            @RequestParam("nome") String nome,
-            @RequestParam("imagem") MultipartFile file) {
-        Produto produto = new Produto();
-        produto.setNome(nome);
+            @RequestPart("produto") String produtoJSON,
+            @RequestPart("imagem") MultipartFile file) {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ProdutoDTO produtoDTO;
 
         try {
-            String nomeImagem = "produto_" + nome + "_" + System.currentTimeMillis();
+            produtoDTO = objectMapper.readValue(produtoJSON, ProdutoDTO.class);
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao converter JSON para ProdutoDTO", e);
+        }
+
+        Produto produto = new Produto();
+        produto.setCategoria(produtoDTO.getCategoria());
+        produto.setNome(produtoDTO.getNome());
+        produto.setCodigoBarras(produtoDTO.getCodigoBarras());
+        produto.setUnidadeMedida(produtoDTO.getUnidadeMedida());
+        produto.setEstoque(produtoDTO.getEstoque());
+        produto.setPrecoCusto(produtoDTO.getPrecoCusto());
+        produto.setPrecoVenda(produtoDTO.getPrecoVenda());
+        produto.setLucro(produtoDTO.getLucro());
+        produto.setMargemLucro(produtoDTO.getMargemLucro());
+
+        try {
+            String nomeImagem = "produto_" + produtoDTO.getNome() + "_" + System.currentTimeMillis();
             String urlImagem = cloudinaryService.uploadImagem(file, nomeImagem);
 
             produto.setUrlImagem(urlImagem);
@@ -52,10 +74,7 @@ public class ProdutoController {
     }
 
 
-
-
-
-    @DeleteMapping("/produto/{id}")
+    @DeleteMapping("/excluirProduto/{id}")
     public void removerProduto(@PathVariable Long id) {
         produtoRepositorio.deleteById(id);
     }
