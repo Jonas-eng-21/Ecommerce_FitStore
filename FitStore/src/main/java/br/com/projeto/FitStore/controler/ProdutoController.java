@@ -2,19 +2,23 @@ package br.com.projeto.FitStore.controler;
 
 import br.com.projeto.FitStore.models.Produto;
 import br.com.projeto.FitStore.repository.ProdutoRepositorio;
+import br.com.projeto.FitStore.service.CloudinaryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@Controller
 public class ProdutoController {
 
 	@Autowired
 	private ProdutoRepositorio produtoRepositorio;
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
     @GetMapping("/produtos")
     public List<Produto> listarProdutos() {
@@ -29,32 +33,28 @@ public class ProdutoController {
 
 
     @PostMapping("/produto")
-    public Produto cadastrarProduto(@RequestBody Produto produto) {
+    public Produto cadastrarProduto(
+            @RequestParam("nome") String nome,
+            @RequestParam("imagem") MultipartFile file) {
+        Produto produto = new Produto();
+        produto.setNome(nome);
+
+        try {
+            String nomeImagem = "produto_" + nome + "_" + System.currentTimeMillis();
+            String urlImagem = cloudinaryService.uploadImagem(file, nomeImagem);
+
+            produto.setUrlImagem(urlImagem);
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao fazer upload da imagem", e);
+        }
+
         return produtoRepositorio.save(produto);
     }
 
 
-    @PutMapping("/produto/{id}")
-    public Produto editarProduto(@PathVariable Long id, @RequestBody Produto produtoAtualizado) {
-        Optional<Produto> produtoExistente = produtoRepositorio.findById(id);
-        if (produtoExistente.isPresent()) {
-            Produto produto = produtoExistente.get();
-            produto.setNome(produtoAtualizado.getNome());
-            produto.setCategoria(produtoAtualizado.getCategoria());
-            produto.setCodigoBarras(produtoAtualizado.getCodigoBarras());
-            produto.setUnidadeMedida(produtoAtualizado.getUnidadeMedida());
-            produto.setEstoque(produtoAtualizado.getEstoque());
-            produto.setPrecoCusto(produtoAtualizado.getPrecoCusto());
-            produto.setPrecoVenda(produtoAtualizado.getPrecoVenda());
-            produto.setLucro(produtoAtualizado.getLucro());
-            produto.setMargemLucro(produtoAtualizado.getMargemLucro());
-            return produtoRepositorio.save(produto);
-        }
-        return null;
-    }
 
 
- 
+
     @DeleteMapping("/produto/{id}")
     public void removerProduto(@PathVariable Long id) {
         produtoRepositorio.deleteById(id);

@@ -20,6 +20,7 @@ public class Produto implements Serializable{
 	private Double precoVenda = 0.00;
 	private Double lucro = 0.00;
 	private Double margemLucro = 0.00;
+	private String urlImagem;
 
 	public Long getId() {
 		return id;
@@ -80,6 +81,12 @@ public class Produto implements Serializable{
 	}
 	public void setMargemLucro(Double margemLucro) {
 		this.margemLucro = margemLucro;
+	}
+	public String getUrlImagem() {
+		return urlImagem;
+	}
+	public void setUrlImagem(String urlImagem) {
+		this.urlImagem = urlImagem;
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
