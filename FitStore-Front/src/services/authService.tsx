@@ -2,7 +2,7 @@ import axios from "axios";
 import { handleError } from "../helpers/errorHandler";
 import { UserProfileToken } from "../models/user";
 
-const api = "http://localhost:5173/";
+const api = "http://localhost:8080/";
 
 type RegisterCliente = {
   nome: string;
