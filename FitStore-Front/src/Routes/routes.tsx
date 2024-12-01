@@ -1,6 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../app";
 import Home from "../pages/Home";
+import About from "../pages/About";
+import Contato from "../pages/Contato";
 import CadastroCliente from "../pages/Register/CadastroCliente";
 import CadastroFornecedor from "../pages/Register/CadastroFornecedor";
 import CadastroFuncinoario from "../pages/Register/CadastroFuncionario";
@@ -8,6 +10,7 @@ import Cart from "../pages/Cart";
 import ProtectedRoute from "./protectedRoute";
 import LoginPage from "../pages/Login";
 import RegisterPage from "../pages/Register";
+import Produtos from "../pages/Produto";
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +22,9 @@ export const router = createBrowserRouter([
       { path: "CadastroFornecedor", element: <CadastroFornecedor /> },
       { path: "CadastroFuncinoario", element: <CadastroFuncinoario /> },
       { path: "Home", element: <Home /> },
+      { path: "About", element: <About /> },
+      { path: "Contato", element: <Contato /> },
+      { path: "Produtos", element: <Produtos /> },
       { path: "Login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
       {
