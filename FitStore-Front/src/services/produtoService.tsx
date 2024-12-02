@@ -1,28 +1,42 @@
 import axios from "axios";
 import { handleErrorProduto } from "../helpers/errorHandleProduto";
-import { Produto } from "../models/produto";
+// import { Produto } from "../models/produto";
 
-const api = "http://localhost:8080/"; // Ajuste a URL conforme necessário
+const api = "http://localhost:8080/";
 
-// Tipagem dos dados do produto
 type ProdutoRequest = {
-  nome: string;
-  preco: number;
-  descricao: string;
-  categoria: string;
+  produto: {
+    nome: string;
+    categoria: string;
+    codigoBarras: string;
+    unidadeMedida: string;
+    estoque: number;
+    precoCusto: number;
+    precoVenda: number;
+    lucro: number;
+    margemLucro: number;
+  };
+  imagem: File;
 };
+
 
 type ProdutoResponse = {
   id: number;
   nome: string;
-  preco: number;
-  descricao: string;
   categoria: string;
+  codigoBarras: string;
+  unidadeMedida: string;
+  estoque: number;
+  precoCusto: number;
+  precoVenda: number;
+  lucro: number;
+  margemLucro: number;
+  urlImagem: string;
 };
 
 export const listarProdutosAPI = async () => {
   try {
-    const response = await axios.get<ProdutoResponse[]>(api + "produtos");
+    const response = await axios.get<ProdutoResponse[]>(api + "produto/listarProdutos");
     return response.data;
   } catch (error) {
     handleErrorProduto(error);
@@ -31,7 +45,7 @@ export const listarProdutosAPI = async () => {
 
 export const obterProdutoPorIdAPI = async (id: number) => {
   try {
-    const response = await axios.get<ProdutoResponse>(api + `produto/${id}`);
+    const response = await axios.get<ProdutoResponse>(api + `produto/listarProdutos/${id}`);
     return response.data;
   } catch (error) {
     handleErrorProduto(error);
@@ -40,7 +54,15 @@ export const obterProdutoPorIdAPI = async (id: number) => {
 
 export const cadastrarProdutoAPI = async (produtoData: ProdutoRequest) => {
   try {
-    const response = await axios.post<ProdutoResponse>(api + "produto", produtoData);
+    const formData = new FormData();
+    formData.append("produto", JSON.stringify(produtoData.produto));
+    formData.append("imagem", produtoData.imagem);
+
+    const response = await axios.post<ProdutoResponse>(api + "produto", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data;
   } catch (error) {
     handleErrorProduto(error);
@@ -58,7 +80,7 @@ export const editarProdutoAPI = async (id: number, produtoData: ProdutoRequest) 
 
 export const removerProdutoAPI = async (id: number) => {
   try {
-    await axios.delete(api + `produto/${id}`);
+    await axios.delete(api + `produto/excluirProduto/${id}`);
   } catch (error) {
     handleErrorProduto(error);
   }

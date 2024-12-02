@@ -1,112 +1,180 @@
 import React from "react";
+import Navbar from "../../components/NavBar";
+import { Container, Footer, ContactForm, ContainerSignUp } from "./style";
+import TextField from "@mui/material/TextField";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  FormHelperText,
+  OutlinedInput,
+} from "@mui/material";
+import ChooseProfile from "../../components/ChooseProfile";
+import { useFormik } from "formik";
 import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useAuth } from "../../contexts/useAuth";
-import { useForm } from "react-hook-form";
+import { loginAPI } from "../../services/authService";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
+type UserType = "cliente" | "fornecedor" | "funcionario";
 
-type LoginFormsInputs = {
-  email: string;
-  senha: string;
-};
+export default function Login() {
+  const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
+  const [userType, setUserType] = React.useState("");
 
-const validation = Yup.object().shape({
-  email: Yup.string().required("O email é obrigatório"),
-  senha: Yup.string().required("A senha é obrigatório"),
-});
-
-const LoginPage = () => {
-  const { loginUser } = useAuth();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormsInputs>({ resolver: yupResolver(validation) });
-
-  const handleLogin = (form: LoginFormsInputs) => {
-    loginUser(form.email, form.senha);
+  const handleClickOpen = () => {
+    setOpen(true);
   };
-  return (
-    <section className="bg-gray-50 dark:bg-gray-900">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mb-20 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Sign in to your account
-            </h1>
-            <form
-              className="space-y-4 md:space-y-6"
-              onSubmit={handleSubmit(handleLogin)}
-            >
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  email
-                </label>
-                <input
-                  type="text"
-                  id="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="email"
-                  {...register("email")}
-                />
-                {errors.email ? (
-                  <p className="text-white">{errors.email.message}</p>
-                ) : (
-                  ""
-                )}
-              </div>
-              <div>
-                <label
-                  htmlFor="senha"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  senha
-                </label>
-                <input
-                  type="senha"
-                  id="senha"
-                  placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  {...register("senha")}
-                />
-                {errors.senha ? (
-                  <p className="text-white">{errors.senha.message}</p>
-                ) : (
-                  ""
-                )}
-              </div>
-              <div className="flex items-center justify-between">
-                <a
-                  href="#"
-                  className="text-sm text-white font-medium text-primary-600 hover:underline dark:text-primary-500"
-                >
-                  Forgot senha?
-                </a>
-              </div>
-              <button
-                type="submit"
-                className="w-full text-white bg-lightGreen hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
-                Sign in
-              </button>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Don’t have an account yet?{" "}
-                <a
-                  href="#"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                >
-                  Sign up
-                </a>
-              </p>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
 
-export default LoginPage;
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleUserTypeChange = (event: SelectChangeEvent) => {
+    setUserType(event.target.value);
+  };
+
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .email("E-mail inválido")
+      .required("O e-mail é obrigatório"),
+    senha: Yup.string().required("A senha é obrigatória"),
+    userType: Yup.string()
+      .oneOf(["cliente", "fornecedor", "funcionario"], "Tipo de usuário inválido")
+      .required("Selecione o tipo de usuário"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      senha: "",
+      userType: "" as UserType,
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      try {
+        const response = await loginAPI(values.email, values.senha, values.userType);
+        if (response) {
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("userType", values.userType);
+          toast.success("Login bem-sucedido!");
+          navigate("/");
+        }
+      } catch (error: unknown) {
+        if (error instanceof AxiosError && error.response) {
+          toast.warning(error.response.data.message);
+          console.error("Erro ao realizar login:", error.response.data.message);
+        } else {
+          toast.error("Ocorreu um erro inesperado. Tente novamente.");
+          console.error("Erro inesperado:", error);
+        }
+      }
+    },
+  });
+
+
+  return (
+    <Container>
+      <Navbar />
+      <ContactForm>
+        <h1>Login</h1>
+        <p>Faça o seu login para continuar sua compras!</p>
+        <form onSubmit={formik.handleSubmit}>
+          <TextField
+            className="TextField"
+            id="email"
+            name="email"
+            label="Seu e-mail"
+            placeholder="Digite aqui o seu e-mail"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            className="TextField"
+            id="senha"
+            name="senha"
+            label="Sua senha"
+            placeholder="Digite aqui a sua senha"
+            type="password"
+            value={formik.values.senha}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.senha && Boolean(formik.errors.senha)}
+            helperText={formik.touched.senha && formik.errors.senha}
+            fullWidth
+            margin="normal"
+          />
+
+          <FormControl
+            fullWidth
+            margin="normal"
+            error={formik.touched.userType && Boolean(formik.errors.userType)}
+          >
+            <InputLabel id="user-type-label">Tipo de Usuário</InputLabel>
+            <Select
+              labelId="user-type-label"
+              id="userType"
+              name="userType"
+              value={userType}
+              onChange={(event) => {
+                handleUserTypeChange(event);
+                formik.handleChange(event);
+              }}
+              onBlur={formik.handleBlur}
+              input={<OutlinedInput label="Tipo de Usuário" />}
+            >
+              <MenuItem value="">
+                <em>Selecione</em>
+              </MenuItem>
+              <MenuItem value="cliente">Usuário Comum</MenuItem>
+              <MenuItem value="fornecedor">Sou Fornecedor</MenuItem>
+              <MenuItem value="funcionario">Sou Funcionário</MenuItem>
+            </Select>
+            {formik.touched.userType && formik.errors.userType && (
+              <FormHelperText>{formik.errors.userType}</FormHelperText>
+            )}
+          </FormControl>
+
+          <button type="submit" className="buttonLogin">
+            Logar
+          </button>
+        </form>
+        <ContainerSignUp>
+          <p className="textSignUp">Ainda nao possui uma conta?</p>
+          <button className="buttonSignUp" onClick={handleClickOpen}>
+            Cadastre-se
+          </button>
+
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Que tipo de conta deseja criar?"}
+            </DialogTitle>
+            <DialogContent>
+              <ChooseProfile />
+            </DialogContent>
+          </Dialog>
+        </ContainerSignUp>
+      </ContactForm>
+
+      <Footer>
+        <p>Obrigado por escolher a Fit Store! 🚀</p>
+      </Footer>
+    </Container>
+  );
+}

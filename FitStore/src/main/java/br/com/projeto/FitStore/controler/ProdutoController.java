@@ -1,61 +1,80 @@
 package br.com.projeto.FitStore.controler;
 
+import br.com.projeto.FitStore.dto.ProdutoDTO;
 import br.com.projeto.FitStore.models.Produto;
 import br.com.projeto.FitStore.repository.ProdutoRepositorio;
+import br.com.projeto.FitStore.service.CloudinaryService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "*")
 @RestController
-@Controller
+@RequestMapping("/produto")
 public class ProdutoController {
 
 	@Autowired
 	private ProdutoRepositorio produtoRepositorio;
 
-    @GetMapping("/produtos")
+    @Autowired
+    private CloudinaryService cloudinaryService;
+
+    @GetMapping("/listarProdutos")
     public List<Produto> listarProdutos() {
         return produtoRepositorio.findAll();
     }
 
   
-    @GetMapping("/produto/{id}")
+    @GetMapping("/listarProdutos/{id}")
     public Optional<Produto> obterProdutoPorId(@PathVariable Long id) {
         return produtoRepositorio.findById(id);
     }
 
 
-    @PostMapping("/produto")
-    public Produto cadastrarProduto(@RequestBody Produto produto) {
+    @PostMapping(consumes = "multipart/form-data")
+    public Produto cadastrarProduto(
+            @RequestPart("produto") String produtoJSON,
+            @RequestPart("imagem") MultipartFile file) {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ProdutoDTO produtoDTO;
+
+        try {
+            produtoDTO = objectMapper.readValue(produtoJSON, ProdutoDTO.class);
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao converter JSON para ProdutoDTO", e);
+        }
+
+        Produto produto = new Produto();
+        produto.setCategoria(produtoDTO.getCategoria());
+        produto.setNome(produtoDTO.getNome());
+        produto.setCodigoBarras(produtoDTO.getCodigoBarras());
+        produto.setUnidadeMedida(produtoDTO.getUnidadeMedida());
+        produto.setEstoque(produtoDTO.getEstoque());
+        produto.setPrecoCusto(produtoDTO.getPrecoCusto());
+        produto.setPrecoVenda(produtoDTO.getPrecoVenda());
+        produto.setLucro(produtoDTO.getLucro());
+        produto.setMargemLucro(produtoDTO.getMargemLucro());
+
+        try {
+            String nomeImagem = "produto_" + produtoDTO.getNome() + "_" + System.currentTimeMillis();
+            String urlImagem = cloudinaryService.uploadImagem(file, nomeImagem);
+
+            produto.setUrlImagem(urlImagem);
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao fazer upload da imagem", e);
+        }
+
         return produtoRepositorio.save(produto);
     }
 
 
-    @PutMapping("/produto/{id}")
-    public Produto editarProduto(@PathVariable Long id, @RequestBody Produto produtoAtualizado) {
-        Optional<Produto> produtoExistente = produtoRepositorio.findById(id);
-        if (produtoExistente.isPresent()) {
-            Produto produto = produtoExistente.get();
-            produto.setNome(produtoAtualizado.getNome());
-            produto.setCategoria(produtoAtualizado.getCategoria());
-            produto.setCodigoBarras(produtoAtualizado.getCodigoBarras());
-            produto.setUnidadeMedida(produtoAtualizado.getUnidadeMedida());
-            produto.setEstoque(produtoAtualizado.getEstoque());
-            produto.setPrecoCusto(produtoAtualizado.getPrecoCusto());
-            produto.setPrecoVenda(produtoAtualizado.getPrecoVenda());
-            produto.setLucro(produtoAtualizado.getLucro());
-            produto.setMargemLucro(produtoAtualizado.getMargemLucro());
-            return produtoRepositorio.save(produto);
-        }
-        return null;
-    }
-
-
- 
-    @DeleteMapping("/produto/{id}")
+    @DeleteMapping("/excluirProduto/{id}")
     public void removerProduto(@PathVariable Long id) {
         produtoRepositorio.deleteById(id);
     }
