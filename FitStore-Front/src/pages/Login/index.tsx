@@ -61,7 +61,7 @@ export default function Login() {
       try {
         const response = await loginAPI(values.email, values.senha, values.userType);
         if (response) {
-          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("token", response.data);
           localStorage.setItem("userType", values.userType);
           toast.success("Login bem-sucedido!");
           navigate("/");
