@@ -41,9 +41,10 @@ type RegisterFornecedor = {
   cidade: { id: number };
 };
 
-export const loginAPI = async (email: string, senha: string) => {
+export const loginAPI = async (email: string, senha: string, userType: string) => {
   try {
-    const data = await axios.post<UserProfileToken>(api + "auth/login", {
+    const api = `http://localhost:8080/auth/login/${userType}`;
+    const data = await axios.post<UserProfileToken>(api, {
       email: email,
       senha: senha,
     });
