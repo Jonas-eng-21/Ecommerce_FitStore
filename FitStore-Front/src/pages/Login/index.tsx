@@ -61,7 +61,9 @@ export default function Login() {
       try {
         const response = await loginAPI(values.email, values.senha, values.userType);
         if (response) {
-          navigate("/Home");
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("userType", values.userType);
+          toast.success("Login bem-sucedido!");
         }
       } catch (error: unknown) {
         if (error instanceof AxiosError && error.response) {

@@ -14,7 +14,7 @@ export default function Navbar() {
                 <Link to="/contato">Contato</Link>
             </NavLinks>
             <NavActions>
-                <Link to="/cart">
+                <Link to="/Cart">
                     <button className="primary">🛒 Carrinho</button>
                 </Link>
                 <Link to="/login">
