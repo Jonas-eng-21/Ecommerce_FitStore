@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { NavbarContainer, NavLinks, NavActions } from './style';
+import { NavbarContainer, NavLinks, NavActions } from '../../components/Navbar/style';
+
 
 export default function Navbar() {
     return (
