@@ -64,6 +64,7 @@ export default function Login() {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("userType", values.userType);
           toast.success("Login bem-sucedido!");
+          navigate("/");
         }
       } catch (error: unknown) {
         if (error instanceof AxiosError && error.response) {
