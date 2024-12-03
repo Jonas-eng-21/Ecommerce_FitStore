@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../../components/NavBar";
-import { Container, Footer, ContactForm, ContainerSignUp } from "./style";
+import { Container, ContactForm, ContainerSignUp } from "./style";
 import TextField from "@mui/material/TextField";
 import {
   Dialog,
@@ -20,6 +20,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Footer from "../../components/Footer";
 
 type UserType = "cliente" | "fornecedor" | "funcionario";
 
@@ -46,7 +47,10 @@ export default function Login() {
       .required("O e-mail é obrigatório"),
     senha: Yup.string().required("A senha é obrigatória"),
     userType: Yup.string()
-      .oneOf(["cliente", "fornecedor", "funcionario"], "Tipo de usuário inválido")
+      .oneOf(
+        ["cliente", "fornecedor", "funcionario"],
+        "Tipo de usuário inválido"
+      )
       .required("Selecione o tipo de usuário"),
   });
 
@@ -59,7 +63,11 @@ export default function Login() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       try {
-        const response = await loginAPI(values.email, values.senha, values.userType);
+        const response = await loginAPI(
+          values.email,
+          values.senha,
+          values.userType
+        );
         if (response) {
           localStorage.setItem("token", response.data);
           localStorage.setItem("userType", values.userType);
@@ -77,7 +85,6 @@ export default function Login() {
       }
     },
   });
-
 
   return (
     <Container>
@@ -171,10 +178,7 @@ export default function Login() {
           </Dialog>
         </ContainerSignUp>
       </ContactForm>
-
-      <Footer>
-        <p>Obrigado por escolher a Fit Store! 🚀</p>
-      </Footer>
+      <Footer />
     </Container>
   );
 }
