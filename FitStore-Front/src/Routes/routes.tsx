@@ -11,6 +11,7 @@ import ProtectedRoute from "./protectedRoute";
 import LoginPage from "../pages/Login";
 import RegisterPage from "../pages/Register";
 import Produtos from "../pages/Produto";
+import Checkout from "../pages/Checkout";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +30,7 @@ export const router = createBrowserRouter([
       { path: "Produtos", element: <Produtos /> },
       { path: "Login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
+      { path: "cart", element: <Cart /> },
       // {
       //   path: "Cart",
       //   element: (

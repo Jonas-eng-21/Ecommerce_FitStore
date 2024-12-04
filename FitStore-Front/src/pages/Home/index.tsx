@@ -10,11 +10,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../../components/NavBar';
 
 export default function Home() {
-    const navigate = useNavigate();
-
-    const handleDirect = () => {
-        navigate('/carrinho');
-    }
+  
     return (
         <Container>
             <Navbar/>

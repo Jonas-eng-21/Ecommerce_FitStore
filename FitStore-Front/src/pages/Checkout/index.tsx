@@ -1,15 +1,4 @@
 import React, { useState } from "react";
-import {
-  CheckoutContainer,
-  Section,
-  Title,
-  Form,
-  InputGroup,
-  Summary,
-  SummaryItem,
-  Total,
-  SubmitButton,
-} from "./style";
 
 interface CartItem {
   id: number;
@@ -18,18 +7,11 @@ interface CartItem {
   quantity: number;
 }
 
-const Checkout: React.FC = () => {
+interface CheckoutProps {
+  cartItems: CartItem[];
+}
 
-  const [cartItems] = useState<CartItem[]>([
-    { id: 1, name: "Produto 1", price: 50.0, quantity: 2 },
-    { id: 2, name: "Produto 2", price: 30.0, quantity: 1 },
-  ]);
-
-  const total = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
-
+const Checkout: React.FC<CheckoutProps> = ({ cartItems }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -38,6 +20,11 @@ const Checkout: React.FC = () => {
     state: "",
     zip: "",
   });
+
+  const total = cartItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -50,95 +37,91 @@ const Checkout: React.FC = () => {
   };
 
   return (
-    <CheckoutContainer>
-      <Section>
-        <Title>Informações do Cliente</Title>
-        <Form onSubmit={handleSubmit}>
-          <InputGroup>
-            <label htmlFor="name">Nome</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-          </InputGroup>
-          <InputGroup>
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </InputGroup>
-          <InputGroup>
-            <label htmlFor="address">Endereço</label>
-            <input
-              type="text"
-              id="address"
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              required
-            />
-          </InputGroup>
-          <InputGroup>
-            <label htmlFor="city">Cidade</label>
-            <input
-              type="text"
-              id="city"
-              name="city"
-              value={formData.city}
-              onChange={handleChange}
-              required
-            />
-          </InputGroup>
-          <InputGroup>
-            <label htmlFor="state">Estado</label>
-            <input
-              type="text"
-              id="state"
-              name="state"
-              value={formData.state}
-              onChange={handleChange}
-              required
-            />
-          </InputGroup>
-          <InputGroup>
-            <label htmlFor="zip">CEP</label>
-            <input
-              type="text"
-              id="zip"
-              name="zip"
-              value={formData.zip}
-              onChange={handleChange}
-              required
-            />
-          </InputGroup>
-          <SubmitButton type="submit">Finalizar Compra</SubmitButton>
-        </Form>
-      </Section>
-      <Section>
-        <Title>Resumo do Pedido</Title>
-        <Summary>
-          {cartItems.map((item) => (
-            <SummaryItem key={item.id}>
-              <p>{item.name} x {item.quantity}</p>
-              <p>R$ {(item.price * item.quantity).toFixed(2)}</p>
-            </SummaryItem>
-          ))}
-          <Total>
-            <p>Total:</p>
-            <p>R$ {total.toFixed(2)}</p>
-          </Total>
-        </Summary>
-      </Section>
-    </CheckoutContainer>
+    <div>
+      <h1>Informações do Cliente</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="name">Nome:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="address">Endereço:</label>
+          <input
+            type="text"
+            id="address"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="city">Cidade:</label>
+          <input
+            type="text"
+            id="city"
+            name="city"
+            value={formData.city}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="state">Estado:</label>
+          <input
+            type="text"
+            id="state"
+            name="state"
+            value={formData.state}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="zip">CEP:</label>
+          <input
+            type="text"
+            id="zip"
+            name="zip"
+            value={formData.zip}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit">Finalizar Compra</button>
+      </form>
+
+      <h2>Resumo do Pedido</h2>
+      <div>
+        {cartItems.map((item) => (
+          <div key={item.id}>
+            <p>{item.name} x {item.quantity}</p>
+            <p>R$ {(item.price * item.quantity).toFixed(2)}</p>
+          </div>
+        ))}
+      </div>
+      <div>
+        <p>Total: R$ {total.toFixed(2)}</p>
+      </div>
+    </div>
   );
 };
 
