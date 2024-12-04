@@ -1,46 +1,47 @@
 import React, { useEffect, useState } from 'react';
-import { listarProdutosAPI } from '../../services/produtoService';
+import { listarEntradasAPI } from '../../services/entradaService';
 import { Grid, Card, CardContent, Typography, CardMedia, Box, Button, Select, MenuItem } from '@mui/material';
 
-interface Produto {
-  nome: string;
-  preco: number;
-  urlImagem: string;
-  categoria: string;
+interface ItemEntrada {
+  nomeProduto: string | null;
+  precoProduto: number;
+  urlImagemProduto: string | null;
+  categoriaProduto: string | null;
+  quantidade: number;
+  valor: number;
 }
 
 const ProdutoCard: React.FC = () => {
-  const [produtos, setProdutos] = useState<Produto[]>([]);
+  const [itensEntrada, setItensEntrada] = useState<ItemEntrada[]>([]);
   const [categoriaSelecionada, setCategoriaSelecionada] = useState<string>(''); // Estado para a categoria selecionada
+  const [categorias, setCategorias] = useState<string[]>([]); // Estado para armazenar as categorias únicas
 
-  // Carregar dados dos produtos
+  // Carregar dados das entradas
   useEffect(() => {
-    const fetchProdutos = async () => {
-      const dadosProdutos = await listarProdutosAPI();
-      if (dadosProdutos) {
-        setProdutos(
-          dadosProdutos.map((produto) => ({
-            nome: produto.nome,
-            preco: produto.precoVenda ?? 0, // Mapeando corretamente o preço
-            urlImagem: produto.urlImagem ?? '', // URL da imagem
-            categoria: produto.categoria ?? 'Outros', // Categoria do produto
-          }))
-        );
+    const fetchEntradas = async () => {
+      const dadosEntradas = await listarEntradasAPI();
+      if (dadosEntradas) {
+        const items = dadosEntradas.flatMap((entrada) => entrada.itensEntrada); // Flatten para pegar todos os itens de todas as entradas
+        setItensEntrada(items);
+
+        // Obter as categorias únicas dos produtos
+        const categoriasUnicas = Array.from(new Set(items.map(item => item.categoriaProduto))).filter(Boolean);
+        setCategorias(categoriasUnicas);
       }
     };
 
-    fetchProdutos();
+    fetchEntradas();
   }, []);
 
-  // Filtro dos produtos pela categoria selecionada
-  const produtosFiltrados = categoriaSelecionada
-    ? produtos.filter(produto => produto.categoria === categoriaSelecionada)
-    : produtos;
+  // Filtro dos itens pela categoria selecionada
+  const itensFiltrados = categoriaSelecionada
+    ? itensEntrada.filter(item => item.categoriaProduto === categoriaSelecionada)
+    : itensEntrada;
 
   return (
     <div>
       {/* Drop para selecionar a categoria */}
-      <Box sx={{ marginBottom: '15px', marginTop: '15px', textAlign: 'end'}}>
+      <Box sx={{ marginBottom: '15px', marginTop: '15px', textAlign: 'end' }}>
         <Select
           value={categoriaSelecionada}
           onChange={e => setCategoriaSelecionada(e.target.value)}
@@ -58,8 +59,12 @@ const ProdutoCard: React.FC = () => {
           }}
         >
           <MenuItem value="">Todas as Categorias</MenuItem>
-          <MenuItem value="Suplementos">Suplementos</MenuItem>
-          <MenuItem value="Roupas">Roupas</MenuItem>
+          {/* Renderiza as categorias dinamicamente */}
+          {categorias.map((categoria, index) => (
+            <MenuItem key={index} value={categoria}>
+              {categoria}
+            </MenuItem>
+          ))}
         </Select>
       </Box>
 
@@ -69,7 +74,7 @@ const ProdutoCard: React.FC = () => {
         justifyContent="center"
         sx={{ marginTop: '25px', backgroundColor: '#6e6e6e' }}
       >
-        {produtosFiltrados.map((produto, index) => (
+        {itensFiltrados.map((item, index) => (
           <Grid item xs={12} sm={6} md={3} key={index}>
             <Card
               sx={{
@@ -84,25 +89,55 @@ const ProdutoCard: React.FC = () => {
                 flexDirection: 'column',
               }}
             >
-              {/*Exibe a imagem do produto*/}
+              {/* Imagem do produto */}
               <CardMedia
                 component="img"
-                image={produto.urlImagem || '../../../assets/images/default-image.png'}
-                alt={produto.nome}
+                image={item.urlImagemProduto || '../../../assets/images/default-image.png'}
+                alt={item.nomeProduto || 'Produto'}
                 sx={{
-                  height: 220, 
-                  objectFit: 'contain', 
-                  objectPosition: 'center', 
-                  borderRadius: '10px', 
+                  height: 220,
+                  objectFit: 'contain',
+                  objectPosition: 'center',
+                  borderRadius: '10px',
                 }}
               />
-              
-              <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                <Typography gutterBottom variant="h5" component="div" align="center">
-                  {produto.nome}
+              <CardContent
+                sx={{
+                  flexGrow: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                {/* Título truncado */}
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                  component="div"
+                  align="center"
+                  sx={{
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    width: '100%',
+                  }}
+                >
+                  {item.nomeProduto}
                 </Typography>
-                <Typography variant="body1" color="text.secondary" align="center">
-                  Preço: R${produto.preco && !isNaN(produto.preco) ? produto.preco.toFixed(2) : '0.00'}
+                {/* Preço truncado */}
+                <Typography
+                  variant="body1"
+                  color="text.secondary"
+                  align="center"
+                  sx={{
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    width: '100%',
+                  }}
+                >
+                  Preço: R${item.precoProduto && !isNaN(item.precoProduto) ? item.precoProduto.toFixed(2) : '0.00'}
                 </Typography>
               </CardContent>
 
