@@ -1,15 +1,13 @@
 import React from 'react';
 import {
   Container,
-  Navbar,
-  NavLinks,
   HeroSection,
   CallToAction,
   Footer,
-  SocialProof,
-  NavActions
+  SocialProof
 } from './style';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import Navbar from '../../components/NavBar';
 
 export default function Home() {
     const navigate = useNavigate();
@@ -19,26 +17,7 @@ export default function Home() {
     }
     return (
         <Container>
-            {/* Navbar */}
-            <Navbar>
-                <Link to="/home" style={{marginTop: '-20px'}}>
-                <img src="assets\images\logo-fitstore.png" alt="Fit Store Logo" style={{ height: '50px', width: 'auto' }} />
-                </Link>
-                <NavLinks>
-                    <Link to="/home">Início </Link>
-                    <Link to="/produto">Produtos</Link>
-                    <Link to="/about">Sobre Nós</Link>
-                    <Link to="/contato">Contato</Link>
-                </NavLinks>
-                <NavActions>
-                    <Link to="/carrinho">
-                    <button className="primary" onClick={handleDirect}>🛒 Carrinho</button>
-                    </Link>
-                    <Link to="/login">
-                    <button className="secondary">Login</button>
-                    </Link>
-                </NavActions>
-            </Navbar>
+            <Navbar/>
 
             {/* seção meio */}
             <HeroSection>
@@ -47,7 +26,7 @@ export default function Home() {
                     <p>
                     Tudo para seu treino, do zero ao shape! 💪🛒
                     </p>
-                    <Link to="/produto">
+                    <Link to="/Produtos">
                     <CallToAction>Ver Produtos</CallToAction>
                     </Link>
                     <h2>Aproveite Nossas Promoções</h2>
@@ -63,7 +42,6 @@ export default function Home() {
                     <Link to="https://www.instagram.com/fittttt_storeeeee" target='_blank' rel='noopener noreferrer' style={{ height: '30px', width: 'auto' }}>
                     <img src="assets/images/instagram.png" alt="Hero Banner" />
                     </Link>
-                    
                     <Link to="https://github.com/Jonas-eng-21/Ecommerce_FitStore" target='_blank' rel='noopener noreferrer' style={{ height: '30px', width: 'auto' }}>
                     <img src="assets/images/github.png" alt="Hero Banner" />
                     </Link>

@@ -11,6 +11,7 @@ public class Produto implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	private String categoria;
 	private String nome;
 	private String codigoBarras;
 	private String unidadeMedida;
@@ -19,12 +20,19 @@ public class Produto implements Serializable{
 	private Double precoVenda = 0.00;
 	private Double lucro = 0.00;
 	private Double margemLucro = 0.00;
+	private String urlImagem;
 
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public String getCategoria() {
+		return categoria;
+	}
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
 	}
 	public String getNome() {
 		return nome;
@@ -73,6 +81,12 @@ public class Produto implements Serializable{
 	}
 	public void setMargemLucro(Double margemLucro) {
 		this.margemLucro = margemLucro;
+	}
+	public String getUrlImagem() {
+		return urlImagem;
+	}
+	public void setUrlImagem(String urlImagem) {
+		this.urlImagem = urlImagem;
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
