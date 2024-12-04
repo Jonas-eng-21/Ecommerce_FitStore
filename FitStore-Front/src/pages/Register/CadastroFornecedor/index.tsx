@@ -11,18 +11,36 @@ import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
-import HowToRegIcon from '@mui/icons-material/HowToReg';
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 import Footer from "../../../components/Footer";
 import { registerFornecedorAPI } from "../../../services/authService";
+
+function formatCNPJ(value: string): string {
+  return value
+    .replace(/\D/g, "")
+    .replace(/(\d{2})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d{1,4})/, "$1/$2")
+    .replace(/(\d{4})(\d{2})$/, "$1-$2")
+    .slice(0, 18);
+}
+
+function formatTelefone(value: string): string {
+  return value
+    .replace(/\D/g, "")
+    .replace(/(\d{2})(\d)/, "($1) $2")
+    .replace(/(\d{5})(\d{4})$/, "$1-$2")
+    .slice(0, 15);
+}
 
 export default function CadastroFornecedor() {
   const navigate = useNavigate();
 
   const validationSchema = Yup.object({
     nome: Yup.string().required("O nome é obrigatório"),
-    cpf: Yup.string()
-      .matches(/^\d{11}$/, "O CPF deve ter 11 dígitos")
-      .required("O CPF é obrigatório"),
+    cnpj: Yup.string()
+      .matches(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/, "Formato de CNPJ inválido")
+      .required("O CNPJ é obrigatório"),
     telefone: Yup.string()
       .matches(/^\(\d{2}\) \d{4,5}-\d{4}$/, "Formato de telefone inválido")
       .required("O telefone é obrigatório"),
@@ -41,7 +59,7 @@ export default function CadastroFornecedor() {
   const formik = useFormik({
     initialValues: {
       nome: "",
-      cpf: "",
+      cnpj: "",
       telefone: "",
       endereco: "",
       numero: "",
@@ -105,25 +123,33 @@ export default function CadastroFornecedor() {
                   margin="normal"
                 />
                 <TextField
-                  id="cpf"
-                  name="cpf"
-                  label="CPF"
-                  placeholder="Digite seu CPF"
-                  value={formik.values.cpf}
-                  onChange={formik.handleChange}
+                  id="cnpj"
+                  name="cnpj"
+                  label="CNPJ"
+                  placeholder="Digite seu CNPJ"
+                  value={formik.values.cnpj}
+                  onChange={(e) =>
+                    formik.setFieldValue("cnpj", formatCNPJ(e.target.value))
+                  }
                   onBlur={formik.handleBlur}
-                  error={formik.touched.cpf && Boolean(formik.errors.cpf)}
-                  helperText={formik.touched.cpf && formik.errors.cpf}
+                  error={formik.touched.cnpj && Boolean(formik.errors.cnpj)}
+                  helperText={formik.touched.cnpj && formik.errors.cnpj}
                   fullWidth
                   margin="normal"
                 />
+
                 <TextField
                   id="telefone"
                   name="telefone"
                   label="Telefone"
                   placeholder="Digite seu telefone"
                   value={formik.values.telefone}
-                  onChange={formik.handleChange}
+                  onChange={(e) =>
+                    formik.setFieldValue(
+                      "telefone",
+                      formatTelefone(e.target.value)
+                    )
+                  }
                   onBlur={formik.handleBlur}
                   error={
                     formik.touched.telefone && Boolean(formik.errors.telefone)

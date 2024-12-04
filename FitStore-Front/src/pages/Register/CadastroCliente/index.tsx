@@ -12,8 +12,25 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { registerClienteAPI } from "../../../services/authService";
-import HowToRegIcon from '@mui/icons-material/HowToReg';
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 import Footer from "../../../components/Footer";
+
+function formatCPF(value: string): string {
+  return value
+    .replace(/\D/g, "")
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d{1,2})$/, "$1-$2")
+    .slice(0, 14);
+}
+
+function formatTelefone(value: string): string {
+  return value
+    .replace(/\D/g, "")
+    .replace(/(\d{2})(\d)/, "($1) $2")
+    .replace(/(\d{5})(\d{4})$/, "$1-$2")
+    .slice(0, 15);
+}
 
 export default function CadastroCliente() {
   const navigate = useNavigate();
@@ -21,7 +38,7 @@ export default function CadastroCliente() {
   const validationSchema = Yup.object({
     nome: Yup.string().required("O nome é obrigatório"),
     cpf: Yup.string()
-      .matches(/^\d{11}$/, "O CPF deve ter 11 dígitos")
+      .matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "Formato de CPF inválido")
       .required("O CPF é obrigatório"),
     telefone: Yup.string()
       .matches(/^\(\d{2}\) \d{4,5}-\d{4}$/, "Formato de telefone inválido")
@@ -110,7 +127,9 @@ export default function CadastroCliente() {
                   label="CPF"
                   placeholder="Digite seu CPF"
                   value={formik.values.cpf}
-                  onChange={formik.handleChange}
+                  onChange={(e) =>
+                    formik.setFieldValue("cpf", formatCPF(e.target.value))
+                  }
                   onBlur={formik.handleBlur}
                   error={formik.touched.cpf && Boolean(formik.errors.cpf)}
                   helperText={formik.touched.cpf && formik.errors.cpf}
@@ -123,7 +142,12 @@ export default function CadastroCliente() {
                   label="Telefone"
                   placeholder="Digite seu telefone"
                   value={formik.values.telefone}
-                  onChange={formik.handleChange}
+                  onChange={(e) =>
+                    formik.setFieldValue(
+                      "telefone",
+                      formatTelefone(e.target.value)
+                    )
+                  }
                   onBlur={formik.handleBlur}
                   error={
                     formik.touched.telefone && Boolean(formik.errors.telefone)
