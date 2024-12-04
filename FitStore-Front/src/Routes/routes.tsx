@@ -20,7 +20,7 @@ export const router = createBrowserRouter([
       { path: "", element: <Home /> },
       { path: "cadastroCliente", element: <CadastroCliente /> },
       { path: "CadastroFornecedor", element: <CadastroFornecedor /> },
-      { path: "CadastroFuncinoario", element: <CadastroFuncinoario /> },
+      { path: "CadastroFuncionario", element: <CadastroFuncinoario /> },
       { path: "Home", element: <Home /> },
       { path: "About", element: <About /> },
       { path: "Contato", element: <Contato /> },
