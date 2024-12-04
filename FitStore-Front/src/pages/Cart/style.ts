@@ -1,13 +1,11 @@
 import styled from "styled-components";
 
-// Estilos gerais do container
 export const Container = styled.div`
   padding: 20px;
   text-align: center;
   background-color: #f9f9f9;
 `;
 
-// Estilo para cada item do carrinho
 export const CartItem = styled.div`
   display: flex;
   justify-content: space-between;
@@ -19,7 +17,7 @@ export const CartItem = styled.div`
   background-color: #f9f9f9;
 
   img {
-    width: 200px;  /* Reduzido em 40% */
+    width: 200px; 
     height: auto;
     margin-right: 20px;
   }
@@ -33,8 +31,6 @@ export const CartItem = styled.div`
     }
   }
 `;
-
-// Estilo para o botão de deletar item do carrinho
 export const DeleteButton = styled.button`
   background-color: #ff4d4d;
   color: white;
@@ -54,7 +50,6 @@ export const DeleteButton = styled.button`
   }
 `;
 
-// Estilo para o botão "Finalizar Compra"
 export const StyledButton = styled.button`
   background-color: black;
   color: white;
