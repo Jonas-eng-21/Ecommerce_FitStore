@@ -27,11 +27,12 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Estado, listarEstadosAPI } from "../../../services/estadoService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function CidadeList() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [cidadeSelecionada, setCidadeSelecionada] = useState<string>("");
   const [cidades, setCidades] = useState<Cidade[]>([]);
   const [mostrarForm, setMostrarForm] = useState(false);
@@ -39,6 +40,22 @@ export default function CidadeList() {
   const [estadoSelecionado, setEstadoSelecionado] = useState<string>("");
 
   const goToCadastroEstado = () => navigate("/cidadeRegister");
+  const tipoCadastro = location.state?.tipoCadastro;
+
+  const redirecionarParaCadastro = (cidadeId: string) => {
+    if (tipoCadastro) {
+      navigate(
+        `/Cadastro${
+          tipoCadastro.charAt(0).toUpperCase() + tipoCadastro.slice(1)
+        }`,
+        {
+          state: { cidadeId },
+        }
+      );
+    } else {
+      console.error("Tipo de cadastro não definido.");
+    }
+  };
 
   useEffect(() => {
     const fetchEstados = async () => {
@@ -78,7 +95,7 @@ export default function CidadeList() {
         );
 
         if (!estadoSelecionadoObj) {
-          alert("Selecione um estado válido.");
+          toast.info("Selecione um estado válido.");
           return;
         }
 
@@ -89,13 +106,20 @@ export default function CidadeList() {
           },
         };
 
-        await cadastrarCidadeAPI(payload);
-        toast.success("Cidade cadastrada com sucesso!");
-        navigate("");
+        const response = await cadastrarCidadeAPI(payload);
+
+        if (response && response.id) {
+          toast.success("Cidade cadastrada com sucesso!");
+          redirecionarParaCadastro(response.id);
+        } else {
+          console.error("Resposta inválida da API ao cadastrar cidade.");
+          toast.error("Erro ao cadastrar a cidade. Tente novamente.");
+        }
+
         resetForm();
       } catch (error) {
         console.error("Erro ao cadastrar cidade:", error);
-        alert("Erro ao cadastrar a cidade. Tente novamente.");
+        toast.error("Erro ao cadastrar a cidade. Tente novamente.");
       }
     },
   });
@@ -108,6 +132,15 @@ export default function CidadeList() {
     setEstadoSelecionado(event.target.value as string);
   };
 
+  const handleSelecionarCidade = () => {
+    const cidade = cidades.find((c) => c.nome === cidadeSelecionada);
+    if (cidade) {
+      redirecionarParaCadastro(cidade.id);
+    } else {
+      toast.error("Selecione uma cidade válida.");
+    }
+  };
+
   return (
     <Container>
       <Navbar />
@@ -115,7 +148,6 @@ export default function CidadeList() {
         <Box className="BoxContainer">
           {!mostrarForm ? (
             <>
-              {/* Div inicial */}
               <h1 className="textH1">A sua cidade consta na lista abaixo?</h1>
               <h4 className="textH1">Selecione a sua cidade, por favor</h4>
               <FormControl fullWidth>
@@ -134,6 +166,12 @@ export default function CidadeList() {
                   ))}
                 </Select>
               </FormControl>
+              <Button
+                onClick={handleSelecionarCidade}
+                disabled={!cidadeSelecionada}
+              >
+                Continuar
+              </Button>
               <div className="ContainerButton">
                 <h4 className="textH1">
                   Sua cidade não consta na lista acima?
