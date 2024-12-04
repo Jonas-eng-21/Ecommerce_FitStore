@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { listarProdutosAPI } from '../../services/produtoService';
 import { Grid, Card, CardContent, Typography, CardMedia, Box, Button, Select, MenuItem } from '@mui/material';
 
@@ -12,6 +13,7 @@ interface Produto {
 const ProdutoCard: React.FC = () => {
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const [categoriaSelecionada, setCategoriaSelecionada] = useState<string>(''); // Estado para a categoria selecionada
+  const navigate = useNavigate(); // Hook para navegação
 
   // Carregar dados dos produtos
   useEffect(() => {
@@ -37,10 +39,15 @@ const ProdutoCard: React.FC = () => {
     ? produtos.filter(produto => produto.categoria === categoriaSelecionada)
     : produtos;
 
+  // Função para redirecionar para a página de detalhes
+  const handleVerDetalhes = (produto: Produto) => {
+    navigate('/detalhes', { state: { produto } }); // Passa o produto como estado
+  };
+
   return (
     <div>
       {/* Drop para selecionar a categoria */}
-      <Box sx={{ marginBottom: '15px', marginTop: '15px', textAlign: 'end'}}>
+      <Box sx={{ marginBottom: '15px', marginTop: '15px', textAlign: 'end' }}>
         <Select
           value={categoriaSelecionada}
           onChange={e => setCategoriaSelecionada(e.target.value)}
@@ -90,13 +97,13 @@ const ProdutoCard: React.FC = () => {
                 image={produto.urlImagem || '../../../assets/images/default-image.png'}
                 alt={produto.nome}
                 sx={{
-                  height: 220, 
-                  objectFit: 'contain', 
-                  objectPosition: 'center', 
-                  borderRadius: '10px', 
+                  height: 220,
+                  objectFit: 'contain',
+                  objectPosition: 'center',
+                  borderRadius: '10px',
                 }}
               />
-              
+
               <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <Typography gutterBottom variant="h5" component="div" align="center">
                   {produto.nome}
@@ -107,7 +114,12 @@ const ProdutoCard: React.FC = () => {
               </CardContent>
 
               <Box sx={{ display: 'flex', justifyContent: 'center', padding: '10px' }}>
-                <Button size="small" variant="contained" color="primary">
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleVerDetalhes(produto)} // Passa o produto para a navegação
+                >
                   Ver Detalhes
                 </Button>
               </Box>

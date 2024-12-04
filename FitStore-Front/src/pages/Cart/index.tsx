@@ -1,60 +1,60 @@
-import React, { useState } from "react";
-import {
-  CheckoutContainer,
-  Section,
-  Title,
-  Summary,
-  SummaryItem,
-  Total,
-  SubmitButton,
-} from "./style";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Container, CartItem, StyledButton, DeleteButton } from "./style";
 
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
+interface CartItemType {
+  nome: string;
+  preco: number;
+  urlImagem: string;
+  categoria: string;
 }
 
 const Cart: React.FC = () => {
-  const [cartItems] = useState<CartItem[]>([
-    { id: 1, name: "Produto 1", price: 50.0, quantity: 2 },
-    { id: 2, name: "Produto 2", price: 30.0, quantity: 1 },
-  ]);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const produto = location.state?.produto;
 
-  const total = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+  const [cartItem, setCartItem] = useState<CartItemType | null>(null);
+
+  useEffect(() => {
+    if (produto) {
+      setCartItem(produto);
+    }
+  }, [produto]);
+
+  const total = cartItem ? cartItem.preco : 0;
 
   const handleFinishPurchase = () => {
-    // Função para finalizar a compra (aqui você pode adicionar lógica para enviar os dados)
-    alert("Compra finalizada com sucesso!");
+    navigate("/checkout");
+  };
+
+  const handleDeleteItem = () => {
+    setCartItem(null);
   };
 
   return (
-    <CheckoutContainer>
-      <Section>
-        <Title>Resumo do Pedido</Title>
-        <Summary>
-          {cartItems.map((item) => (
-            <SummaryItem key={item.id}>
-              <p>{item.name} x {item.quantity}</p>
-              <p>R$ {(item.price * item.quantity).toFixed(2)}</p>
-            </SummaryItem>
-          ))}
-          <Total>
-            <p>Total:</p>
-            <p>R$ {total.toFixed(2)}</p>
-          </Total>
-        </Summary>
-      </Section>
-      <Section>
-        <SubmitButton onClick={handleFinishPurchase}>
-          Finalizar Compra
-        </SubmitButton>
-      </Section>
-    </CheckoutContainer>
+    <Container>
+      <h1>Resumo do Carrinho</h1>
+      <div>
+        {cartItem === null ? (
+          <p>Carrinho vazio</p>
+        ) : (
+          <CartItem>
+            <img src={cartItem.urlImagem} alt={cartItem.nome} />
+            <div>
+              <p>{cartItem.nome}</p>
+              <p>Categoria: {cartItem.categoria}</p>
+              <p>Preço: R${cartItem.preco.toFixed(2)}</p>
+            </div>
+            <DeleteButton onClick={handleDeleteItem}>X</DeleteButton>
+          </CartItem>
+        )}
+      </div>
+      <div>
+        <p>Total: R$ {total.toFixed(2)}</p>
+        <StyledButton onClick={handleFinishPurchase}>Finalizar Compra</StyledButton>
+      </div>
+    </Container>
   );
 };
 
