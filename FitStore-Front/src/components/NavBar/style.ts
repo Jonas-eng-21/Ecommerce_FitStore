@@ -1,6 +1,22 @@
 import styled from 'styled-components';
 
 export const NavbarContainer = styled.nav`
+    
+    font-family: Arial, sans-serif;
+    display: flex;
+    gap: 1.875rem;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.875rem;
+    background-color: #ffffff;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+    @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+`;
+
+export const Navbar = styled.nav`
     display: flex;
     gap: 1.875rem;
     justify-content: space-between;
