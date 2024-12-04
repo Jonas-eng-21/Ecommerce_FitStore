@@ -11,6 +11,8 @@ import ProtectedRoute from "./protectedRoute";
 import LoginPage from "../pages/Login";
 import RegisterPage from "../pages/Register";
 import Produtos from "../pages/Produto";
+import Checkout from "../pages/Checkout";
+import Detalhes from "../pages/Detalhes";
 
 export const router = createBrowserRouter([
   {
@@ -20,21 +22,23 @@ export const router = createBrowserRouter([
       { path: "", element: <Home /> },
       { path: "cadastroCliente", element: <CadastroCliente /> },
       { path: "CadastroFornecedor", element: <CadastroFornecedor /> },
-      { path: "CadastroFuncinoario", element: <CadastroFuncinoario /> },
+      { path: "CadastroFuncionario", element: <CadastroFuncinoario /> },
       { path: "Home", element: <Home /> },
       { path: "About", element: <About /> },
       { path: "Contato", element: <Contato /> },
       { path: "Produtos", element: <Produtos /> },
       { path: "Login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
-      {
-        path: "Cart",
-        element: (
-          <ProtectedRoute>
-            <Cart />
-          </ProtectedRoute>
-        ),
-      },
+      { path: "cart", element: <Cart /> },
+      { path: "detalhes", element: <Detalhes /> },
+      // {
+      //   path: "Cart",
+      //   element: (
+      //     <ProtectedRoute>
+      //       <Cart />
+      //     </ProtectedRoute>
+      //   ),
+      // },
     ],
   },
 ]);

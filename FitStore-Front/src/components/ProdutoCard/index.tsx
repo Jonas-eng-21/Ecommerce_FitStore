@@ -38,6 +38,11 @@ const ProdutoCard: React.FC = () => {
     ? itensEntrada.filter(item => item.categoriaProduto === categoriaSelecionada)
     : itensEntrada;
 
+  // Função para redirecionar para a página de detalhes
+  const handleVerDetalhes = (produto: Produto) => {
+    navigate('/detalhes', { state: { produto } }); // Passa o produto como estado
+  };
+
   return (
     <div>
       {/* Drop para selecionar a categoria */}
@@ -142,7 +147,12 @@ const ProdutoCard: React.FC = () => {
               </CardContent>
 
               <Box sx={{ display: 'flex', justifyContent: 'center', padding: '10px' }}>
-                <Button size="small" variant="contained" color="primary">
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleVerDetalhes(produto)} // Passa o produto para a navegação
+                >
                   Ver Detalhes
                 </Button>
               </Box>
