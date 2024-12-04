@@ -40,7 +40,7 @@ const ProdutoCard: React.FC = () => {
   return (
     <div>
       {/* Drop para selecionar a categoria */}
-      <Box sx={{ marginBottom: '15px', marginTop: '15px', textAlign: 'end'}}>
+      <Box sx={{ marginBottom: '15px', marginTop: '15px', textAlign: 'end' }}>
         <Select
           value={categoriaSelecionada}
           onChange={e => setCategoriaSelecionada(e.target.value)}
@@ -84,25 +84,56 @@ const ProdutoCard: React.FC = () => {
                 flexDirection: 'column',
               }}
             >
-              {/*Exibe a imagem do produto*/}
+              {/* Imagem do produto */}
               <CardMedia
                 component="img"
                 image={produto.urlImagem || '../../../assets/images/default-image.png'}
                 alt={produto.nome}
                 sx={{
-                  height: 220, 
-                  objectFit: 'contain', 
-                  objectPosition: 'center', 
-                  borderRadius: '10px', 
+                  height: 220,
+                  objectFit: 'contain',
+                  objectPosition: 'center',
+                  borderRadius: '10px',
                 }}
               />
-              
-              <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                <Typography gutterBottom variant="h5" component="div" align="center">
+              <CardContent
+                sx={{
+                  flexGrow: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                {/* Título truncado */}
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                  component="div"
+                  align="center"
+                  sx={{
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    width: '100%',
+                  }}
+                >
                   {produto.nome}
                 </Typography>
-                <Typography variant="body1" color="text.secondary" align="center">
-                  Preço: R${produto.preco && !isNaN(produto.preco) ? produto.preco.toFixed(2) : '0.00'}
+                {/* Preço truncado*/}
+                <Typography
+                  variant="body1"
+                  color="text.secondary"
+                  align="center"
+                  sx={{
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    width: '100%',
+                  }}
+                >
+                  Preço: R$
+                  {produto.preco && !isNaN(produto.preco) ? produto.preco.toFixed(2) : '0.00'}
                 </Typography>
               </CardContent>
 
