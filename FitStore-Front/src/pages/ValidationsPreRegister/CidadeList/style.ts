@@ -19,4 +19,21 @@ export const ContainerForm = styled.div`
   margin: 2rem auto;
   border-radius: 8px;
   padding: 2rem;
+
+  .BoxContainer {
+    width: 90%;
+    background-color: #ffffff;
+    margin: 2rem auto;
+    padding: 2%;
+  }
+
+  .textH1 {
+    color: black;
+  }
+
+  .ContainerButton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;

@@ -48,4 +48,5 @@ export const ContainerTextField = styled.div`
   margin-bottom: 2%;
   margin-top: 2%;
   gap: 3%;
+  align-items: center;
 `;

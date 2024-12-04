@@ -5,13 +5,14 @@ import { useNavigate } from "react-router-dom";
 export default function ChooseProfile() {
   const navigate = useNavigate();
 
-  const goToCadastroFornecedor = () => navigate("/CadastroFornecedor");
-  const goToCadastroCliente = () => navigate("/CadastroCliente");
-  const goToCadastroFuncionario = () => navigate("/CadastroFuncionario");
+  const goToCidadeList = (tipoCadastro: string) => {
+    navigate("/cidadeList", { state: { tipoCadastro } });
+  };
+
   return (
     <Container>
       <Card sx={{ maxWidth: 300 }}>
-        <CardActionArea onClick={goToCadastroFornecedor}>
+        <CardActionArea onClick={() => goToCidadeList("fornecedor")}>
           <CardContent>
             <Typography variant="body2" sx={{ color: "text.secondary" }}>
               Fornecedor
@@ -21,7 +22,7 @@ export default function ChooseProfile() {
       </Card>
 
       <Card sx={{ maxWidth: 300 }}>
-        <CardActionArea onClick={goToCadastroCliente} >
+        <CardActionArea onClick={() => goToCidadeList("cliente")} >
           <CardContent>
             <Typography variant="body2" sx={{ color: "text.secondary" }}>
               Cliente
@@ -31,7 +32,7 @@ export default function ChooseProfile() {
       </Card>
 
       <Card sx={{ maxWidth: 300 }}>
-        <CardActionArea onClick={goToCadastroFuncionario}>
+        <CardActionArea onClick={() => goToCidadeList("funcionario")}>
           <CardContent>
             <Typography variant="body2" sx={{ color: "text.secondary" }}>
               Funcionario

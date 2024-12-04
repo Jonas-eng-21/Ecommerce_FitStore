@@ -10,8 +10,8 @@ import Cart from "../pages/Cart";
 import ProtectedRoute from "./protectedRoute";
 import LoginPage from "../pages/Login";
 import Produtos from "../pages/Produto";
+import CidadeList from "../pages/ValidationsPreRegister/CidadeList";
 import CidadeRegister from "../pages/ValidationsPreRegister/CidadeRegister";
-import EstadoRegister from "../pages/ValidationsPreRegister/EstadoRegister";
 
 export const router = createBrowserRouter([
   {
@@ -27,8 +27,8 @@ export const router = createBrowserRouter([
       { path: "Contato", element: <Contato /> },
       { path: "Produtos", element: <Produtos /> },
       { path: "Login", element: <LoginPage /> },
+      { path: "cidadeList", element: <CidadeList /> },
       { path: "cidadeRegister", element: <CidadeRegister /> },
-      { path: "estadoRegister", element: <EstadoRegister /> },
       {
         path: "Cart",
         element: (
