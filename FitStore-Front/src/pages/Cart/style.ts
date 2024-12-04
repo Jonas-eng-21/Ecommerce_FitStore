@@ -14,6 +14,7 @@ export const CartList = styled.div`
   margin-top: 20px;
 `;
 
+
 export const CartItem = styled.div`
   display: flex;
   justify-content: space-between;
@@ -37,6 +38,7 @@ export const CartItem = styled.div`
     }
   }
 `;
+
 
 export const ItemDetails = styled.div`
   flex: 1;
@@ -74,7 +76,6 @@ export const QuantityControls = styled.div`
     font-weight: bold;
   }
 `;
-
 export const TotalContainer = styled.div`
   margin-top: 20px;
   text-align: right;
@@ -100,21 +101,91 @@ export const CartButton = styled.button`
   }
 `;
 
+export const CheckoutContainer = styled.div`
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+`;
 
-export const CheckoutContainer = styled.div``;
+export const Section = styled.section`
+  margin-bottom: 20px;
+`;
 
-export const Section = styled.section``;
+export const Title = styled.h1`
+  font-size: 1.8rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+`;
 
-export const Title = styled.h1``;
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
 
-export const Form = styled.form``;
+export const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
 
-export const InputGroup = styled.div``;
+  label {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 5px;
+  }
 
-export const Summary = styled.div``;
+  input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
 
-export const SummaryItem = styled.div``;
+    &:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+  }
+`;
 
-export const Total = styled.div``;
+export const Summary = styled.div`
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+`;
 
-export const SubmitButton = styled.button``;
+export const SummaryItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  span {
+    font-size: 1rem;
+    color: #333;
+  }
+`;
+
+export const Total = styled.div`
+  margin-top: 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  text-align: right;
+`;
+
+// Botão para enviar formulário
+export const SubmitButton = styled.button`
+  padding: 12px 20px;
+  font-size: 1rem;
+  color: white;
+  background: #007bff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background: #0056b3;
+  }
+`;
