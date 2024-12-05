@@ -12,6 +12,7 @@ import LoginPage from "../pages/Login";
 import Produtos from "../pages/Produto";
 import CidadeList from "../pages/ValidationsPreRegister/CidadeList";
 import CidadeRegister from "../pages/ValidationsPreRegister/CidadeRegister";
+import HomeFuncionario from "../pages/HomeFuncionario";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +30,7 @@ export const router = createBrowserRouter([
       { path: "Login", element: <LoginPage /> },
       { path: "cidadeList", element: <CidadeList /> },
       { path: "cidadeRegister", element: <CidadeRegister /> },
+      { path: "homeFuncionario", element: <HomeFuncionario /> },
       {
         path: "Cart",
         element: (

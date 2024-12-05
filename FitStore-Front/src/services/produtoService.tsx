@@ -1,6 +1,5 @@
 import axios from "axios";
 import { handleErrorProduto } from "../helpers/errorHandleProduto";
-// import { Produto } from "../models/produto";
 
 const api = "http://localhost:8080/";
 
