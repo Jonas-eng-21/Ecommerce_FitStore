@@ -23,7 +23,6 @@ const ProductDetails: React.FC = () => {
   }, [produto]);
 
   const handleAddToCart = () => {
-    // Navegar para a página do carrinho
     navigate("/cart", { state: { produto } });
   };
 

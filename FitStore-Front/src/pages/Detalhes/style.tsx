@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-// Estilos gerais do container
 export const Container = styled.div`
   padding: 20px;
   text-align: center;
@@ -20,7 +19,6 @@ export const ProductDetailsWrapper = styled.div`
   max-width: 1000px;
 `;
 
-// Estilo para a imagem do produto
 export const ProductImage = styled.img`
   width: 200px;  /* Tamanho fixo para imagem */
   height: auto;
@@ -28,7 +26,6 @@ export const ProductImage = styled.img`
   border-radius: 8px;
 `;
 
-// Estilo para cada item do carrinho
 export const CartItem = styled.div`
   display: flex;
   justify-content: space-between;
@@ -40,7 +37,7 @@ export const CartItem = styled.div`
   background-color: #f9f9f9;
 
   img {
-    width: 200px;  /* A imagem será 40% da largura disponível do container */
+    width: 200px;
     height: auto;
     margin-right: 20px;
   }
@@ -75,7 +72,6 @@ export const ProductInfo = styled.div`
   }
 `;
 
-// Estilo para o botão de deletar
 export const DeleteButton = styled.button`
   background-color: red;
   color: white;
@@ -94,7 +90,6 @@ export const DeleteButton = styled.button`
   }
 `;
 
-// Estilo para o botão de finalizar compra
 export const StyledButton = styled.button`
   background-color: black;
   color: white;
