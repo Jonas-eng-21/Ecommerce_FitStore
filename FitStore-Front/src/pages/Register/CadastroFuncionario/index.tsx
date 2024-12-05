@@ -8,7 +8,7 @@ import {
 } from "../CadastroCliente/style";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { registerFuncionarioAPI } from "../../../services/authService";
@@ -33,6 +33,8 @@ function formatTelefone(value: string): string {
 }
 
 export default function CadastroFuncinoario() {
+  const location = useLocation();
+  const cidadeId = location.state?.cidadeId;
   const navigate = useNavigate();
 
   const validationSchema = Yup.object({
@@ -71,18 +73,18 @@ export default function CadastroFuncinoario() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      const { ...dataToSend } = values;
+      const { confirmarSenha, ...dataToSend } = values;
 
       const dataToSendFormatted = {
         ...dataToSend,
-        cidade: { id: 1 },
+        cidade: { id: cidadeId },
       };
 
       try {
         const response = await registerFuncionarioAPI(dataToSendFormatted);
         if (response) {
           toast.success(
-            "Cadastro bem-sucedido! Agora você pode continuar as suas compras :)"
+            "Cadastro bem-sucedido!"
           );
           navigate("/");
         }
