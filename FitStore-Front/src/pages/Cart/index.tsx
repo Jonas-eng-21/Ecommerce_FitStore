@@ -24,7 +24,7 @@ const Cart: React.FC = () => {
     if (produto) {
       const storedCartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
 
-      // Verifica se o item já está no carrinho antes de adicionar
+      
       const isItemInCart = storedCartItems.some((item: CartItemType) => item.nome === produto.nome);
       
       if (!isItemInCart) {

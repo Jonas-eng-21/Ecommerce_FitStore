@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, CartItem, StyledButton, DeleteButton, Summary, UserInfo } from "./style";
 import Navbar from "../../components/NavBar";
+import { AxiosError } from "axios"; 
+import { cadastrarVendaAPI } from "../../services/vendaService";
+import { toast } from "react-toastify";
 
 interface CartItemType {
   nome: string | null;
@@ -9,6 +12,7 @@ interface CartItemType {
   urlImagem: string | null;
   categoria: string | null;
   quantidade: number;
+  id: number; 
 }
 
 const Checkout: React.FC = () => {
@@ -28,7 +32,6 @@ const Checkout: React.FC = () => {
     zip: "",
   });
 
-  // Supondo que você tenha uma função ou API para obter as informações do usuário logado
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -36,29 +39,49 @@ const Checkout: React.FC = () => {
     }
   }, []);
 
-  // Função para formatar o preço para exibição
   const formatPreco = (preco: number | null) => {
     return preco != null && !isNaN(preco) ? preco.toFixed(2) : "0.00";
   };
 
-  // Função para calcular o total levando em consideração a quantidade de cada item
   const calculateTotal = () => {
     return cartItems.reduce((total, item) => {
       return total + (item.preco ?? 0) * item.quantidade;
     }, 0);
   };
 
-  // Função para remover um item do carrinho
   const handleDeleteItem = (index: number) => {
     const updatedCartItems = cartItems.filter((_, i) => i !== index);
     setCartItems(updatedCartItems);
     localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
   };
 
-  // Função para finalizar a compra
-  const handleFinishPurchase = () => {
-    alert("Compra finalizada com sucesso!");
-    navigate("/confirmation"); // Redireciona para uma página de confirmação de compra
+  const handleFinishPurchase = async () => {
+    const itensVenda = cartItems.map(item => ({
+      produtoId: item.id, 
+      quantidade: item.quantidade,
+      valor: (item.preco ?? 0) * item.quantidade, 
+    }));
+
+    const payload = {
+      itensVenda: itensVenda,
+    };
+
+    try {
+      const response = await cadastrarVendaAPI(payload);
+      if (response) {
+        toast.success("Compra finalizada com sucesso!");
+        navigate("/confirmation"); 
+      }
+    } catch (error: unknown) {
+      if (error instanceof AxiosError && error.response) {
+        const message = error.response.data.message || "Erro ao finalizar a compra.";
+        alert(message);
+        console.error("Erro ao finalizar a compra:", message);
+      } else {
+        alert("Ocorreu um erro inesperado. Tente novamente.");
+        console.error("Erro inesperado:", error);
+      }
+    }
   };
 
   return (

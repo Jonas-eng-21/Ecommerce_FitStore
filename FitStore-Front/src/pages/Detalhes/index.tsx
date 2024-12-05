@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Container, ProductDetailsWrapper, ProductImage, ProductInfo, StyledButton } from "./style";
 import Navbar from "../../components/NavBar";
 
-
 interface Product {
   nome: string | null;
   preco: number | null;
@@ -30,16 +29,13 @@ const ProductDetails: React.FC = () => {
   }, [produto]);
 
   const handleAddToCart = () => {
-    // Adiciona diretamente no localStorage
     const storedCartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
 
-    const isItemInCart = storedCartItems.some((item: Product) => item.nome === product?.nome);
-
-    if (!isItemInCart && product) {
-      const updatedItems = [...storedCartItems, product];
-      localStorage.setItem("cartItems", JSON.stringify(updatedItems));
+    if (product) {
+      const updatedItems = [...storedCartItems, product]; 
+      localStorage.setItem("cartItems", JSON.stringify(updatedItems)); 
     }
-    navigate("/cart");
+    navigate("/cart"); 
   };
 
   const formatPreco = (preco: number | null) => {
@@ -48,7 +44,7 @@ const ProductDetails: React.FC = () => {
 
   return (
     <div>
-      <Navbar />  {/* Colocando o Navbar acima do container */}
+      <Navbar /> 
       <Container>
         <h1>Detalhes do Produto</h1>
         {product ? (
