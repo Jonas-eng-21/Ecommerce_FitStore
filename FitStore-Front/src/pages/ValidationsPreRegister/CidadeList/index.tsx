@@ -140,6 +140,7 @@ export default function CidadeList() {
       toast.error("Selecione uma cidade válida.");
     }
   };
+  
 
   return (
     <Container>

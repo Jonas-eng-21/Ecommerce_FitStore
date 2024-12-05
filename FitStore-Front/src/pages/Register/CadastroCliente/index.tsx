@@ -8,7 +8,7 @@ import {
 } from "./style";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { registerClienteAPI } from "../../../services/authService";
@@ -34,6 +34,8 @@ function formatTelefone(value: string): string {
 
 export default function CadastroCliente() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const cidadeId = location.state?.cidadeId;
 
   const validationSchema = Yup.object({
     nome: Yup.string().required("O nome é obrigatório"),
@@ -69,11 +71,11 @@ export default function CadastroCliente() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      const { ...dataToSend } = values;
+      const { confirmarSenha, ...dataToSend } = values;
 
       const dataToSendFormatted = {
         ...dataToSend,
-        cidade: { id: 1 },
+        cidade: { id: cidadeId },
       };
 
       try {
