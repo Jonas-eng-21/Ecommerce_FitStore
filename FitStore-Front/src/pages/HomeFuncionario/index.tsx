@@ -8,6 +8,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import CadastroEntrada from "./CadastroEntrada";
 import ListagemEntradas from "./ListagemEntradas";
 import { Container } from "./style";
+import ExibirVendas from "./ExibirVendas";
 
 export default function HomeFuncionario() {
   const [value, setValue] = React.useState("1");
@@ -35,7 +36,9 @@ export default function HomeFuncionario() {
             <TabPanel value="2">
               <ListagemEntradas />
             </TabPanel>
-            <TabPanel value="3">Item Three</TabPanel>
+            <TabPanel value="3">
+              <ExibirVendas />
+            </TabPanel>
           </TabContext>
         </Box>
       </Container>
