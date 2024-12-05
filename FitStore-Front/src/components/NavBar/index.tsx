@@ -3,8 +3,8 @@ import { NavbarContainer, NavLinks, NavActions } from "./style";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuth } from "../../contexts/useAuth";
-export default function Navbar() {
 
+export default function Navbar() {
   const { user, logout } = useAuth();
   console.log("Estado do usuário na Navbar:", user);
 

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+// NavbarContainer agora ocupa toda a largura da tela e está fixado no topo
 export const NavbarContainer = styled.nav`
   display: flex;
   gap: 1.875rem;
@@ -8,12 +9,19 @@ export const NavbarContainer = styled.nav`
   padding: 1rem 1.875rem;
   background-color: #ffffff;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+  position: fixed; /* Fixa a navbar no topo */
+  top: 0;
+  left: 0;
+  width: 100%; /* Garante que ocupe toda a largura */
+  z-index: 1000; /* Garante que fique acima de outros elementos */
+  height: 60px; /* Ajuste a altura conforme necessário */
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 1.25rem;
   }
 `;
 
+// Link Styling
 export const NavLinks = styled.div`
   display: flex;
   gap: 2rem;
@@ -32,6 +40,7 @@ export const NavLinks = styled.div`
   }
 `;
 
+// Ações do Navbar (botões como "Carrinho", "Login", "Logout")
 export const NavActions = styled.div`
   display: flex;
   gap: 1rem;

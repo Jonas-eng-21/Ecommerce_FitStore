@@ -106,7 +106,7 @@ export const HeroSection = styled.section`
     }
 
     img {
-        max-width: 100%;
+        max-width: 50%;
         height: auto;
         border-radius: 10px;
         margin-top: 2rem;
