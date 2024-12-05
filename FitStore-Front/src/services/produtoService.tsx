@@ -33,7 +33,6 @@ type ProdutoResponse = {
   urlImagem: string;
 };
 
-// Listar todos os produtos
 export const listarProdutosAPI = async () => {
   try {
     const response = await axios.get<ProdutoResponse[]>(`${api}produto/listarProdutos`);
@@ -43,7 +42,6 @@ export const listarProdutosAPI = async () => {
   }
 };
 
-// Obter produto por ID
 export const obterProdutoPorIdAPI = async (id: number) => {
   try {
     const response = await axios.get<ProdutoResponse>(`${api}produto/listarProdutos/${id}`);
@@ -53,7 +51,6 @@ export const obterProdutoPorIdAPI = async (id: number) => {
   }
 };
 
-// Cadastrar produto com imagem
 export const cadastrarProdutoAPI = async (produtoData: ProdutoRequest) => {
   try {
     const formData = new FormData();
@@ -71,7 +68,6 @@ export const cadastrarProdutoAPI = async (produtoData: ProdutoRequest) => {
   }
 };
 
-// Remover produto por ID
 export const removerProdutoAPI = async (id: number) => {
   try {
     await axios.delete(`${api}produto/excluirProduto/${id}`);
@@ -80,7 +76,6 @@ export const removerProdutoAPI = async (id: number) => {
   }
 };
 
-// Exportação de todas as funções do serviço
 export const produtoAPI = () => {
   return {
     listarProdutos: listarProdutosAPI,

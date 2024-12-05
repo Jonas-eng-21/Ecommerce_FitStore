@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-// Container principal para o checkout
 export const Container = styled.div`
   width: 100%;
   max-width: 1200px;
@@ -8,7 +7,6 @@ export const Container = styled.div`
   padding: 20px;
 `;
 
-// Estilo para cada item no resumo do carrinho
 export const CartItem = styled.div`
   display: flex;
   margin-bottom: 20px;
@@ -17,9 +15,9 @@ export const CartItem = styled.div`
   border-radius: 8px;
   background-color: #f9f9f9;
   align-items: center;
+  position: relative; /* Necessário para posicionar o botão de exclusão à direita */
 `;
 
-// Estilo para a imagem do item no carrinho
 export const CartItemImage = styled.img`
   max-width: 100px;
   max-height: 100px;
@@ -27,7 +25,6 @@ export const CartItemImage = styled.img`
   margin-right: 20px;
 `;
 
-// Estilo para a descrição do item (nome, preço e quantidade)
 export const CartItemDetails = styled.div`
   flex: 1;
   p {
@@ -35,21 +32,22 @@ export const CartItemDetails = styled.div`
   }
 `;
 
-// Estilo para o botão de excluir um item
 export const DeleteButton = styled.button`
+  position: absolute;
+  right: 10px;
   background-color: #ff4d4d;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 15px;
   padding: 5px 10px;
   cursor: pointer;
+  font-size: 16px;
 
   &:hover {
     background-color: #ff1a1a;
   }
 `;
 
-// Estilo para a seção de informações do usuário
 export const UserInfo = styled.div`
   margin-bottom: 30px;
   padding: 20px;
@@ -66,7 +64,6 @@ export const UserInfo = styled.div`
   }
 `;
 
-// Estilo para o resumo do pedido
 export const Summary = styled.div`
   margin-bottom: 30px;
   padding: 20px;
@@ -83,7 +80,6 @@ export const Summary = styled.div`
   }
 `;
 
-// Estilo para o botão de finalizar compra
 export const StyledButton = styled.button`
   background-color: #4caf50;
   color: white;

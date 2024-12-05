@@ -36,7 +36,6 @@ type EntradaResponse = {
     itensEntrada: ItemEntrada[];
 };
 
-// Listar todas as entradas
 export const listarEntradasAPI = async (): Promise<EntradaResponse[]> => {
     try {
         const response = await axios.get<EntradaResponse[]>(api);
@@ -47,7 +46,6 @@ export const listarEntradasAPI = async (): Promise<EntradaResponse[]> => {
     }
 };
 
-// Cadastrar uma entrada
 export const cadastrarEntradaAPI = async (
     entradaData: EntradaRequest
 ): Promise<EntradaResponse | undefined> => {
@@ -59,7 +57,6 @@ export const cadastrarEntradaAPI = async (
     }
 };
 
-// Remover uma entrada por ID
 export const removerEntradaAPI = async (id: number): Promise<void> => {
     try {
         await axios.delete(`${api}${id}`);
@@ -68,7 +65,6 @@ export const removerEntradaAPI = async (id: number): Promise<void> => {
     }
 };
 
-// Remover um item de entrada por ID
 export const removerItemEntradaAPI = async (id: number): Promise<void> => {
     try {
         await axios.delete(`${api}item/${id}`);
@@ -77,7 +73,6 @@ export const removerItemEntradaAPI = async (id: number): Promise<void> => {
     }
 };
 
-// Exportação das funções do serviço
 export const entradaAPI = () => {
     return {
         listarEntradas: listarEntradasAPI,

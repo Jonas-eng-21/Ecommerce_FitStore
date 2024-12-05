@@ -39,7 +39,6 @@ const Checkout: React.FC = () => {
     }
   }, []);
 
-  // Função para formatar o preço
   const formatPreco = (preco: number | null) => {
     return preco != null && !isNaN(preco) ? preco.toFixed(2) : "0.00";
   };
@@ -50,7 +49,6 @@ const Checkout: React.FC = () => {
     }, 0);
   };
 
-  // Função para remover item do carrinho
   const handleDeleteItem = (index: number) => {
     const updatedCartItems = cartItems.filter((_, i) => i !== index);
     setCartItems(updatedCartItems);
@@ -58,40 +56,33 @@ const Checkout: React.FC = () => {
   };
 
   const handleFinishPurchase = async () => {
-    // Estruturando os dados conforme o formato que a API espera
     const itensVenda = cartItems.map(item => ({
-      produto: { id: item.id },
+      produtoId: item.id, 
       quantidade: item.quantidade,
+      valor: (item.preco ?? 0) * item.quantidade, 
     }));
-  
+
     const payload = {
       itensVenda: itensVenda,
     };
-  
+
     try {
       const response = await cadastrarVendaAPI(payload);
       if (response) {
         toast.success("Compra finalizada com sucesso!");
-        navigate("/confirmation");
+        navigate("/confirmation"); 
       }
     } catch (error: unknown) {
-      // tratamento de erros
       if (error instanceof AxiosError && error.response) {
-        // exibindo mensagem de erro
         const message = error.response.data.message || "Erro ao finalizar a compra.";
         alert(message);
         console.error("Erro ao finalizar a compra:", message);
-        console.error("Detalhes do erro:", error.response.data);
-        console.error("Status do erro:", error.response.status);
-        console.error("Headers:", error.response.headers);
       } else {
-        // caso seja um erro inesperado
         alert("Ocorreu um erro inesperado. Tente novamente.");
         console.error("Erro inesperado:", error);
       }
     }
   };
-  
 
   return (
     <div>

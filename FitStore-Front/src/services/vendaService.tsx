@@ -1,5 +1,5 @@
 import axios from "axios";
-import { handleErrorVenda } from "../helpers/errorHandleVendas"; // Certifique-se de criar um helper para tratamento de erros
+import { handleErrorVenda } from "../helpers/errorHandleVendas"; 
 
 const api = "http://localhost:8080/api/vendas";
 
@@ -31,7 +31,6 @@ type VendaResponse = {
     itensVenda: ItemVenda[];
 };
 
-// Listar todas as vendas
 export const listarVendasAPI = async (): Promise<VendaResponse[]> => {
     try {
         const response = await axios.get<VendaResponse[]>(api);
@@ -42,7 +41,6 @@ export const listarVendasAPI = async (): Promise<VendaResponse[]> => {
     }
 };
 
-// Cadastrar uma nova venda
 export const cadastrarVendaAPI = async (
     vendaData: VendaRequest
 ): Promise<VendaResponse | undefined> => {
@@ -54,7 +52,6 @@ export const cadastrarVendaAPI = async (
     }
 };
 
-// Remover uma venda por ID (caso necessário)
 export const removerVendaAPI = async (id: number): Promise<void> => {
     try {
         await axios.delete(`${api}/${id}`);
@@ -63,7 +60,6 @@ export const removerVendaAPI = async (id: number): Promise<void> => {
     }
 };
 
-// Exportação das funções do serviço
 export const vendaAPI = () => {
     return {
         listarVendas: listarVendasAPI,
