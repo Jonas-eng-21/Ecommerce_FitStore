@@ -5,4 +5,5 @@ export type UserProfileToken = {
 
   export type UserProfile = {
     email: string;
+    role: string;
   };

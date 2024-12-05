@@ -9,24 +9,9 @@ import axios from "axios";
 type UserContextType = {
   user: UserProfile | null;
   token: string | null;
-  registerUser: (email: string, senha: string) => void;
-  loginUser: (email: string, senha: string, userType: string) => void;
+  loginUser: (email: string, senha: string, userType: string) => Promise<void>;
   logout: () => void;
   isLoggedIn: () => boolean;
-};
-
-type RegisterUserData = {
-  nome: string;
-  cpf?: string;
-  cnpj?: string;
-  telefone: string;
-  endereco: string;
-  numero: string;
-  bairro: string;
-  email: string;
-  senha: string;
-  cidade: { id: number };
-  funcao?: string;
 };
 
 type Props = { children: React.ReactNode };
@@ -41,58 +26,44 @@ export const UserProvider = ({ children }: Props) => {
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
+    const storedUserType = localStorage.getItem("userType");
 
-    if (storedToken) {
+    if (storedToken && storedUserType) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${storedToken}`;
       setToken(storedToken);
+      setUser({ email: "usuario@exemplo.com", role: storedUserType }); // Incluímos o "role"
     }
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+
     setIsReady(true);
   }, []);
-
-  const registerUser = async (userData: RegisterUserData) => {
-    await registerAPI(userData)
-      .then((res) => {
-        if (res) {
-          localStorage.setItem("token", res?.data.token);
-          const userObj = {
-            nome: res?.data.nome,
-            email: res?.data.email,
-          };
-          localStorage.setItem("user", JSON.stringify(userObj));
-          setToken(res.data.token!);
-          setUser(userObj!);
-          toast.success("Cadastro realizado com sucesso!");
-          navigate("/search");
-        }
-      })
-      .catch((e) => toast.warning("Erro no servidor"));
-  };
 
   const loginUser = async (email: string, senha: string, userType: string) => {
     try {
       const res = await loginAPI(email, senha, userType);
-      if (res && res.data) {
-        const token = res.data;
-        const userObj = { email };
 
+      if (res && res.data) {
+        const token = res.data.token;
         localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(userObj));
+        localStorage.setItem("userType", userType);
 
         setToken(token);
-        setUser(userObj);
+        setUser({ email, role: userType }); // Adiciona o tipo de usuário
 
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         toast.success("Login bem-sucedido!");
+
+        // Redireciona com base no tipo de usuário
+        if (userType === "fornecedor") {
+          navigate("/homefornecedor");
+        } else {
+          navigate("/");
+        }
       } else {
         toast.error("Falha ao autenticar. Tente novamente.");
       }
     } catch (error) {
+      console.error("Erro no login:", error);
       toast.warning("Erro no servidor");
-      console.log(error);
     }
   };
 
@@ -102,16 +73,15 @@ export const UserProvider = ({ children }: Props) => {
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userType");
     setUser(null);
     setToken(null);
     delete axios.defaults.headers.common["Authorization"];
-    navigate("/Login");
+    navigate("/login");
   };
 
   return (
-    <UserContext.Provider
-      value={{ loginUser, user, token, logout, isLoggedIn, registerUser }}
-    >
+    <UserContext.Provider value={{ loginUser, user, token, logout, isLoggedIn }}>
       {isReady ? children : null}
     </UserContext.Provider>
   );

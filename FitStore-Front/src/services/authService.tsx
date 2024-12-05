@@ -41,10 +41,11 @@ type RegisterFornecedor = {
   cidade: { id: number };
 };
 
+// Função para login com base no tipo de usuário
 export const loginAPI = async (email: string, senha: string, userType: string) => {
   try {
     const api = `http://localhost:8080/auth/login/${userType}`;
-    const response = await axios.post<string>(api, {
+    const response = await axios.post<UserProfileToken>(api, {
       email: email,
       senha: senha,
     });
@@ -54,7 +55,7 @@ export const loginAPI = async (email: string, senha: string, userType: string) =
   }
 };
 
-
+// Cadastro de cliente
 export const registerClienteAPI = async (userData: RegisterCliente) => {
   try {
     const data = await axios.post<UserProfileToken>(api + "cliente", userData);
@@ -63,6 +64,8 @@ export const registerClienteAPI = async (userData: RegisterCliente) => {
     handleError(error);
   }
 };
+
+// Cadastro de funcionário
 export const registerFuncionarioAPI = async (userData: RegisterFuncionario) => {
   try {
     const data = await axios.post<UserProfileToken>(
@@ -74,6 +77,8 @@ export const registerFuncionarioAPI = async (userData: RegisterFuncionario) => {
     handleError(error);
   }
 };
+
+// Cadastro de fornecedor
 export const registerFornecedorAPI = async (userData: RegisterFornecedor) => {
   try {
     const data = await axios.post<UserProfileToken>(
@@ -86,6 +91,7 @@ export const registerFornecedorAPI = async (userData: RegisterFornecedor) => {
   }
 };
 
+// Agrupamento de APIs de registro
 export const registerAPI = () => {
   return {
     registerCliente: registerClienteAPI,

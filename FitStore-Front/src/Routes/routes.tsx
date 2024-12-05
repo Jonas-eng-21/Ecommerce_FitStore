@@ -7,7 +7,7 @@ import CadastroCliente from "../pages/Register/CadastroCliente";
 import CadastroFornecedor from "../pages/Register/CadastroFornecedor";
 import CadastroFuncinoario from "../pages/Register/CadastroFuncionario";
 import Cart from "../pages/Cart";
-//import ProtectedRoute from "./protectedRoute";
+import ProtectedRoute from "./protectedRoute";
 import LoginPage from "../pages/Login";
 import Produtos from "../pages/Produto";
 import CidadeList from "../pages/ValidationsPreRegister/CidadeList";
@@ -15,7 +15,7 @@ import CidadeRegister from "../pages/ValidationsPreRegister/CidadeRegister";
 import HomeFuncionario from "../pages/HomeFuncionario";
 import Detalhes from "../pages/Detalhes";
 import Checkout from "../pages/Checkout";
-import ProtectedRoute from "./protectedRoute";
+import HomeFornecedor from "../pages/HomeFornecedor";
 
 export const router = createBrowserRouter([
   {
@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
       { path: "", element: <Home /> },
       { path: "cadastroCliente", element: <CadastroCliente /> },
       { path: "CadastroFornecedor", element: <CadastroFornecedor /> },
-      { path: "CadastroFuncionario", element: <CadastroFuncinoario /> },
+      { path: "CadastroFuncinoario", element: <CadastroFuncinoario /> },
       { path: "Home", element: <Home /> },
       { path: "About", element: <About /> },
       { path: "Contato", element: <Contato /> },
@@ -34,18 +34,23 @@ export const router = createBrowserRouter([
       { path: "cidadeList", element: <CidadeList /> },
       { path: "cidadeRegister", element: <CidadeRegister /> },
       { path: "homeFuncionario", element: <HomeFuncionario /> },
-      // { path: "register", element: <RegisterPage /> },
       { path: "cart", element: <Cart /> },
       { path: "detalhes", element: <Detalhes /> },
       { path: "checkout", element: <Checkout cartItems={[]} /> },
-      // {
-      //   path: "Cart",
-      //   element: (
-      //     <ProtectedRoute>
-      //       <Cart />
-      //     </ProtectedRoute>
-      //   ),
-      // },
+      {
+        path: "homefornecedor",
+        element: (
+          <ProtectedRoute allowedRoles={["fornecedor"]}>
+            <HomeFornecedor />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
 ]);
+
+
+
+
+
+
