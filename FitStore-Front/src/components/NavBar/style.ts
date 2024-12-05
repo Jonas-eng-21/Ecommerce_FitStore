@@ -9,12 +9,7 @@ export const NavbarContainer = styled.nav`
   padding: 1rem 1.875rem;
   background-color: #ffffff;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
-  position: fixed; /* Fixa a navbar no topo */
-  top: 0;
-  left: 0;
-  width: 100%; /* Garante que ocupe toda a largura */
   z-index: 1000; /* Garante que fique acima de outros elementos */
-  height: 60px; /* Ajuste a altura conforme necessário */
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 1.25rem;

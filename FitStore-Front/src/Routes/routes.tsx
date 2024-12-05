@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
       { path: "", element: <Home /> },
       { path: "cadastroCliente", element: <CadastroCliente /> },
       { path: "CadastroFornecedor", element: <CadastroFornecedor /> },
-      { path: "CadastroFuncinoario", element: <CadastroFuncinoario /> },
+      { path: "CadastroFuncionario", element: <CadastroFuncinoario /> },
       { path: "Home", element: <Home /> },
       { path: "About", element: <About /> },
       { path: "Contato", element: <Contato /> },
@@ -33,7 +33,7 @@ export const router = createBrowserRouter([
       { path: "Login", element: <LoginPage /> },
       { path: "cidadeList", element: <CidadeList /> },
       { path: "cidadeRegister", element: <CidadeRegister /> },
-      { path: "homeFuncionario", element: <HomeFuncionario /> },
+      // { path: "homeFuncionario", element: <HomeFuncionario /> },
       { path: "cart", element: <Cart /> },
       { path: "detalhes", element: <Detalhes /> },
       { path: "checkout", element: <Checkout cartItems={[]} /> },
@@ -45,6 +45,14 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: "homeFuncionario",
+        element: (
+          <ProtectedRoute allowedRoles={["funcionario"]}>
+            <HomeFuncionario />
+          </ProtectedRoute>
+        ),
+      }
     ],
   },
 ]);

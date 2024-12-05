@@ -55,6 +55,8 @@ export const UserProvider = ({ children }: Props) => {
         // Redireciona com base no tipo de usuário
         if (userType === "fornecedor") {
           navigate("/homefornecedor");
+        } else if (userType === "funcionario") {
+          navigate("/homeFuncionario");
         } else {
           navigate("/");
         }
