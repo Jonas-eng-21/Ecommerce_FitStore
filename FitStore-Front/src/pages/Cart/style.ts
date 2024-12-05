@@ -1,85 +1,95 @@
 import styled from "styled-components";
 
-export const Navbar = styled.div`
-  width: 100%;
-  background-color: #333;
-  padding: 10px 20px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-`;
-
+// Estilos para o Container principal do Carrinho
 export const Container = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
-  text-align: center;
-  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+  background-color: #f8f8f8;
 `;
 
+// Estilos para cada item no Carrinho
 export const CartItem = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding: 15px;
-  border: 1px solid #ddd;
+  background-color: #fff;
   border-radius: 8px;
-  background-color: #f9f9f9;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
   img {
-    width: 200px; 
-    height: auto;
-    margin-right: 20px;
+    border-radius: 8px;
+    margin-right: 15px;
   }
 
   div {
-    flex: 1;
-    text-align: left;
+    flex-grow: 1;
+  }
 
-    p {
-      margin: 5px 0;
-    }
+  p {
+    margin: 5px 0;
   }
 `;
+
+// Estilo para o botão de deletar
 export const DeleteButton = styled.button`
-  background-color: #ff4d4d;
+  background-color: #e74c3c;
   color: white;
   border: none;
-  cursor: pointer;
-  font-size: 18px;
-  padding: 5px 10px;
   border-radius: 50%;
-  transition: background-color 0.3s ease;
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
 
   &:hover {
-    background-color: #ff3333;
-  }
-
-  &:focus {
-    outline: none;
+    background-color: #c0392b;
   }
 `;
 
+// Estilo para o botão de "Finalizar Compra"
 export const StyledButton = styled.button`
-  background-color: black;
+  background-color: #3498db;
   color: white;
+  font-size: 16px;
   padding: 10px 20px;
   border: none;
-  cursor: pointer;
-  font-size: 16px;
   border-radius: 5px;
-  transition: background-color 0.3s ease;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s;
 
   &:hover {
-    background-color: orange;
-  }
-
-  &:focus {
-    background-color: orange;
+    background-color: #2980b9;
   }
 `;
+
+// Estilo para os títulos do carrinho
+export const Title = styled.h1`
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+`;
+
+// Estilos para o total de preços
+export const TotalContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  margin-top: 20px;
+`;
+
+export const TotalText = styled.p`
+  font-weight: bold;
+  font-size: 20px;
+  color: #333;
+`;
+
