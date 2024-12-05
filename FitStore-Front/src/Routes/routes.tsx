@@ -11,7 +11,6 @@ import ProtectedRoute from "./protectedRoute";
 import LoginPage from "../pages/Login";
 import RegisterPage from "../pages/Register";
 import Produtos from "../pages/Produto";
-import Checkout from "../pages/Checkout";
 import Detalhes from "../pages/Detalhes";
 
 export const router = createBrowserRouter([

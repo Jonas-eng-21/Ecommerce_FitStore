@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { listarEntradasAPI } from '../../services/entradaService';
 import { Grid, Card, CardContent, Typography, CardMedia, Box, Button, Select, MenuItem } from '@mui/material';
 
@@ -15,6 +16,7 @@ const ProdutoCard: React.FC = () => {
   const [itensEntrada, setItensEntrada] = useState<ItemEntrada[]>([]);
   const [categoriaSelecionada, setCategoriaSelecionada] = useState<string>(''); // Estado para a categoria selecionada
   const [categorias, setCategorias] = useState<string[]>([]); // Estado para armazenar as categorias únicas
+  const navigate = useNavigate();
 
   // Carregar dados das entradas
   useEffect(() => {
@@ -25,7 +27,8 @@ const ProdutoCard: React.FC = () => {
         setItensEntrada(items);
 
         // Obter as categorias únicas dos produtos
-        const categoriasUnicas = Array.from(new Set(items.map(item => item.categoriaProduto))).filter(Boolean);
+        const categoriasUnicas = Array.from(new Set(items.map(item => item.categoriaProduto)))
+          .filter((categoria): categoria is string => categoria !== null); // Filtro que garante que o valor seja string
         setCategorias(categoriasUnicas);
       }
     };
@@ -39,8 +42,8 @@ const ProdutoCard: React.FC = () => {
     : itensEntrada;
 
   // Função para redirecionar para a página de detalhes
-  const handleVerDetalhes = (produto: Produto) => {
-    navigate('/detalhes', { state: { produto } }); // Passa o produto como estado
+  const handleVerDetalhes = (item: ItemEntrada) => {
+    navigate('/detalhes', { state: { produto: item } }); // Passa o produto como estado
   };
 
   return (
@@ -151,7 +154,7 @@ const ProdutoCard: React.FC = () => {
                   size="small"
                   variant="contained"
                   color="primary"
-                  onClick={() => handleVerDetalhes(produto)} // Passa o produto para a navegação
+                  onClick={() => handleVerDetalhes(item)} // Passa o produto para a navegação
                 >
                   Ver Detalhes
                 </Button>

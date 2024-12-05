@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 // Estilos gerais do container
 export const Container = styled.div`
+  font-family: Arial, sans-serif;
   padding: 20px;
   text-align: center;
   background-color: #f9f9f9;
@@ -22,7 +23,7 @@ export const ProductDetailsWrapper = styled.div`
 
 // Estilo para a imagem do produto
 export const ProductImage = styled.img`
-  width: 200px;  /* Tamanho fixo para imagem */
+  width: 200px;
   height: auto;
   margin-right: 20px;
   border-radius: 8px;
@@ -40,7 +41,7 @@ export const CartItem = styled.div`
   background-color: #f9f9f9;
 
   img {
-    width: 200px;  /* A imagem será 40% da largura disponível do container */
+    width: 200px;
     height: auto;
     margin-right: 20px;
   }
