@@ -18,8 +18,8 @@ type ProdutoRequest = {
   imagem: File;
 };
 
-
 type ProdutoResponse = {
+  preco: number;
   id: number;
   nome: string;
   categoria: string;
@@ -33,31 +33,34 @@ type ProdutoResponse = {
   urlImagem: string;
 };
 
+// Listar todos os produtos
 export const listarProdutosAPI = async () => {
   try {
-    const response = await axios.get<ProdutoResponse[]>(api + "produto/listarProdutos");
+    const response = await axios.get<ProdutoResponse[]>(`${api}produto/listarProdutos`);
     return response.data;
   } catch (error) {
     handleErrorProduto(error);
   }
 };
 
+// Obter produto por ID
 export const obterProdutoPorIdAPI = async (id: number) => {
   try {
-    const response = await axios.get<ProdutoResponse>(api + `produto/listarProdutos/${id}`);
+    const response = await axios.get<ProdutoResponse>(`${api}produto/listarProdutos/${id}`);
     return response.data;
   } catch (error) {
     handleErrorProduto(error);
   }
 };
 
+// Cadastrar produto com imagem
 export const cadastrarProdutoAPI = async (produtoData: ProdutoRequest) => {
   try {
     const formData = new FormData();
     formData.append("produto", JSON.stringify(produtoData.produto));
     formData.append("imagem", produtoData.imagem);
 
-    const response = await axios.post<ProdutoResponse>(api + "produto", formData, {
+    const response = await axios.post<ProdutoResponse>(`${api}produto`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -68,29 +71,21 @@ export const cadastrarProdutoAPI = async (produtoData: ProdutoRequest) => {
   }
 };
 
-export const editarProdutoAPI = async (id: number, produtoData: ProdutoRequest) => {
-  try {
-    const response = await axios.put<ProdutoResponse>(api + `produto/${id}`, produtoData);
-    return response.data;
-  } catch (error) {
-    handleErrorProduto(error);
-  }
-};
-
+// Remover produto por ID
 export const removerProdutoAPI = async (id: number) => {
   try {
-    await axios.delete(api + `produto/excluirProduto/${id}`);
+    await axios.delete(`${api}produto/excluirProduto/${id}`);
   } catch (error) {
     handleErrorProduto(error);
   }
 };
 
+// Exportação de todas as funções do serviço
 export const produtoAPI = () => {
   return {
     listarProdutos: listarProdutosAPI,
     obterProdutoPorId: obterProdutoPorIdAPI,
     cadastrarProduto: cadastrarProdutoAPI,
-    editarProduto: editarProdutoAPI,
     removerProduto: removerProdutoAPI,
   };
 };

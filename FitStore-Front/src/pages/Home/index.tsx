@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../../components/NavBar';
 
 export default function Home() {
+  
     return (
         <Container>
             <Navbar/>
@@ -27,7 +28,7 @@ export default function Home() {
                     <h2>Aproveite Nossas Promoções</h2>
                     <p>Desconto em sua primeira compra e frete grátis nas compras a partir de R$199!</p>
                 </div>
-                <img src="assets/images/default-image.png" alt="Hero Banner" />
+                <img src="assets/images/osbons.png" alt="Hero Banner" />
             </HeroSection>
 
             {/* seção redes sociais */}
