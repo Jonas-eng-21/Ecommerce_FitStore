@@ -20,18 +20,24 @@ interface Column {
 }
 
 const columns: readonly Column[] = [
-  { id: "id", label: "ID Entrada", minWidth: 100 },
   { id: "valorTotal", label: "Valor Total", minWidth: 100 },
   { id: "quantidadeTotal", label: "Quantidade Total", minWidth: 100 },
-  { id: "itens", label: "Itens da Entrada", minWidth: 300 },
+  { id: "nomeProduto", label: "Nome do Produto", minWidth: 150 },
+  { id: "categoriaProduto", label: "Categoria", minWidth: 150 },
+  { id: "precoProduto", label: "Preço Produto", minWidth: 100 },
+  { id: "quantidade", label: "Quantidade", minWidth: 100 },
+  { id: "valorCusto", label: "Valor Custo", minWidth: 100 },
 ];
 
 interface ItemEntrada {
   id: number;
   produtoId: number;
   nomeProduto: string;
+  categoriaProduto: string;
+  precoProduto: number;
   quantidade: number;
   valor: number;
+  valorCusto: number;
 }
 
 interface Entrada {
@@ -44,7 +50,7 @@ interface Entrada {
 export default function ListagemEntradas() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [entradas, setEntradas] = useState<Entrada[]>([]); // Estado para armazenar as entradas
+  const [entradas, setEntradas] = useState<Entrada[]>([]);
 
   useEffect(() => {
     async function fetchEntradas() {
@@ -97,12 +103,31 @@ export default function ListagemEntradas() {
                   >
                     {columns.map((column) => {
                       let value;
-                      if (column.id === "itens") {
+                      if (column.id === "id") {
+                        value = entrada.id;
+                      } else if (column.id === "valorTotal") {
+                        value = entrada.valorTotal;
+                      } else if (column.id === "quantidadeTotal") {
+                        value = entrada.quantidadeTotal;
+                      } else if (column.id === "nomeProduto") {
                         value = entrada.itensEntrada
-                          .map(
-                            (item) =>
-                              `${item.nomeProduto} (Qtd: ${item.quantidade})`
-                          )
+                          .map((item) => item.nomeProduto)
+                          .join(", ");
+                      } else if (column.id === "categoriaProduto") {
+                        value = entrada.itensEntrada
+                          .map((item) => item.categoriaProduto)
+                          .join(", ");
+                      } else if (column.id === "precoProduto") {
+                        value = entrada.itensEntrada
+                          .map((item) => item.precoProduto)
+                          .join(", ");
+                      } else if (column.id === "quantidade") {
+                        value = entrada.itensEntrada
+                          .map((item) => item.quantidade)
+                          .join(", ");
+                      } else if (column.id === "valorCusto") {
+                        value = entrada.itensEntrada
+                          .map((item) => item.valorCusto)
                           .join(", ");
                       } else {
                         value = entrada[column.id as keyof Entrada];
@@ -113,6 +138,7 @@ export default function ListagemEntradas() {
                         </TableCell>
                       );
                     })}
+
                   </TableRow>
                 );
               })}

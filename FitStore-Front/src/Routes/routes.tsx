@@ -34,7 +34,7 @@ export const router = createBrowserRouter([
       { path: "cidadeList", element: <CidadeList /> },
       { path: "cidadeRegister", element: <CidadeRegister /> },
       { path: "homeFuncionario", element: <HomeFuncionario /> },
-      { path: "register", element: <RegisterPage /> },
+      // { path: "register", element: <RegisterPage /> },
       { path: "cart", element: <Cart /> },
       { path: "detalhes", element: <Detalhes /> },
       { path: "checkout", element: <Checkout cartItems={[]} /> },
