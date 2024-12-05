@@ -11,7 +11,7 @@ import ProtectedRoute from "./protectedRoute";
 import LoginPage from "../pages/Login";
 import RegisterPage from "../pages/Register";
 import Produtos from "../pages/Produto";
-import HomeFornecedor from "../pages/HomeFornecedor";
+import HomeFornecedor from "../pages/HomeFornecedor"; // Importa a página protegida
 
 export const router = createBrowserRouter([
   {
@@ -21,20 +21,26 @@ export const router = createBrowserRouter([
       { path: "", element: <Home /> },
       { path: "cadastroCliente", element: <CadastroCliente /> },
       { path: "CadastroFornecedor", element: <CadastroFornecedor /> },
-      { path: "CadastroFuncionario", element: <CadastroFuncinoario /> },
+      { path: "CadastroFuncinoario", element: <CadastroFuncinoario /> },
       { path: "Home", element: <Home /> },
       { path: "About", element: <About /> },
       { path: "Contato", element: <Contato /> },
       { path: "Produtos", element: <Produtos /> },
       { path: "Login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
-      { path: "HomeFornecedor", element: <HomeFornecedor /> },
-      
       {
         path: "Cart",
         element: (
           <ProtectedRoute>
             <Cart />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "homefornecedor", // Adiciona a rota para fornecedores
+        element: (
+          <ProtectedRoute allowedRoles={["fornecedor"]}>
+            <HomeFornecedor />
           </ProtectedRoute>
         ),
       },
