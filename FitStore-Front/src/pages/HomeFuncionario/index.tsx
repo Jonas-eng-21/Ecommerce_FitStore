@@ -2,11 +2,11 @@ import React from "react";
 import { Box, Tab } from "@mui/material";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/NavBar";
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
-import CadastroCliente from "../Register/CadastroCliente";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
 import CadastroEntrada from "./CadastroEntrada";
+import ListagemEntradas from "./ListagemEntradas";
 
 export default function HomeFuncionario() {
   const [value, setValue] = React.useState("1");
@@ -28,9 +28,11 @@ export default function HomeFuncionario() {
             </TabList>
           </Box>
           <TabPanel value="1">
-            <CadastroEntrada/>
+            <CadastroEntrada />
           </TabPanel>
-          <TabPanel value="2">Item Two</TabPanel>
+          <TabPanel value="2">
+            <ListagemEntradas />
+          </TabPanel>
           <TabPanel value="3">Item Three</TabPanel>
         </TabContext>
       </Box>

@@ -79,8 +79,9 @@ export default function CadastroEntrada() {
 
         await cadastrarEntradaAPI(entradaData);
         toast.success("Entrada cadastrada com sucesso!");
+        console.log("Entrada cadastrada com sucesso!", entradaData);
         resetForm();
-        setItensEntrada([]); // Limpa a lista de itens
+        setItensEntrada([]);
         setProdutoSelecionado(false);
       } catch (error) {
         console.log("Erro ao cadastrar a entrada:", error);
@@ -253,17 +254,16 @@ export default function CadastroEntrada() {
                   </ButtonSubmit>
                 </ContainerTextField>
               )}
-
-              {/* Lista de itens adicionados */}
               {itensEntrada.length > 0 && (
                 <div>
-                  <h4>Itens Adicionados:</h4>
+                  <h5>Itens Adicionados:</h5>
                   <ul>
                     {itensEntrada.map((item, index) => (
                       <li key={index}>
-                        Produto ID: {item.produto.id}, Quantidade:{" "}
-                        {item.quantidade}, Valor: {item.valor}, Valor de Custo:{" "}
-                        {item.valorCusto}
+                        Produto: {item.produto.id},
+                        Quantidade:{" "} {item.quantidade},
+                        Valor: {item.valor},
+                        Valor de Custo:{" "} {item.valorCusto}
                       </li>
                     ))}
                   </ul>
