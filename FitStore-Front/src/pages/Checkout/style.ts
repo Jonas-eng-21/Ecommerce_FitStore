@@ -1,105 +1,100 @@
 import styled from "styled-components";
 
 export const CheckoutContainer = styled.div`
-  max-width: 900px;
-  margin: 30px auto;
+  max-width: 1000px;
+  margin: 20px auto;
   padding: 30px;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
 `;
 
-export const Section = styled.section`
-  margin-bottom: 40px;
+export const Section = styled.div`
+  margin-bottom: 30px;
 `;
 
-export const Title = styled.h2`
+export const SectionTitle = styled.h2`
   font-size: 1.75rem;
+  margin-bottom: 15px;
   color: #333;
-  margin-bottom: 20px;
-  text-align: center;
+  border-bottom: 3px solid #007bff;
+  padding-bottom: 8px;
 `;
 
-export const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
+export const InfoBox = styled.div`
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
 
-export const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  label {
+  p {
+    margin: 10px 0;
     font-size: 1.1rem;
     color: #555;
   }
+`;
 
-  input {
-    padding: 12px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    outline: none;
+export const OrderSummary = styled.div`
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
-    &:focus {
-      border-color: #007bff;
+  div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+
+    p {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    strong {
+      font-size: 1.2rem;
+      color: #333;
     }
   }
 `;
 
-export const Summary = styled.div`
-  background: #fafafa;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
-`;
-
-export const SummaryItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-
-  p {
-    font-size: 1rem;
-    color: #555;
-    margin: 0;
-  }
-`;
-
-export const Total = styled.div`
-  display: flex;
-  justify-content: space-between;
+export const TotalPrice = styled.div`
   font-size: 1.3rem;
   font-weight: bold;
-  margin-top: 20px;
-
-  p {
-    margin: 0;
-    color: #333;
-  }
+  text-align: right;
+  color: #28a745;
 `;
 
-export const SubmitButton = styled.button`
-  display: block;
+export const ConfirmButton = styled.button`
   width: 100%;
-  padding: 14px;
-  font-size: 1.2rem;
-  color: white;
-  background-color: #28a745;
+  max-width: 350px;
+  margin: 30px auto 0;
+  display: block;
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  color: #ffffff;
+  background-color: #007bff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  margin-top: 30px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 
   &:hover {
-    background-color: #218838;
+    background-color: #0056b3;
+    transform: translateY(-3px);
   }
 
-  &:disabled {
-    background-color: #b2d8b5;
-    cursor: not-allowed;
+  &:focus {
+    outline: none;
   }
+`;
+
+export const Title = styled.h1`
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #007bff;
+  font-weight: 600;
 `;

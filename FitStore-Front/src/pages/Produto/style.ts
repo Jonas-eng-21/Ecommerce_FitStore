@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 
-
 export const Navbar = styled.nav`
     display: flex;
     gap: 1.875rem;
