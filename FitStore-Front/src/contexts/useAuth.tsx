@@ -42,7 +42,7 @@ export const UserProvider = ({ children }: Props) => {
       const res = await loginAPI(email, senha, userType);
 
       if (res && res.data) {
-        const token = res.data;
+        const token = res.data.token;
         localStorage.setItem("token", token);
         localStorage.setItem("userType", userType);
 
@@ -54,7 +54,7 @@ export const UserProvider = ({ children }: Props) => {
 
         // Redireciona com base no tipo de usuário
         if (userType === "fornecedor") {
-          navigate("/home-fornecedor");
+          navigate("/homefornecedor");
         } else {
           navigate("/");
         }
