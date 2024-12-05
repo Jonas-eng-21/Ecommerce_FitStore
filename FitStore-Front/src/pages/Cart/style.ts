@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+// Estilos gerais do container
 export const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
@@ -16,7 +17,6 @@ export const Title = styled.h1`
   margin-bottom: 30px;
 `;
 
-
 export const CartItem = styled.div`
   display: flex;
   flex-direction: column;
@@ -28,6 +28,7 @@ export const CartItem = styled.div`
   margin-bottom: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
+  position: relative; /* Para permitir que o botão delete fique posicionado no canto direito */
 
   &:hover {
     transform: scale(1.05);
@@ -73,17 +74,32 @@ export const DeleteButton = styled.button`
   font-size: 18px;
   padding: 8px 12px;
   border-radius: 50%;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
   margin-top: 10px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute; /* Aqui é onde o botão vai para o canto direito */
+  top: 10px;
+  right: 10px;
 
   &:hover {
     background-color: #e44d4d;
+    transform: scale(1.1);
   }
 
   &:focus {
     outline: none;
   }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 `;
+
 export const StyledButton = styled.button`
   width: 100%;
   max-width: 300px;

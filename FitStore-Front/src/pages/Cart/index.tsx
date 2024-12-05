@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Container, CartItem, StyledButton, DeleteButton } from "./style";
+import { FaTrash } from "react-icons/fa";
 
 interface CartItemType {
   nome: string;
@@ -46,7 +47,9 @@ const Cart: React.FC = () => {
               <p>Categoria: {cartItem.categoria}</p>
               <p>Preço: R${cartItem.preco.toFixed(2)}</p>
             </div>
-            <DeleteButton onClick={handleDeleteItem}>X</DeleteButton>
+            <DeleteButton onClick={handleDeleteItem}>
+              <FaTrash />
+            </DeleteButton>
           </CartItem>
         )}
       </div>
