@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Container, CartItem, StyledButton, DeleteButton } from "./style";
+import Navbar from "../../components/NavBar";
 
-// Ajustando a interface para corresponder aos dados retornados pela API
 interface CartItemType {
   nome: string | null;
   preco: number | null;
@@ -13,60 +13,76 @@ interface CartItemType {
 const Cart: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const produto = location.state?.produto; // Produto é passado diretamente da navegação
-
-  const [cartItem, setCartItem] = useState<CartItemType | null>(null);
+  const produto = location.state?.produto;
+  
+  const [cartItems, setCartItems] = useState<CartItemType[]>(() => {
+    const storedCartItems = localStorage.getItem("cartItems");
+    return storedCartItems ? JSON.parse(storedCartItems) : [];
+  });
 
   useEffect(() => {
     if (produto) {
-      // Mapeia os dados da API para o formato adequado para o carrinho
-      setCartItem({
-        nome: produto.nomeProduto ?? "Nome não disponível",
-        preco: produto.precoProduto ?? 0,
-        urlImagem: produto.urlImagemProduto ?? "../../../assets/images/default-image.png", // Imagem padrão se não houver
-        categoria: produto.categoriaProduto ?? "Sem categoria",
-      });
+      const storedCartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+
+      // Verifica se o item já está no carrinho antes de adicionar
+      const isItemInCart = storedCartItems.some((item: CartItemType) => item.nome === produto.nome);
+      
+      if (!isItemInCart) {
+        const updatedItems = [...storedCartItems, produto];
+        localStorage.setItem("cartItems", JSON.stringify(updatedItems));
+        setCartItems(updatedItems);
+      }
     }
   }, [produto]);
 
   const handleFinishPurchase = () => {
-    navigate("/checkout"); // Navegar para a página de checkout
+    navigate("/checkout");
   };
 
-  const handleDeleteItem = () => {
-    setCartItem(null); // Remover item do carrinho
+  const handleDeleteItem = (index: number) => {
+    const updatedCartItems = cartItems.filter((_, i) => i !== index);
+    setCartItems(updatedCartItems);
+    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
   };
 
   const formatPreco = (preco: number | null) => {
-    return preco != null && !isNaN(preco) ? preco.toFixed(2) : "0.00"; // Garantir formato válido
+    return preco != null && !isNaN(preco) ? preco.toFixed(2) : "0.00";
   };
 
+  const calculateTotal = () => cartItems.reduce((total, item) => total + (item.preco ?? 0), 0);
+
   return (
+    <div>
+    <Navbar/>
     <Container>
       <h1>Resumo do Carrinho</h1>
       <div>
-        {cartItem === null ? (
+        {cartItems.length === 0 ? (
           <p>Carrinho vazio</p>
         ) : (
-          <CartItem>
-            <img
-              src={cartItem.urlImagem ?? "../../../assets/simages/default-image.png"} // Usando a URL da imagem (ou imagem padrão)
-              alt={cartItem.nome ?? "Produto sem nome"} // Garantindo que 'alt' seja uma string válida
-            />
-            <div>
-              <p>{cartItem.nome}</p>
-              <p>Categoria: {cartItem.categoria}</p>
-              <p>Preço: R$ {formatPreco(cartItem.preco)}</p>
-            </div>
-            <DeleteButton onClick={handleDeleteItem}>X</DeleteButton>
-          </CartItem>
+          cartItems.map((item, index) => (
+            <CartItem key={index}>
+              <img
+                src={item.urlImagem ?? "../../../assets/images/default-image.png"}
+                alt={item.nome ?? "Produto sem nome"}
+                style={{ maxWidth: "100px", maxHeight: "100px", objectFit: "cover" }}
+              />
+              <div>
+                <p>{item.nome}</p>
+                <p>Categoria: {item.categoria}</p>
+                <p>Preço: R$ {formatPreco(item.preco)}</p>
+              </div>
+              <DeleteButton onClick={() => handleDeleteItem(index)}>X</DeleteButton>
+            </CartItem>
+          ))
         )}
       </div>
       <div>
-        <p>Total: R$ {formatPreco(cartItem?.preco ?? null)}</p>
+        <p>Total: R$ {formatPreco(calculateTotal())}</p>
         <StyledButton onClick={handleFinishPurchase}>Finalizar Compra</StyledButton>
       </div>
     </Container>
+    </div>
   );
 };
 

@@ -1,5 +1,20 @@
 import styled from "styled-components";
 
+export const Navbar = styled.div`
+  width: 100%;
+  background-color: #333;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+`;
+
 export const Container = styled.div`
   padding: 20px;
   text-align: center;

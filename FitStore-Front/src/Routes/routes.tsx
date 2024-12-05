@@ -7,11 +7,12 @@ import CadastroCliente from "../pages/Register/CadastroCliente";
 import CadastroFornecedor from "../pages/Register/CadastroFornecedor";
 import CadastroFuncinoario from "../pages/Register/CadastroFuncionario";
 import Cart from "../pages/Cart";
-import ProtectedRoute from "./protectedRoute";
+//import ProtectedRoute from "./protectedRoute";
 import LoginPage from "../pages/Login";
 import RegisterPage from "../pages/Register";
 import Produtos from "../pages/Produto";
 import Detalhes from "../pages/Detalhes";
+import Checkout from "../pages/Checkout";
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +31,7 @@ export const router = createBrowserRouter([
       { path: "register", element: <RegisterPage /> },
       { path: "cart", element: <Cart /> },
       { path: "detalhes", element: <Detalhes /> },
+      { path: "checkout", element: <Checkout cartItems={[]} /> },
       // {
       //   path: "Cart",
       //   element: (

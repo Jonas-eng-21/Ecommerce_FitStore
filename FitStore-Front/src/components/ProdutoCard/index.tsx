@@ -15,20 +15,20 @@ interface ItemEntrada {
 const ProdutoCard: React.FC = () => {
   const [itensEntrada, setItensEntrada] = useState<ItemEntrada[]>([]);
   const [categoriaSelecionada, setCategoriaSelecionada] = useState<string>(''); // Estado para a categoria selecionada
-  const [categorias, setCategorias] = useState<string[]>([]); // Estado para armazenar as categorias únicas
+  const [categorias, setCategorias] = useState<string[]>([]); // Armazenar as categorias únicas
   const navigate = useNavigate();
 
-  // Carregar dados das entradas
+
   useEffect(() => {
     const fetchEntradas = async () => {
       const dadosEntradas = await listarEntradasAPI();
       if (dadosEntradas) {
-        const items = dadosEntradas.flatMap((entrada) => entrada.itensEntrada); // Flatten para pegar todos os itens de todas as entradas
+        const items = dadosEntradas.flatMap((entrada) => entrada.itensEntrada); 
         setItensEntrada(items);
 
-        // Obter as categorias únicas dos produtos
+        
         const categoriasUnicas = Array.from(new Set(items.map(item => item.categoriaProduto)))
-          .filter((categoria): categoria is string => categoria !== null); // Filtro que garante que o valor seja string
+          .filter((categoria): categoria is string => categoria !== null);
         setCategorias(categoriasUnicas);
       }
     };
@@ -36,14 +36,14 @@ const ProdutoCard: React.FC = () => {
     fetchEntradas();
   }, []);
 
-  // Filtro dos itens pela categoria selecionada
+ 
   const itensFiltrados = categoriaSelecionada
     ? itensEntrada.filter(item => item.categoriaProduto === categoriaSelecionada)
     : itensEntrada;
 
-  // Função para redirecionar para a página de detalhes
+
   const handleVerDetalhes = (item: ItemEntrada) => {
-    navigate('/detalhes', { state: { produto: item } }); // Passa o produto como estado
+    navigate('/detalhes', { state: { produto: item } });
   };
 
   return (

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Container, ProductDetailsWrapper, ProductImage, ProductInfo, StyledButton } from "./style";
+import Navbar from "../../components/NavBar";
 
-// Ajustando a interface para corresponder aos dados retornados pela API
+
 interface Product {
   nome: string | null;
-  preco: number | null; // Permitir que preço seja null
+  preco: number | null;
   urlImagem: string | null;
   categoria: string | null;
 }
@@ -13,13 +14,12 @@ interface Product {
 const ProductDetails: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const produto = location.state?.produto; // Produto é passado diretamente da navegação
+  const produto = location.state?.produto;
 
   const [product, setProduct] = useState<Product | null>(null);
 
   useEffect(() => {
     if (produto) {
-      // Mapeia os dados da API para o formato adequado para o componente
       setProduct({
         nome: produto.nomeProduto ?? "Nome não disponível",
         preco: produto.precoProduto ?? 0,
@@ -30,7 +30,16 @@ const ProductDetails: React.FC = () => {
   }, [produto]);
 
   const handleAddToCart = () => {
-    navigate("/cart", { state: { produto: product } }); // Enviar `product` para o carrinho
+    // Adiciona diretamente no localStorage
+    const storedCartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+
+    const isItemInCart = storedCartItems.some((item: Product) => item.nome === product?.nome);
+
+    if (!isItemInCart && product) {
+      const updatedItems = [...storedCartItems, product];
+      localStorage.setItem("cartItems", JSON.stringify(updatedItems));
+    }
+    navigate("/cart");
   };
 
   const formatPreco = (preco: number | null) => {
@@ -38,29 +47,32 @@ const ProductDetails: React.FC = () => {
   };
 
   return (
-    <Container>
-      <h1>Detalhes do Produto</h1>
-      {product ? (
-        <ProductDetailsWrapper>
-          <ProductImage
-            src={product.urlImagem ?? "../../../assets/images/default-image.png"} // Garantir que a imagem exista
-            alt={product.nome ?? "Produto sem nome"} // Garantir que o alt seja sempre uma string
-          />
-          <ProductInfo>
-            <h2>{product.nome}</h2>
-            <p>
-              <strong>Categoria:</strong> {product.categoria}
-            </p>
-            <p>
-              <strong>Preço:</strong> R$ {formatPreco(product.preco)}
-            </p>
-            <StyledButton onClick={handleAddToCart}>Adicionar ao Carrinho</StyledButton>
-          </ProductInfo>
-        </ProductDetailsWrapper>
-      ) : (
-        <p>Produto não encontrado.</p>
-      )}
-    </Container>
+    <div>
+      <Navbar />  {/* Colocando o Navbar acima do container */}
+      <Container>
+        <h1>Detalhes do Produto</h1>
+        {product ? (
+          <ProductDetailsWrapper>
+            <ProductImage
+              src={product.urlImagem ?? "../../../assets/images/default-image.png"}
+              alt={product.nome ?? "Produto sem nome"}
+            />
+            <ProductInfo>
+              <h2>{product.nome}</h2>
+              <p>
+                <strong>Categoria:</strong> {product.categoria}
+              </p>
+              <p>
+                <strong>Preço:</strong> R$ {formatPreco(product.preco)}
+              </p>
+              <StyledButton onClick={handleAddToCart}>Adicionar ao Carrinho</StyledButton>
+            </ProductInfo>
+          </ProductDetailsWrapper>
+        ) : (
+          <p>Produto não encontrado.</p>
+        )}
+      </Container>
+    </div>
   );
 };
 

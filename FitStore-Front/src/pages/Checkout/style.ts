@@ -1,105 +1,66 @@
 import styled from "styled-components";
 
-export const CheckoutContainer = styled.div`
-  max-width: 900px;
-  margin: 30px auto;
-  padding: 30px;
+export const Container = styled.div`
+  padding: 20px;
   background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 `;
 
-export const Section = styled.section`
-  margin-bottom: 40px;
-`;
-
-export const Title = styled.h2`
-  font-size: 1.75rem;
-  color: #333;
-  margin-bottom: 20px;
-  text-align: center;
-`;
-
-export const Form = styled.form`
+export const CartItem = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 10px;
 `;
 
-export const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+export const StyledButton = styled.button`
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
 
-  label {
-    font-size: 1.1rem;
-    color: #555;
+  &:hover {
+    background-color: #45a049;
   }
+`;
 
-  input {
-    padding: 12px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    outline: none;
+export const DeleteButton = styled.button`
+  background-color: #ff4040;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+  cursor: pointer;
+  margin-left: 10px;
 
-    &:focus {
-      border-color: #007bff;
-    }
+  &:hover {
+    background-color: #ff3333;
   }
 `;
 
 export const Summary = styled.div`
-  background: #fafafa;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
-`;
-
-export const SummaryItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-
-  p {
-    font-size: 1rem;
-    color: #555;
-    margin: 0;
-  }
-`;
-
-export const Total = styled.div`
-  display: flex;
-  justify-content: space-between;
-  font-size: 1.3rem;
-  font-weight: bold;
   margin-top: 20px;
+`;
+
+export const UserInfo = styled.div`
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 5px;
+
+  h2 {
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: bold;
+  }
 
   p {
-    margin: 0;
-    color: #333;
+    font-size: 16px;
+    margin: 5px 0;
   }
 `;
 
-export const SubmitButton = styled.button`
-  display: block;
-  width: 100%;
-  padding: 14px;
-  font-size: 1.2rem;
-  color: white;
-  background-color: #28a745;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 30px;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #218838;
-  }
-
-  &:disabled {
-    background-color: #b2d8b5;
-    cursor: not-allowed;
-  }
-`;
