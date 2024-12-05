@@ -41,14 +41,14 @@ export const UserProvider = ({ children }: Props) => {
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
+    const storedUser = localStorage.getItem("user");
+
     if (storedToken) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${storedToken}`;
       setToken(storedToken);
-
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
-      }
+    }
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
     setIsReady(true);
   }, []);
@@ -75,19 +75,12 @@ export const UserProvider = ({ children }: Props) => {
   const loginUser = async (email: string, senha: string, userType: string) => {
     try {
       const res = await loginAPI(email, senha, userType);
-
-      console.log("Resposta da API:", res);
-
       if (res && res.data) {
         const token = res.data;
-        console.log("Token recebido:", token);
+        const userObj = { email };
 
         localStorage.setItem("token", token);
-        console.log("Token armazenado no localStorage.");
-
-        const userObj = { email };
         localStorage.setItem("user", JSON.stringify(userObj));
-        console.log("Usuário armazenado no localStorage:", userObj);
 
         setToken(token);
         setUser(userObj);
@@ -95,12 +88,11 @@ export const UserProvider = ({ children }: Props) => {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         toast.success("Login bem-sucedido!");
       } else {
-        console.error("Token ausente na resposta da API.");
         toast.error("Falha ao autenticar. Tente novamente.");
       }
     } catch (error) {
-      console.error("Erro no login:", error);
       toast.warning("Erro no servidor");
+      console.log(error);
     }
   };
 

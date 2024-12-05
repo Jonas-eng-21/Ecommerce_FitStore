@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { listarEntradasAPI } from '../../services/entradaService';
 import { Grid, Card, CardContent, Typography, CardMedia, Box, Button, Select, MenuItem } from '@mui/material';
 
@@ -14,18 +15,20 @@ interface ItemEntrada {
 const ProdutoCard: React.FC = () => {
   const [itensEntrada, setItensEntrada] = useState<ItemEntrada[]>([]);
   const [categoriaSelecionada, setCategoriaSelecionada] = useState<string>(''); // Estado para a categoria selecionada
-  const [categorias, setCategorias] = useState<string[]>([]); // Estado para armazenar as categorias únicas
+  const [categorias, setCategorias] = useState<string[]>([]); // Armazenar as categorias únicas
+  const navigate = useNavigate();
 
-  // Carregar dados das entradas
+
   useEffect(() => {
     const fetchEntradas = async () => {
       const dadosEntradas = await listarEntradasAPI();
       if (dadosEntradas) {
-        const items = dadosEntradas.flatMap((entrada) => entrada.itensEntrada); // Flatten para pegar todos os itens de todas as entradas
+        const items = dadosEntradas.flatMap((entrada) => entrada.itensEntrada); 
         setItensEntrada(items);
 
-        // Obter as categorias únicas dos produtos
-        const categoriasUnicas = Array.from(new Set(items.map(item => item.categoriaProduto))).filter(Boolean);
+        
+        const categoriasUnicas = Array.from(new Set(items.map(item => item.categoriaProduto)))
+          .filter((categoria): categoria is string => categoria !== null);
         setCategorias(categoriasUnicas);
       }
     };
@@ -33,10 +36,15 @@ const ProdutoCard: React.FC = () => {
     fetchEntradas();
   }, []);
 
-  // Filtro dos itens pela categoria selecionada
+ 
   const itensFiltrados = categoriaSelecionada
     ? itensEntrada.filter(item => item.categoriaProduto === categoriaSelecionada)
     : itensEntrada;
+
+
+  const handleVerDetalhes = (item: ItemEntrada) => {
+    navigate('/detalhes', { state: { produto: item } });
+  };
 
   return (
     <div>
@@ -142,7 +150,12 @@ const ProdutoCard: React.FC = () => {
               </CardContent>
 
               <Box sx={{ display: 'flex', justifyContent: 'center', padding: '10px' }}>
-                <Button size="small" variant="contained" color="primary">
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleVerDetalhes(item)} // Passa o produto para a navegação
+                >
                   Ver Detalhes
                 </Button>
               </Box>
