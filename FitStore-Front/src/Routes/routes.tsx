@@ -9,11 +9,11 @@ import CadastroFuncinoario from "../pages/Register/CadastroFuncionario";
 import Cart from "../pages/Cart";
 import ProtectedRoute from "./protectedRoute";
 import LoginPage from "../pages/Login";
+import Detalhes from "../pages/Detalhes";
+import Checkout from "../pages/Checkout";
 import RegisterPage from "../pages/Register";
 import Produtos from "../pages/Produto";
 import HomeFornecedor from "../pages/HomeFornecedor"; // Importa a página protegida
-import Detalhes from "../pages/Detalhes";
-import Checkout from "../pages/Checkout";
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +30,17 @@ export const router = createBrowserRouter([
       { path: "Produtos", element: <Produtos /> },
       { path: "Login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
+      { path: "cart", element: <Cart /> },
+      { path: "detalhes", element: <Detalhes /> },
+      { path: "checkout", element: <Checkout cartItems={[]} /> },
+      // {
+      //   path: "Cart",
+      //   element: (
+      //     <ProtectedRoute>
+      //       <Cart />
+      //     </ProtectedRoute>
+      //   ),
+      // },
       {
         path: "Cart",
         element: (
@@ -46,17 +57,12 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      { path: "cart", element: <Cart /> },
-      { path: "detalhes", element: <Detalhes /> },
-      { path: "checkout", element: <Checkout cartItems={[]} /> },
-      // {
-      //   path: "Cart",
-      //   element: (
-      //     <ProtectedRoute>
-      //       <Cart />
-      //     </ProtectedRoute>
-      //   ),
-      // },
     ],
   },
 ]);
+
+
+
+
+
+
